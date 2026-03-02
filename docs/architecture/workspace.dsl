@@ -18,7 +18,8 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
                 search = component "Search Service" "Gestiona la indexación y búsqueda de la documentación y el catálogo." "Node.js"
                 auth = component "Auth Service" "Gestiona la autenticación y el flujo de identidad con proveedores externos." "Node.js"
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
-                ctt = component "CTT Explorer" "Obtiene y guarda la documentación de la forja del CTT (Centro de Transferencia de Tecnología)." "Node.js"
+                ctt = component "CTT Explorer Plugin" "Obtiene y guarda la documentación de la forja del CTT (Centro de Transferencia de Tecnología)." "Node.js"
+                desy = component "DESY Explorer Plugin" "Obtiene y guarda la documentación de la forja de DESY" "Node.js"
             }
             
             database = container "Base de Datos" "Almacena la persistencia de datos de Backstage (entidades, estados, etc.)." "PostgreSQL" "Database"
@@ -54,6 +55,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.backend.scaffolder -> github "Crea repositorios" "GitHub API/HTTPS"
         backstage.backend.techdocs -> backstage.storage "Lee/Escribe archivos" "HTTPS/S3"
         backstage.backend.ctt -> backstage.storage "Guarda docs de forja" "HTTPS/S3"
+        backstage.backend.desy -> backstage.storage "Guarda docs de DESY" "HTTPS/S3"
         backstage.backend.ctt -> github "Consulta la forja" "GitHub API/HTTPS"
     }
 
