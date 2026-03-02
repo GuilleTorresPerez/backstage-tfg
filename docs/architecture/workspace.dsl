@@ -3,17 +3,17 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
     
     model {
         # Actores
-        developer = person "Desarrollador" "Desarrollador que crea software para la organización Aragon digital" "Actor"
-        admin = person "Administrador" "Funcionario administrador de aragón digital" "Actor"
+        developer = person "Desarrollador" "Desarrollador que crea y gestiona el ciclo de vida de sus servicios" "Actor"
+        admin = person "Administrador" "Define estándares tecnológicos, gestiona el catálogo de servicios y supervisa" "Actor"
         
         # Sistemas
         backstage = softwareSystem "BACKSTAGE" "Portal para crear, gestionar y explorar servicios" "System"
         github = softwareSystem "GITHUB" "Almacena código fuente y ejecuta workflows" "ExternalSystem"
         
         # Relaciones
-        developer -> backstage "Crea aplicaciones"
-        admin -> backstage "Gestiona las aplicaciones"
-        github -> backstage "Envía estados de los workflows"
+        developer -> backstage "Utiliza plantillas para crear nuevos servicios y consulta el catálogo."
+        admin -> backstage "Define plantillas de software, gestiona la estructura organizativa y audita activos."
+        backstage -> github "Crea repositorios y lanza workflows de andamiaje (scaffolding)."
     }
 
     views {
