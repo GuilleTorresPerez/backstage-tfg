@@ -5,4 +5,7 @@ docs/architecture/workspace.json
 docs/obsidian
 docs/architecture/C4-Model
 
+# ai
+.gemini/skills
+
 .env
