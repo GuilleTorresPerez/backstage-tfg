@@ -14,7 +14,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
             backend = container "Backend" "Orquesta los plugins, gestiona la autenticación y se comunica con sistemas externos." "Node.js / Express" "Server" {
                 # Componentes (Nivel 3)
                 catalog = component "Software Catalog" "Gestiona los metadatos del software y el grafo de entidades dentro de Backstage." "Node.js"
-                scaffolder = component "Software Templates" "Herramienta para crear nuevos componentes a partir de plantillas (andamiaje)." "Node.js"
+                scaffolder = component "Software Templates" "Orquesta la creación de proyectos, inyecta el Kit de IA y utiliza Custom Actions de DESY." "Node.js"
                 search = component "Search Service" "Gestiona la indexación y búsqueda de la documentación y el catálogo." "Node.js"
                 auth = component "Auth Service" "Gestiona la autenticación y el flujo de identidad con proveedores externos." "Node.js"
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
@@ -27,11 +27,14 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         }
         
         github = softwareSystem "GITHUB" "Plataforma de control de versiones y ejecución de pipelines (CI/CD)." "ExternalSystem"
+
+        bitbucket = softwareSystem "BITBUCKET" "Forja de código del Gobierno de Aragón donde residen los starters oficiales." "ExternalSystem"
         
         # Relaciones Contexto (Nivel 1)
         developer -> backstage "Utiliza plantillas y consulta el catálogo"
         admin -> backstage "Gestiona el portal y audita activos"
         backstage -> github "Crea repositorios y lanza workflows" "API/HTTPS"
+        
 
         # Relaciones Contenedores (Nivel 2)
         developer -> backstage.frontend "Navega y utiliza el portal" "HTTPS"
@@ -53,6 +56,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
 
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
         backstage.backend.scaffolder -> github "Crea repositorios" "GitHub API/HTTPS"
+        backstage.backend.scaffolder -> bitbucket "Descarga Starters oficiales" "HTTPS"
         backstage.backend.techdocs -> backstage.storage "Lee/Escribe archivos" "HTTPS/S3"
         backstage.backend.ctt -> backstage.storage "Guarda docs de forja" "HTTPS/S3"
         backstage.backend.desy -> backstage.storage "Guarda docs de DESY" "HTTPS/S3"
