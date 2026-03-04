@@ -20,6 +20,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
                 ctt = component "CTT Explorer Plugin" "Obtiene y guarda la documentación de la forja del CTT (Centro de Transferencia de Tecnología)." "Node.js"
                 desy = component "DESY Explorer Plugin" "Obtiene y guarda la documentación de la forja de DESY" "Node.js"
+                compliance = component "Compliance & Auditor Plugin" "Actúa como auditor continuo, verificando versiones y estándares (DESY Pills) en los repositorios." "Node.js"
             }
             
             database = container "Base de Datos" "Almacena la persistencia de datos de Backstage (entidades, estados, etc.)." "PostgreSQL" "Database"
@@ -54,15 +55,20 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.frontend -> backstage.backend.search "Busca información" "JSON/HTTPS"
         backstage.frontend -> backstage.backend.auth "Inicia sesión" "JSON/HTTPS"
         backstage.frontend -> backstage.backend.techdocs "Accede a manuales" "JSON/HTTPS"
+        backstage.frontend -> backstage.backend.compliance "Visualiza cumplimiento y Píldoras DESY" "JSON/HTTPS"
 
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
         backstage.backend.catalog -> github "Lee definiciones de plantillas y entidades" "GitHub API/HTTPS"
+        backstage.backend.catalog -> bitbucket "Descubre entidades de catálogo" "Bitbucket API/HTTPS"
         backstage.backend.scaffolder -> github "Crea nuevos repositorios" "GitHub API/HTTPS"
         backstage.backend.scaffolder -> bitbucket "Descarga Starters oficiales" "HTTPS"
         backstage.backend.techdocs -> backstage.storage "Lee/Escribe archivos" "HTTPS/S3"
         backstage.backend.ctt -> backstage.storage "Guarda docs de forja" "HTTPS/S3"
         backstage.backend.desy -> backstage.storage "Guarda docs de DESY" "HTTPS/S3"
         backstage.backend.ctt -> github "Consulta la forja" "GitHub API/HTTPS"
+        backstage.backend.compliance -> bitbucket "Consulta versiones de referencia (Starters)" "Bitbucket API/HTTPS"
+        backstage.backend.compliance -> github "Audita versiones en repositorios destino" "GitHub API/HTTPS"
+        backstage.backend.compliance -> backstage.backend.catalog "Obtiene lista de servicios a auditar" "In-process"
     }
 
     views {
