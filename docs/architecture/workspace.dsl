@@ -33,6 +33,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         # Relaciones Contexto (Nivel 1)
         developer -> backstage "Utiliza plantillas y consulta el catálogo"
         admin -> backstage "Gestiona el portal y audita activos"
+        admin -> github "Define y versiona plantillas de software (YAML)" "HTTPS"
         backstage -> github "Crea repositorios y lanza workflows" "API/HTTPS"
         
 
@@ -55,7 +56,8 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.frontend -> backstage.backend.techdocs "Accede a manuales" "JSON/HTTPS"
 
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
-        backstage.backend.scaffolder -> github "Crea repositorios" "GitHub API/HTTPS"
+        backstage.backend.catalog -> github "Lee definiciones de plantillas y entidades" "GitHub API/HTTPS"
+        backstage.backend.scaffolder -> github "Crea nuevos repositorios" "GitHub API/HTTPS"
         backstage.backend.scaffolder -> bitbucket "Descarga Starters oficiales" "HTTPS"
         backstage.backend.techdocs -> backstage.storage "Lee/Escribe archivos" "HTTPS/S3"
         backstage.backend.ctt -> backstage.storage "Guarda docs de forja" "HTTPS/S3"
