@@ -18,7 +18,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
                 search = component "Search Service" "Gestiona la indexación y búsqueda de la documentación y el catálogo." "Node.js"
                 auth = component "Auth Service" "Gestiona la autenticación y el flujo de identidad con proveedores externos." "Node.js"
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
-                ctt = component "CTT Explorer Plugin" "Obtiene y guarda la documentación de la forja del CTT (Centro de Transferencia de Tecnología)." "Node.js"
+                ctt = component "CTT Scraper & Generator" "Realiza scraping del portal CTT, genera documentación técnica y la publica." "Node.js / Puppeteer"
                 desy = component "DESY Explorer Plugin" "Obtiene y guarda la documentación de la forja de DESY" "Node.js"
                 compliance = component "Compliance & Auditor Plugin" "Actúa como auditor continuo, verificando versiones y estándares (DESY Pills) en los repositorios." "Node.js"
             }
@@ -30,12 +30,15 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         github = softwareSystem "GITHUB" "Plataforma de control de versiones y ejecución de pipelines (CI/CD)." "ExternalSystem"
 
         bitbucket = softwareSystem "BITBUCKET" "Forja de código del Gobierno de Aragón donde residen los starters oficiales." "ExternalSystem"
+
+        ctt_portal = softwareSystem "Portal CTT" "Portal de activos del Centro de Transferencia de Tecnología (CTT)." "ExternalSystem"
         
         # Relaciones Contexto (Nivel 1)
         developer -> backstage "Utiliza plantillas y consulta el catálogo"
         admin -> backstage "Gestiona el portal y audita activos"
         admin -> github "Define y versiona plantillas de software (YAML)" "HTTPS"
         backstage -> github "Crea repositorios y lanza workflows" "API/HTTPS"
+        backstage -> ctt_portal "Extrae información de activos" "HTTPS/HTML"
         
 
         # Relaciones Contenedores (Nivel 2)
@@ -46,6 +49,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.backend -> backstage.database "Lee y escribe datos" "SQL/TCP"
         backstage.backend -> backstage.storage "Sincroniza y almacena documentación" "HTTPS/S3"
         backstage.backend -> github "Crea repositorios y andamiaje" "GitHub API/HTTPS"
+        backstage.backend -> ctt_portal "Realiza scraping de activos" "HTTPS/HTML"
         
         developer -> backstage.storage "Lee documentación técnica (TechDocs)" "HTTPS"
 
@@ -60,12 +64,14 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
         backstage.backend.catalog -> github "Lee definiciones de plantillas y entidades" "GitHub API/HTTPS"
         backstage.backend.catalog -> bitbucket "Descubre entidades de catálogo" "Bitbucket API/HTTPS"
+        backstage.backend.search -> backstage.backend.catalog "Indexa entidades del catálogo" "In-process"
+        backstage.backend.search -> backstage.backend.techdocs "Indexa contenido de documentación" "In-process"
         backstage.backend.scaffolder -> github "Crea nuevos repositorios" "GitHub API/HTTPS"
         backstage.backend.scaffolder -> bitbucket "Descarga Starters oficiales" "HTTPS"
         backstage.backend.techdocs -> backstage.storage "Lee/Escribe archivos" "HTTPS/S3"
-        backstage.backend.ctt -> backstage.storage "Guarda docs de forja" "HTTPS/S3"
+        backstage.backend.ctt -> backstage.storage "Publica documentación generada" "HTTPS/S3"
         backstage.backend.desy -> backstage.storage "Guarda docs de DESY" "HTTPS/S3"
-        backstage.backend.ctt -> github "Consulta la forja" "GitHub API/HTTPS"
+        backstage.backend.ctt -> ctt_portal "Realiza scraping de activos" "HTTPS/HTML"
         backstage.backend.compliance -> bitbucket "Consulta versiones de referencia (Starters)" "Bitbucket API/HTTPS"
         backstage.backend.compliance -> github "Audita versiones en repositorios destino" "GitHub API/HTTPS"
         backstage.backend.compliance -> backstage.backend.catalog "Obtiene lista de servicios a auditar" "In-process"
