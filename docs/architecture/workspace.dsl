@@ -80,6 +80,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.backend.compliance -> bitbucket "Consulta versiones de referencia (Starters)" "Bitbucket API/HTTPS"
         backstage.backend.compliance -> github "Audita versiones en repositorios destino" "GitHub API/HTTPS"
         backstage.backend.compliance -> backstage.backend.catalog "Obtiene lista de servicios a auditar" "In-process"
+        backstage.backend.auth -> github "Intercambia código OAuth por token y resuelve identidad" "OAuth2/HTTPS"
     }
 
     views {
