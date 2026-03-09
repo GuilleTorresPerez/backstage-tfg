@@ -2,3 +2,19 @@ dist
 dist-types
 coverage
 .vscode
+
+# Documentation and architecture files
+docs/
+*.md
+*.dsl
+*.json5
+
+# Config and agent files
+.agents/
+.claude/
+.gemini/
+CLAUDE.md
+GEMINI.md
+README.md
+app-config.local.yaml
+docker-compose.yml
