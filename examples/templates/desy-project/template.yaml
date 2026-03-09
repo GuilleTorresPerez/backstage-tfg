@@ -1,0 +1,145 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: desy-project
+  title: Proyecto DESY
+  description: Crea un nuevo proyecto basado en el Sistema de Diseno del Gobierno de Aragon (DESY)
+  tags:
+    - desy
+    - gobierno-de-aragon
+    - frontend
+spec:
+  owner: user:guest
+  type: website
+
+  parameters:
+    - title: Informacion del Proyecto
+      required:
+        - name
+      properties:
+        name:
+          title: Nombre
+          type: string
+          description: Nombre del proyecto
+          ui:autofocus: true
+        description:
+          title: Descripcion
+          type: string
+          description: Breve descripcion del proyecto
+        owner:
+          title: Propietario
+          type: string
+          description: Propietario del componente en el catalogo
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
+
+    - title: Tipo de Arquitectura
+      required:
+        - architectureType
+      properties:
+        architectureType:
+          title: Tipo de Arquitectura
+          type: string
+          description: Selecciona el tipo de proyecto DESY
+          enum:
+            - html
+            - angular
+            - ionic
+            - react
+          enumNames:
+            - Portal Publico Estatico (HTML)
+            - Aplicacion Web con Angular
+            - Aplicacion Movil (Ionic)
+            - Aplicacion Web con React
+
+    - title: Repositorio
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Ubicacion del Repositorio
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - portal-aragon
+
+  steps:
+    - id: fetch-html
+      name: Descargar starter DESY HTML
+      if: ${{ parameters.architectureType === 'html' }}
+      action: fetch:plain
+      input:
+        url: https://bitbucket.org/sdaragon/desy-html-starter/src/master/
+        targetPath: .
+
+    - id: fetch-angular
+      name: Descargar starter DESY Angular
+      if: ${{ parameters.architectureType === 'angular' }}
+      action: fetch:plain
+      input:
+        url: https://bitbucket.org/sdaragon/desy-angular-starter/src/master/
+        targetPath: .
+
+    - id: fetch-ionic
+      name: Descargar starter DESY Ionic
+      if: ${{ parameters.architectureType === 'ionic' }}
+      action: fetch:plain
+      input:
+        url: https://bitbucket.org/sdaragon/desy-ionic/src/master/
+        targetPath: .
+
+    - id: fetch-react
+      name: Descargar starter DESY React
+      if: ${{ parameters.architectureType === 'react' }}
+      action: fetch:plain
+      input:
+        url: https://bitbucket.org/sdaragon/desy-react/src/main/
+        targetPath: .
+
+    - id: fetch-catalog
+      name: Agregar catalog-info.yaml
+      action: fetch:template
+      input:
+        url: ./content
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          architectureType: ${{ parameters.architectureType }}
+
+    - id: publish
+      name: Publicar en GitHub
+      action: publish:github
+      input:
+        description: ${{ parameters.description }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+
+    - id: register
+      name: Registrar en el catalogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+    - id: notify
+      name: Notificar
+      action: notification:send
+      input:
+        recipients: broadcast
+        title: 'Nuevo proyecto DESY creado'
+        info: 'El proyecto ${{ parameters.name }} ha sido creado correctamente'
+        severity: normal
+
+  output:
+    links:
+      - title: Repositorio
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Abrir en el catalogo
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

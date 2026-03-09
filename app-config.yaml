@@ -42,6 +42,9 @@ integrations:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
+  bitbucketCloud:
+    - username: ${BITBUCKET_USERNAME}
+      appPassword: ${BITBUCKET_APP_PASSWORD}
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -93,6 +96,12 @@ catalog:
     # Local example template
     - type: file
       target: ../../examples/template/template.yaml
+      rules:
+        - allow: [Template]
+
+    # DESY project template
+    - type: file
+      target: ../../examples/templates/desy-project/template.yaml
       rules:
         - allow: [Template]
 
