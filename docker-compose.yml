@@ -3,7 +3,6 @@ services:
   structurizr:
     image: structurizr/structurizr
     container_name: structurizr-lite
-    user: "${UID:-1000}:${GID:-1000}"
     ports:
       - "8080:8080"
     volumes:
