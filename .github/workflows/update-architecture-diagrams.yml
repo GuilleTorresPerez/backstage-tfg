@@ -1,0 +1,72 @@
+name: Update Architecture Diagrams
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/architecture/workspace.dsl'
+
+concurrency:
+  group: diagrams-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  export-diagrams:
+    name: Export Structurizr diagrams to SVG
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Start Structurizr Lite
+        run: |
+          docker run -d --name structurizr \
+            -p 8080:8080 \
+            -v "${{ github.workspace }}/docs/architecture:/usr/local/structurizr" \
+            structurizr/structurizr local
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Puppeteer
+        run: npm install
+        working-directory: scripts
+
+      - name: Wait for Structurizr to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -s -o /dev/null -w '%{http_code}' http://localhost:8080 | grep -q '200'; then
+              echo "Structurizr is ready"
+              exit 0
+            fi
+            echo "Waiting for Structurizr... ($i/30)"
+            sleep 2
+          done
+          echo "Structurizr failed to start"
+          docker logs structurizr
+          exit 1
+
+      - name: Export diagrams
+        run: node scripts/export-diagrams.mjs http://localhost:8080 docs/architecture/images
+
+      - name: Stop Structurizr
+        if: always()
+        run: docker rm -f structurizr
+
+      - name: Commit updated diagrams
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/architecture/images/
+          if git diff --cached --quiet; then
+            echo "No diagram changes to commit."
+          else
+            git commit -m "chore: regenerate architecture diagrams from workspace.dsl"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
