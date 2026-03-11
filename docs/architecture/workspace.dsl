@@ -13,8 +13,8 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
             
             backend = container "Backend" "Orquesta los plugins, gestiona la autenticación y se comunica con sistemas externos." "Node.js / Express" "Server" {
                 # Componentes (Nivel 3)
-                catalog = component "Software Catalog" "Gestiona los metadatos del software y el grafo de entidades dentro de Backstage." "Node.js"
-                scaffolder = component "Software Templates" "Orquesta la creación de proyectos, inyecta el Kit de IA y utiliza Custom Actions de DESY." "Node.js"
+                catalog = component "Software Catalog" "Gestiona los metadatos del software, descubre entidades automáticamente desde GitHub mediante un EntityProvider periódico y mantiene el grafo de entidades." "Node.js"
+                scaffolder = component "Software Templates" "Orquesta la creación de proyectos, genera un catalog-info.yaml en cada repositorio para habilitar el auto-registro en el catálogo vía GitHub Discovery, e inyecta el Kit de IA." "Node.js"
                 search = component "Search Service" "Gestiona la indexación y búsqueda de la documentación y el catálogo." "Node.js"
                 auth = component "Auth Service" "Gestiona la autenticación y el flujo de identidad con proveedores externos." "Node.js"
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
@@ -70,7 +70,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.frontend -> backstage.backend.compliance "Visualiza cumplimiento y Píldoras DESY" "JSON/HTTPS"
 
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
-        backstage.backend.catalog -> github "Lee definiciones de plantillas y entidades" "GitHub API/HTTPS"
+        backstage.backend.catalog -> github "Descubre entidades periódicamente via GitHub EntityProvider (catalog-info.yaml en rama main)" "GitHub API/HTTPS"
         backstage.backend.catalog -> bitbucket "Descubre entidades de catálogo" "Bitbucket API/HTTPS"
         backstage.backend.search -> backstage.backend.catalog "Indexa entidades del catálogo" "In-process"
         backstage.backend.search -> backstage.backend.techdocs "Indexa contenido de documentación" "In-process"
