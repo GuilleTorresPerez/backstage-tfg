@@ -66,3 +66,6 @@ docs/architecture/C4-Model
 .gemini/skills
 
 .mcp.json
+
+# Puppeteer export script lockfile
+scripts/package-lock.json
