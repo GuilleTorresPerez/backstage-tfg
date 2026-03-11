@@ -21,6 +21,12 @@ const browser = await puppeteer.launch({
 
 const page = await browser.newPage();
 
+// Log browser console messages for debugging
+page.on('console', msg =>
+  console.log(` [browser ${msg.type()}] ${msg.text()}`),
+);
+page.on('pageerror', err => console.log(` [browser error] ${err.message}`));
+
 // Enable dark mode before navigating
 await page.evaluateOnNewDocument(() => {
   localStorage.setItem('structurizrDarkMode', 'true');
@@ -29,18 +35,23 @@ await page.evaluateOnNewDocument(() => {
 console.log(` - Opening ${url}`);
 await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-// Debug: log where we actually landed
+// Debug: log where we actually landed and dump the page state
 const finalUrl = page.url();
 const title = await page.title();
 console.log(` - Page loaded: ${finalUrl} (title: "${title}")`);
 
-const hasScripting = await page.evaluate(() => {
-  return (
-    typeof structurizr !== 'undefined' &&
-    typeof structurizr.scripting !== 'undefined'
-  );
+const debugInfo = await page.evaluate(() => {
+  return {
+    hasStructurizr: typeof structurizr !== 'undefined',
+    hasScripting:
+      typeof structurizr !== 'undefined' &&
+      typeof structurizr.scripting !== 'undefined',
+    bodySnippet: document.body?.innerHTML?.substring(0, 500) || '(empty)',
+  };
 });
-console.log(` - structurizr.scripting available: ${hasScripting}`);
+console.log(` - structurizr global: ${debugInfo.hasStructurizr}`);
+console.log(` - structurizr.scripting: ${debugInfo.hasScripting}`);
+console.log(` - body snippet: ${debugInfo.bodySnippet}`);
 
 await page.waitForFunction(
   'structurizr.scripting && structurizr.scripting.isDiagramRendered() === true',
