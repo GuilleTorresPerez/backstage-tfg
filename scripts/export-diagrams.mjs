@@ -28,6 +28,17 @@ await page.evaluateOnNewDocument(() => {
 
 console.log(` - Opening ${url}`);
 await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+
+// Debug: log where we actually landed
+const finalUrl = page.url();
+const title = await page.title();
+console.log(` - Page loaded: ${finalUrl} (title: "${title}")`);
+
+const hasScripting = await page.evaluate(() => {
+  return typeof structurizr !== 'undefined' && typeof structurizr.scripting !== 'undefined';
+});
+console.log(` - structurizr.scripting available: ${hasScripting}`);
+
 await page.waitForFunction(
   'structurizr.scripting && structurizr.scripting.isDiagramRendered() === true',
   { timeout: 60000 },

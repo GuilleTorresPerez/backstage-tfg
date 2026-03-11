@@ -53,7 +53,7 @@ jobs:
           exit 1
 
       - name: Export diagrams
-        run: node scripts/export-diagrams.mjs http://localhost:8080/workspace/1 docs/architecture/images
+        run: node scripts/export-diagrams.mjs http://localhost:8080/workspace/diagrams docs/architecture/images
 
       - name: Stop Structurizr
         if: always()
