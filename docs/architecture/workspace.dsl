@@ -7,7 +7,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         admin = person "Responsable de Gobernanza" "Define estándares tecnológicos, gestiona el catálogo de servicios y supervisa el cumplimiento normativo." "Actor"
         
         # Sistemas
-        backstage = softwareSystem "BACKSTAGE" "Portal de autoservicio para desarrolladores que centraliza el catálogo, plantillas y documentación." "System" {
+        backstage = softwareSystem "BACKSTAGE" "Portal de autoservicio para desarrolladores que centraliza el catálogo, plantillas y documentación" "System" {
             # Contenedores (Nivel 2)
             frontend = container "Frontend" "Proporciona la interfaz de usuario donde el desarrollador busca en el catálogo, usa plantillas y ve la documentación." "React" "WebBrowser"
             
