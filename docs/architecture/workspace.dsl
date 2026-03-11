@@ -4,7 +4,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
     model {
         # Actores
         developer = person "Desarrollador" "Crea y mantiene servicios digitales siguiendo los estándares de la organización." "Actor"
-        admin = person "Responsable de Gobernanza" "Define estándares tecnológicos, gestiona el catálogo de servicios y supervisa el cumplimiento normativo." "Actor"
+        admin = person "Responsable de Gobernanza" "Define estándares tecnológicos, gestiona el catálogo de servicios y supervisa el cumplimiento normativo" "Actor"
         
         # Sistemas
         backstage = softwareSystem "BACKSTAGE" "Portal de autoservicio para desarrolladores que centraliza el catálogo, plantillas y documentación" "System" {
