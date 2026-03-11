@@ -40,7 +40,7 @@ const views = await page.evaluate(() => {
 console.log(` - Found ${views.length} view(s)`);
 
 for (const view of views) {
-  await page.evaluate((v) => {
+  await page.evaluate(v => {
     structurizr.scripting.changeView(v.key);
   }, view);
 
