@@ -27,10 +27,10 @@ await page.evaluateOnNewDocument(() => {
 });
 
 console.log(` - Opening ${url}`);
-await page.goto(url, { waitUntil: 'domcontentloaded' });
+await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 await page.waitForFunction(
   'structurizr.scripting && structurizr.scripting.isDiagramRendered() === true',
-  { timeout: 30000 },
+  { timeout: 60000 },
 );
 
 const views = await page.evaluate(() => {
