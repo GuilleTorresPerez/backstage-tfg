@@ -35,7 +35,10 @@ const title = await page.title();
 console.log(` - Page loaded: ${finalUrl} (title: "${title}")`);
 
 const hasScripting = await page.evaluate(() => {
-  return typeof structurizr !== 'undefined' && typeof structurizr.scripting !== 'undefined';
+  return (
+    typeof structurizr !== 'undefined' &&
+    typeof structurizr.scripting !== 'undefined'
+  );
 });
 console.log(` - structurizr.scripting available: ${hasScripting}`);
 
