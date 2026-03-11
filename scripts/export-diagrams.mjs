@@ -22,10 +22,8 @@ const browser = await puppeteer.launch({
 const page = await browser.newPage();
 
 // Log browser console messages for debugging
-page.on('console', msg =>
-  console.log(` [browser ${msg.type()}] ${msg.text()}`),
-);
-page.on('pageerror', err => console.log(` [browser error] ${err.message}`));
+page.on('console', (msg) => console.log(` [browser ${msg.type()}] ${msg.text()}`));
+page.on('pageerror', (err) => console.log(` [browser error] ${err.message}`));
 
 // Enable dark mode before navigating
 await page.evaluateOnNewDocument(() => {
