@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **Backstage.io Internal Developer Portal (IDP)** built as a TFG (Trabajo Fin de Grado) for Universidad de Zaragoza. The goal is an internal developer platform for the public sector with self-service, software templates, and compliance-by-design.
 
+repo url: https://github.com/GuilleTorresPerez/backstage-tfg
+
 ## Commands
 
 ```bash
