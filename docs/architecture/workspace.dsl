@@ -13,12 +13,13 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
             
             backend = container "Backend" "Orquesta los plugins, gestiona la autenticación y se comunica con sistemas externos." "Node.js / Express" "Server" {
                 # Componentes (Nivel 3)
-                catalog = component "Software Catalog" "Gestiona los metadatos del software, descubre entidades automáticamente desde GitHub mediante un EntityProvider periódico y mantiene el grafo de entidades." "Node.js"
+                catalog = component "Software Catalog" "Gestiona los metadatos del software, descubre entidades (Components, APIs, Systems) vía GitHub EntityProvider y sincroniza usuarios y grupos (User/Group entities) desde la organización de GitHub." "Node.js"
                 scaffolder = component "Software Templates" "Orquesta la creación de proyectos, genera un catalog-info.yaml en cada repositorio para habilitar el auto-registro en el catálogo vía GitHub Discovery, e inyecta el Kit de IA." "Node.js"
                 search = component "Search Service" "Gestiona la indexación y búsqueda de la documentación y el catálogo." "Node.js"
-                auth = component "Auth Service" "Gestiona la autenticación y el flujo de identidad con proveedores externos." "Node.js"
+                auth = component "Auth Service" "Gestiona la autenticación OAuth con GitHub, resuelve la identidad del usuario contra entidades User del catálogo y emite JWTs con ownership refs (grupos transitivos)." "Node.js"
                 techdocs = component "TechDocs Engine" "Lee y centraliza la documentación técnica siguiendo el paradigma docs-as-code." "Node.js"
                 compliance = component "Compliance & Auditor Plugin" "Actúa como auditor continuo, verificando versiones y estándares (DESY Pills) en los repositorios." "Node.js"
+                permission = component "Permission Service" "Evalúa políticas de autorización RBAC. Recibe peticiones de autorización de los plugins, aplica la PermissionPolicy basada en la membresía de grupos del usuario (ownershipEntityRefs) y devuelve decisiones ALLOW, DENY o CONDITIONAL." "Node.js"
             }
             
             database = container "Base de Datos" "Almacena la persistencia de datos de Backstage (entidades, estados, etc.)." "PostgreSQL" "Database"
@@ -70,7 +71,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.frontend -> backstage.backend.compliance "Visualiza cumplimiento y Píldoras DESY" "JSON/HTTPS"
 
         backstage.backend.catalog -> backstage.database "Persiste entidades" "SQL/TCP"
-        backstage.backend.catalog -> github "Descubre entidades periódicamente via GitHub EntityProvider (catalog-info.yaml en rama main)" "GitHub API/HTTPS"
+        backstage.backend.catalog -> github "Descubre entidades de software (catalog-info.yaml) y sincroniza usuarios y equipos de la organización (GitHub Org Provider)" "GitHub API/HTTPS"
         backstage.backend.catalog -> bitbucket "Descubre entidades de catálogo" "Bitbucket API/HTTPS"
         backstage.backend.search -> backstage.backend.catalog "Indexa entidades del catálogo" "In-process"
         backstage.backend.search -> backstage.backend.techdocs "Indexa contenido de documentación" "In-process"
@@ -81,12 +82,16 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
         backstage.backend.compliance -> github "Audita versiones en repositorios destino" "GitHub API/HTTPS"
         backstage.backend.compliance -> backstage.backend.catalog "Obtiene lista de servicios a auditar" "In-process"
         backstage.backend.auth -> github "Intercambia código OAuth por token y resuelve identidad" "OAuth2/HTTPS"
+        backstage.backend.auth -> backstage.backend.catalog "Resuelve entidad User del catálogo para construir el JWT de identidad (sign-in resolver)" "In-process"
+        backstage.backend.catalog -> backstage.backend.permission "Solicita autorización para operaciones sobre entidades (read, create, delete)" "In-process"
+        backstage.backend.scaffolder -> backstage.backend.permission "Solicita autorización para ejecutar tareas y mostrar parámetros de plantillas" "In-process"
+        backstage.frontend -> backstage.backend.permission "Consulta permisos para mostrar u ocultar elementos de la interfaz" "JSON/HTTPS"
     }
 
     views {
         systemLandscape "SystemLandscape-01" "SYSTEM LANDSCAPE DIAGRAM - LEVEL 1" {
             include *
-            #autolayout lr
+            autolayout lr
         }
 
         container backstage "Containers-01" "CONTAINER DIAGRAM - LEVEL 2" {
@@ -96,7 +101,7 @@ workspace "Aragón Digital" "Diagramas de Arquitectura" {
 
         component backstage.backend "Components-01" "COMPONENT DIAGRAM - LEVEL 3 (BACKEND)" {
             include *
-            #autolayout tb
+            autolayout tb
         }
         
         styles {
