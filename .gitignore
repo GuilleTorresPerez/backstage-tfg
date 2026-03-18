@@ -69,3 +69,6 @@ docs/architecture/C4-Model
 
 # Puppeteer export script lockfile
 scripts/package-lock.json
+
+# MinIO local data
+minio-data/
