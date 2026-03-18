@@ -72,3 +72,6 @@ scripts/package-lock.json
 
 # MinIO local data
 minio-data/
+
+# playwright test artifacts
+scripts/ctt-pipeline/output/slugs.json
