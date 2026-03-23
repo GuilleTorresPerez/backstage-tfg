@@ -5,6 +5,8 @@ import re
 
 from playwright.async_api import BrowserContext
 
+from utils import navigate_with_retry
+
 SOLUTIONS_PATH = "/ctt/solucionesTodas.htm?verTodas=true"
 SLUG_PATTERN = re.compile(r"^/ctt/([a-zA-Z0-9_-]+)$")
 
@@ -37,8 +39,6 @@ def parse_slugs(hrefs: list[str]) -> list[str]:
 
 async def extract_slugs(context: BrowserContext, base_url: str) -> list[str]:
     """Navega a la página de soluciones y extrae todos los slugs."""
-    from scraper import navigate_with_retry
-
     url = base_url + SOLUTIONS_PATH
     content_check = "document.querySelectorAll('a[href*=\"/ctt/\"]').length > 10"
 

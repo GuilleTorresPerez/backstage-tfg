@@ -9,6 +9,7 @@ from pathlib import PurePosixPath
 from playwright.async_api import BrowserContext
 
 from models import Descarga
+from utils import navigate_with_retry
 
 log = logging.getLogger(__name__)
 
@@ -80,8 +81,6 @@ async def extract_all_descargas(
     delay: float = 1.0,
 ) -> list[dict]:
     """Extrae las descargas de cada solución CTT. Retorna lista de dicts."""
-    from scraper import navigate_with_retry
-
     content_check = "document.querySelector('body').innerText.length > 100"
     total = len(slugs)
     all_descargas: list[dict] = []

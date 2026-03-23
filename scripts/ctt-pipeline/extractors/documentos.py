@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 from urllib.parse import quote, urlparse, urlunparse
 
-from playwright.async_api import BrowserContext
+from playwright.async_api import BrowserContext, Page
 
 log = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ async def download_all_documents(
     return counters
 
 
-async def _download_file(page, url: str, file_path: Path) -> bool:
+async def _download_file(page: Page, url: str, file_path: Path) -> bool:
     """Descarga un fichero individual via navegación del browser.
 
     ``page.goto()`` lanza ``"Download is starting"`` cuando el servidor

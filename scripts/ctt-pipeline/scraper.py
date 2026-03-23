@@ -23,7 +23,12 @@ import json
 import logging
 from pathlib import Path
 
-from playwright.async_api import Page, async_playwright
+from playwright.async_api import async_playwright
+
+from extractors import (
+    extract_slugs, extract_all_fichas,
+    extract_all_descargas, download_all_documents,
+)
 
 # --- Constantes ---
 BASE_URL = "https://administracionelectronica.gob.es"
@@ -40,78 +45,11 @@ FICHAS_FILE = OUTPUT_DIR / "fichas.json"
 DESCARGAS_FILE = OUTPUT_DIR / "descargas.json"
 DESCARGAS_DIR = OUTPUT_DIR / "descargas"
 
-MAX_RETRIES = 3
-RETRY_BASE_DELAY = 5  # segundos
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 log = logging.getLogger(__name__)
-
-
-# --- Excepciones ---
-
-
-class TSPDError(Exception):
-    """El challenge TSPD de F5 no se resolvió tras agotar los reintentos."""
-
-
-# --- Utilidades compartidas ---
-
-
-async def wait_for_real_content(
-    page: Page, content_check: str, timeout_ms: int = 30_000,
-) -> bool:
-    """Espera a que la página cumpla el content_check JS.
-
-    Retorna True si se detectó contenido, False si expiró el timeout.
-    """
-    try:
-        await page.wait_for_function(content_check, timeout=timeout_ms)
-        return True
-    except TimeoutError:
-        return False
-
-
-async def navigate_with_retry(
-    page: Page, url: str, content_check: str,
-) -> None:
-    """Navega a una URL con reintentos ante TSPD o errores de red."""
-    for attempt in range(1, MAX_RETRIES + 1):
-        log.info("Intento %d/%d — navegando a %s", attempt, MAX_RETRIES, url)
-
-        try:
-            await page.goto(url, wait_until="networkidle", timeout=60_000)
-        except Exception as exc:
-            log.warning("Error en navegación: %s", exc)
-            if attempt < MAX_RETRIES:
-                await _backoff(attempt)
-                continue
-            raise
-
-        if await wait_for_real_content(page, content_check):
-            log.info("Página cargada correctamente.")
-            return
-
-        body_text = await page.inner_text("body")
-        preview = body_text[:500] if body_text else "(vacío)"
-        log.warning("El contenido real no cargó. Preview del body:\n%s", preview)
-
-        if attempt < MAX_RETRIES:
-            await _backoff(attempt)
-            continue
-
-    raise TSPDError(
-        f"No se pudo resolver el challenge TSPD tras {MAX_RETRIES} intentos. "
-        "Prueba con --no-headless o playwright-stealth."
-    )
-
-
-async def _backoff(attempt: int) -> None:
-    delay = RETRY_BASE_DELAY * attempt
-    log.info("Reintentando en %ds…", delay)
-    await asyncio.sleep(delay)
 
 
 def save_json(data, path: Path) -> None:
@@ -204,12 +142,6 @@ def parse_args() -> argparse.Namespace:
 async def main() -> None:
     args = parse_args()
     scenarios = set(args.scenarios)
-
-    # Importar extractors (import diferido para evitar ciclos)
-    from extractors import (
-        extract_slugs, extract_all_fichas,
-        extract_all_descargas, download_all_documents,
-    )
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=args.headless)

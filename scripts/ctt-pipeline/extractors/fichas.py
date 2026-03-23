@@ -7,6 +7,7 @@ from dataclasses import asdict
 from playwright.async_api import BrowserContext
 
 from models import Ficha
+from utils import navigate_with_retry
 
 log = logging.getLogger(__name__)
 
@@ -117,8 +118,6 @@ async def extract_all_fichas(
     delay: float = 1.0,
 ) -> list[dict]:
     """Extrae la ficha de cada solución CTT. Retorna lista de dicts."""
-    from scraper import navigate_with_retry
-
     content_check = "document.querySelector('body').innerText.length > 200"
     total = len(slugs)
     fichas: list[dict] = []
