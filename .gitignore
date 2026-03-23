@@ -73,5 +73,8 @@ scripts/package-lock.json
 # MinIO local data
 minio-data/
 
-# playwright test artifacts
-scripts/ctt-pipeline/output/slugs.json
+# CTT scraper — datos generados (no comitear)
+scripts/ctt-pipeline/output/fichas.json
+scripts/ctt-pipeline/output/descargas.json
+scripts/ctt-pipeline/**/__pycache__/
+scripts/ctt-pipeline/**/*.pyc
