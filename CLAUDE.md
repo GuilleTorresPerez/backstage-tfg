@@ -99,3 +99,19 @@ The `docker-compose.yml` runs a Structurizr Lite server on port 8080, serving th
 ## Package manager
 
 This project uses **Yarn 4** (Berry). Always use `yarn` commands, not `npm`.
+
+## Coding principles
+
+Apply these principles consistently across all code in this project:
+
+- **KISS** (Keep It Simple, Stupid): Prefer the simplest solution that works. Avoid unnecessary abstractions, over-engineering, or clever tricks that reduce readability.
+- **DRY** (Don't Repeat Yourself): Extract reusable logic to avoid duplication. Every piece of knowledge should have a single, authoritative representation.
+- **SOLID**:
+  - *Single Responsibility*: Each class/module/function should have one reason to change.
+  - *Open/Closed*: Open for extension, closed for modification. Prefer composition over modification of existing code.
+  - *Liskov Substitution*: Subtypes must be substitutable for their base types without altering correctness.
+  - *Interface Segregation*: Prefer small, focused interfaces over large, general-purpose ones.
+  - *Dependency Inversion*: Depend on abstractions, not concretions. Inject dependencies rather than instantiating them directly.
+- **YAGNI** (You Aren't Gonna Need It): Don't implement functionality until it is actually needed.
+- **Fail fast**: Validate inputs and surface errors early rather than propagating invalid state.
+- **Pure functions**: Prefer stateless, side-effect-free functions where possible; isolate side effects at system boundaries.
