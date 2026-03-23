@@ -5,12 +5,15 @@ Escenarios:
     1. Extracción de slugs (catálogo completo)
     2. Extracción de fichas/metadata por solución
     3. Extracción de lista de descargas por solución
+    4. Descarga de documentos (ficheros reales)
 
 Uso:
     python scraper.py                           # Solo escenario 1
     python scraper.py --scenarios 2 3           # Escenarios 2 y 3
     python scraper.py --scenarios 2 --limit 5   # 5 primeras fichas
     python scraper.py --scenarios 2 --slugs afirma clave  # solo esos slugs
+    python scraper.py --scenarios 3 4 --slugs acceda      # extraer + descargar
+    python scraper.py --scenarios 4 --extensions pdf docx  # solo ciertos tipos
     python scraper.py --no-headless             # browser visible
 """
 
@@ -35,6 +38,7 @@ OUTPUT_DIR = Path(__file__).parent / "output"
 SLUGS_FILE = OUTPUT_DIR / "slugs.json"
 FICHAS_FILE = OUTPUT_DIR / "fichas.json"
 DESCARGAS_FILE = OUTPUT_DIR / "descargas.json"
+DESCARGAS_DIR = OUTPUT_DIR / "descargas"
 
 MAX_RETRIES = 3
 RETRY_BASE_DELAY = 5  # segundos
@@ -151,7 +155,7 @@ def parse_args() -> argparse.Namespace:
         nargs="+",
         type=int,
         default=[1],
-        choices=[1, 2, 3],
+        choices=[1, 2, 3, 4],
         help="Escenarios a ejecutar (default: 1)",
     )
     parser.add_argument(
@@ -171,6 +175,12 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=1.0,
         help="Delay en segundos entre peticiones (default: 1.0)",
+    )
+    parser.add_argument(
+        "--extensions",
+        nargs="+",
+        default=None,
+        help="Filtrar descargas por extensión (ej: pdf docx zip)",
     )
     parser.add_argument(
         "--headless",
@@ -196,14 +206,17 @@ async def main() -> None:
     scenarios = set(args.scenarios)
 
     # Importar extractors (import diferido para evitar ciclos)
-    from extractors import extract_slugs, extract_all_fichas, extract_all_descargas
+    from extractors import (
+        extract_slugs, extract_all_fichas,
+        extract_all_descargas, download_all_documents,
+    )
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=args.headless)
         context = await browser.new_context(user_agent=USER_AGENT)
         try:
             # Escenario 1 — obtener slugs
-            if 1 in scenarios or 2 in scenarios or 3 in scenarios:
+            if scenarios & {1, 2, 3, 4}:
                 # Intentar cargar de disco si no se necesita re-extraer
                 slugs = None
                 if 1 not in scenarios:
@@ -229,12 +242,55 @@ async def main() -> None:
                 save_json(fichas, FICHAS_FILE)
 
             # Escenario 3 — descargas
+            descargas = None
             if 3 in scenarios:
                 log.info("=== Escenario 3: Extracción de descargas ===")
                 descargas = await extract_all_descargas(
                     context, BASE_URL, slugs, args.delay,
                 )
                 save_json(descargas, DESCARGAS_FILE)
+
+            # Escenario 4 — descarga de documentos
+            if 4 in scenarios:
+                log.info("=== Escenario 4: Descarga de documentos ===")
+
+                # Cargar descargas desde memoria o disco
+                if descargas is None:
+                    if DESCARGAS_FILE.exists():
+                        descargas = json.loads(DESCARGAS_FILE.read_text())
+                        log.info(
+                            "Descargas cargadas desde disco: %d",
+                            len(descargas),
+                        )
+                    else:
+                        log.error(
+                            "No hay descargas disponibles. "
+                            "Ejecuta el escenario 3 primero.",
+                        )
+                        return
+
+                # Filtrar por slugs seleccionados
+                if args.slugs:
+                    slug_set = set(args.slugs)
+                    descargas = [
+                        d for d in descargas if d["slug"] in slug_set
+                    ]
+
+                ext_filter = (
+                    {e.lower().lstrip(".") for e in args.extensions}
+                    if args.extensions else None
+                )
+                counters = await download_all_documents(
+                    context, descargas, DESCARGAS_DIR,
+                    delay=args.delay, extensions=ext_filter,
+                )
+                log.info(
+                    "Resumen descargas — descargados: %d, "
+                    "saltados: %d, fallidos: %d",
+                    counters["downloaded"],
+                    counters["skipped"],
+                    counters["failed"],
+                )
 
         finally:
             await browser.close()

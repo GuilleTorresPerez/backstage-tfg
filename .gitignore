@@ -76,5 +76,6 @@ minio-data/
 # CTT scraper — datos generados (no comitear)
 scripts/ctt-pipeline/output/fichas.json
 scripts/ctt-pipeline/output/descargas.json
+scripts/ctt-pipeline/output/descargas/
 scripts/ctt-pipeline/**/__pycache__/
 scripts/ctt-pipeline/**/*.pyc
