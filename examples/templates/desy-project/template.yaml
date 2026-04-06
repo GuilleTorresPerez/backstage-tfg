@@ -53,6 +53,93 @@ spec:
             - Aplicacion Web con Angular
             - Aplicacion Movil (Ionic)
             - Aplicacion Web con React
+      dependencies:
+        architectureType:
+          oneOf:
+            - properties:
+                architectureType:
+                  const: html
+            - properties:
+                architectureType:
+                  const: ionic
+            - properties:
+                architectureType:
+                  const: react
+            - properties:
+                architectureType:
+                  const: angular
+                headerType:
+                  title: Tipo de Cabecera
+                  type: string
+                  description: Selecciona el tipo de cabecera para la aplicacion
+                  default: standard
+                  enum:
+                    - minimal
+                    - standard
+                    - advanced
+                    - edit
+                  enumNames:
+                    - Minimal (paginas publicas sin sesion)
+                    - Estandar (webapp con sesion)
+                    - Avanzada (portal con megamenu)
+                    - Edicion (formularios y CRUD)
+                hasAppSelector:
+                  title: Selector de aplicaciones en cabecera
+                  type: boolean
+                  description: Incluir dropdown para cambiar entre aplicaciones
+                  default: false
+                hasSubheader:
+                  title: Subcabecera con pestanas de navegacion
+                  type: boolean
+                  description: Incluir barra secundaria con pestanas y boton volver
+                  default: false
+                hasSidebar:
+                  title: Navegacion lateral (sidebar)
+                  type: boolean
+                  description: Incluir menu vertical lateral para navegar secciones
+                  default: false
+              required:
+                - headerType
+              # Validacion de combinaciones invalidas:
+              # - headerType: edit solo permite headerPosition: fixed
+              #   Razon tecnica: <app-page-edit-header> tiene lg:fixed hardcodeado
+              #   Razon de UX: botones de accion deben estar siempre visibles
+              # - Los otros headerType permiten todas las opciones de posicion
+              dependencies:
+                headerType:
+                  oneOf:
+                    - properties:
+                        headerType:
+                          enum: [minimal, standard, advanced]
+                        headerPosition:
+                          title: Posicion de la Cabecera
+                          type: string
+                          description: Comportamiento de la cabecera al hacer scroll
+                          default: relative
+                          enum:
+                            - relative
+                            - fixed
+                            - headroom
+                          enumNames:
+                            - Normal (se desplaza con la pagina)
+                            - Fija (siempre visible arriba)
+                            - Auto-ocultar al hacer scroll (headroom)
+                      required:
+                        - headerPosition
+                    - properties:
+                        headerType:
+                          const: edit
+                        headerPosition:
+                          title: Posicion de la Cabecera
+                          type: string
+                          description: La cabecera de edicion siempre es fija para mantener los botones de accion visibles
+                          default: fixed
+                          enum:
+                            - fixed
+                          enumNames:
+                            - Fija (siempre visible arriba)
+                      required:
+                        - headerPosition
 
     - title: Repositorio
       required:
@@ -85,6 +172,36 @@ spec:
         url: https://bitbucket.org/sdaragon/desy-angular-starter/src/master/
         targetPath: .
 
+    - id: apply-layout
+      name: Aplicar configuracion de layout
+      if: ${{ parameters.architectureType === 'angular' }}
+      action: fetch:template
+      input:
+        url: ./skeleton-angular-layout
+        targetPath: .
+        replace: true
+        templateFileExtension: true
+        trimBlocks: true
+        lstripBlocks: true
+        values:
+          name: ${{ parameters.name }}
+          headerType: ${{ parameters.headerType }}
+          headerPosition: ${{ parameters.headerPosition }}
+          hasAppSelector: ${{ parameters.hasAppSelector }}
+          hasSubheader: ${{ parameters.hasSubheader }}
+          hasSidebar: ${{ parameters.hasSidebar }}
+
+    - id: cleanup-layouts
+      name: Eliminar layouts de ejemplo
+      if: ${{ parameters.architectureType === 'angular' }}
+      action: fs:delete
+      input:
+        files:
+          - src/app/feature-modules/page-templates/layouts
+          - src/app/feature-modules/page-templates/components
+          - src/app/feature-modules/page-templates/page-templates.module.ts
+          - src/app/feature-modules/page-templates/page-templates-routing.module.ts
+
     - id: fetch-ionic
       name: Descargar starter DESY Ionic
       if: ${{ parameters.architectureType === 'ionic' }}
@@ -111,6 +228,11 @@ spec:
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
           architectureType: ${{ parameters.architectureType }}
+          headerType: ${{ parameters.headerType }}
+          headerPosition: ${{ parameters.headerPosition }}
+          hasAppSelector: ${{ parameters.hasAppSelector }}
+          hasSubheader: ${{ parameters.hasSubheader }}
+          hasSidebar: ${{ parameters.hasSidebar }}
 
     - id: publish
       name: Publicar en GitHub

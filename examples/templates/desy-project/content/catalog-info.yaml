@@ -8,6 +8,15 @@ metadata:
   tags:
     - desy
     - ${{ values.architectureType }}
+    {%- if values.headerType %}
+    - layout-${{ values.headerType }}
+    {%- endif %}
+    {%- if values.hasSidebar %}
+    - with-sidebar
+    {%- endif %}
+    {%- if values.hasSubheader %}
+    - with-subheader
+    {%- endif %}
 spec:
   type: website
   lifecycle: experimental

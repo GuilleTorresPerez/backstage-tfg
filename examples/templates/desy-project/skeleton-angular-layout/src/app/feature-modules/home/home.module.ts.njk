@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './components/home/home.component';
+import { HomeLayoutComponent } from './layouts/home/home-layout.component';
+import { DesyAngularModule } from 'desy-angular';
+import { SharedModule } from '../../shared/shared.module';
+{% if values.headerPosition == "headroom" %}
+import { HeadroomModule } from '@ctrl/ngx-headroom';
+{% endif %}
+
+@NgModule({
+  declarations: [HomeComponent, HomeLayoutComponent],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    DesyAngularModule,
+    SharedModule,
+{% if values.headerPosition == "headroom" %}
+    HeadroomModule,
+{% endif %}
+  ],
+})
+export class HomeModule {}
