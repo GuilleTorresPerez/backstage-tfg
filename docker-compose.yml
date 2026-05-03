@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./docs/architecture:/usr/local/structurizr
+      - ./docs/architecture:/usr/local/structurizr:z
     command: local
     restart: unless-stopped
 
