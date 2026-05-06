@@ -67,5 +67,8 @@ backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
 
 backend.add(import('@backstage/plugin-catalog-backend-module-github'));
+backend.add(
+  import('@backstage-community/plugin-catalog-backend-module-keycloak'),
+);
 
 backend.start();

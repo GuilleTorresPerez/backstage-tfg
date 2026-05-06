@@ -111,6 +111,16 @@ catalog:
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
+    keycloakOrg:
+      default:
+        baseUrl: http://localhost:8081
+        realm: aragon-idp
+        clientId: backstage-sync
+        clientSecret: ${KEYCLOAK_BACKSTAGE_SYNC_SECRET}
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+          initialDelay: { seconds: 15 }
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
