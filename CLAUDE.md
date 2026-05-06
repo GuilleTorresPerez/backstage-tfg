@@ -8,6 +8,33 @@ This is a **Backstage.io Internal Developer Portal (IDP)** built as a TFG (Traba
 
 repo url: https://github.com/GuilleTorresPerez/backstage-tfg
 
+### Proposal summary
+
+The full proposal is at `/home/guillermotorres/Documents/TFG/Visión/Propuesta TFG.md`. Key points:
+
+- **Title**: *Evaluación y prototipado de una Plataforma Interna de Desarrollo (IDP) para la Administración Pública basada en Backstage: reingeniería del Sistema de Diseño DESY del Gobierno de Aragón como caso de estudio.*
+- **Goal**: Evaluate the technical, regulatory and operational feasibility of building an IDP on Backstage for the public sector, materialized as a functional prototype using the DESY Design System as the main case study.
+- **Problems addressed**: fragmentation of documentation and standards, poor discoverability of reusable assets, manual/bureaucratic processes for infrastructure and compliance, costly a-posteriori regulatory audits (ENS), and lack of standardization across teams and vendors.
+- **Specific objectives**: analyze the state of the art of developer portals in the public sector; integrate DESY into Backstage as a *Golden Path*; design the IDP architecture (catalog, scaffolder, techdocs); align the platform with ENS compliance (RD 311/2022); explore reuse of public-sector assets in the catalog; document technical, organizational and legal limitations; and evaluate viability through impact metrics.
+- **Methodology**: Design Science Research Methodology (DSRM). The artifact is an *instantiation*: a working Backstage prototype.
+- **Key tools/standards**: Backstage (Node.js/TypeScript), DESY Design System (WCAG 2.1 AA), ENS (RD 311/2022).
+- **SDGs**: ODS 9 (Industry, Innovation and Infrastructure), ODS 16 (Peace, Justice and Strong Institutions), ODS 17 (Partnerships for the Goals).
+
+### Phases
+
+Project phases are documented in `/home/guillermotorres/Documents/TFG/Planificación/Fases/`:
+- `Fase 1 - Identificación del Problema y Estado del Arte.md`
+- `Fase 2 - Definición de Objetivos de la Solución.md`
+- `Fase 3 - Diseño y Desarrollo del Artefacto.md`
+
+### Requirements
+
+Requirements are documented in `/home/guillermotorres/Documents/TFG/Implementación/Requisitos/`:
+- `Requisitos de Despliegue.md`
+- `Requisitos del Catálogo de Software.md`
+- `Requisitos del Permission Framework.md`
+- `Requisitos del Scaffolder.md`
+
 ## Commands
 
 ```bash
