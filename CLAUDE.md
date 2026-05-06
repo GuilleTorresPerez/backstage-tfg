@@ -99,3 +99,27 @@ The `docker-compose.yml` runs a Structurizr Lite server on port 8080, serving th
 ## Package manager
 
 This project uses **Yarn 4** (Berry). Always use `yarn` commands, not `npm`.
+
+## Dev environment — host + Fedora Toolbox
+
+Claude Code runs **on the host**. Project dev dependencies (Node 22, Yarn 4, etc.) live inside a Fedora Toolbox named `backstage-dev`. The host does not have Node/Yarn installed — running `yarn ...` directly from the host will fail.
+
+When a command depends on the toolbox toolchain (anything in the Commands section above: `yarn start`, `yarn build:*`, `yarn tsc`, `yarn test`, `yarn lint`, etc.), prefix it with:
+
+```bash
+toolbox run -c backstage-dev <command>
+```
+
+Examples:
+```bash
+toolbox run -c backstage-dev yarn install
+toolbox run -c backstage-dev yarn tsc
+toolbox run -c backstage-dev yarn workspace app test --testPathPattern=App.test
+```
+
+Commands that do **not** need the toolbox (run directly on the host):
+- `git`, `gh`
+- `docker` / `docker compose` (the container engine lives on the host, not in the toolbox)
+- File edits, `grep`, `find`, etc.
+
+Rule of thumb: if it touches `node_modules`, `yarn`, `node`, or the project's TypeScript/build pipeline → wrap in `toolbox run -c backstage-dev`. Otherwise run it directly.
