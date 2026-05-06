@@ -115,6 +115,7 @@ catalog:
       default:
         baseUrl: http://localhost:8081
         realm: aragon-idp
+        loginRealm: aragon-idp
         clientId: backstage-sync
         clientSecret: ${KEYCLOAK_BACKSTAGE_SYNC_SECRET}
         schedule:
