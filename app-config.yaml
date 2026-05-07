@@ -78,13 +78,6 @@ auth:
   providers:
     # See https://backstage.io/docs/auth/guest/provider
     guest: {}
-    github:
-      development:
-        clientId: ${AUTH_GITHUB_CLIENT_ID}
-        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
     oidc:
       development:
         metadataUrl: ${AUTH_OIDC_METADATA_URL}
