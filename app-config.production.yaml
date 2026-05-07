@@ -40,28 +40,63 @@ techdocs:
         accessKeyId: ${TECHDOCS_S3_ACCESS_KEY_ID}
         secretAccessKey: ${TECHDOCS_S3_SECRET_ACCESS_KEY}
 
+# ---------------------------------------------------------------------------
+# Autenticación: Keycloak local en dev, IdP corporativo en producción.
+#
+# El prototipo usa Keycloak en `docker-compose.yml` (`http://localhost:8081`,
+# realm `aragon-idp`) durante el TFG. Al desplegar contra el IdP corporativo
+# de la AST (RD-AUTH-06) cambian las siguientes piezas:
+#
+# 1. `metadataUrl` apunta al discovery del IdP corporativo, p. ej.
+#    `https://idp.aragon.es/realms/ast/.well-known/openid-configuration`.
+#    Se inyecta vía `AUTH_OIDC_METADATA_URL`.
+#
+# 2. Registro del cliente. El cliente `backstage` (público + PKCE en dev) se
+#    registra de nuevo en el IdP corporativo, normalmente como confidencial
+#    con `clientSecret` real. `AUTH_OIDC_CLIENT_ID` y `AUTH_OIDC_CLIENT_SECRET`
+#    los gestiona el equipo de identidad corporativa y deben vivir en un
+#    secret manager (Vault, sealed-secrets, etc.), no en variables de entorno
+#    planas.
+#
+# 3. Resolver. `packages/backend/src/modules/oidcAuthProvider.ts` extrae
+#    `preferred_username` del id_token. Si el IdP corporativo emite el
+#    identificador estable en otro claim (`upn`, `sub`, `email`), hay que
+#    ajustar el resolver o sustituirlo por uno built-in
+#    (`emailMatchingUserEntityProfileEmail`).
+#
+# 4. Sincronización al catálogo (`catalog.providers.keycloakOrg`). El plugin
+#    `@backstage-community/plugin-catalog-backend-module-keycloak` necesita
+#    acceso al Admin REST API de Keycloak vía un service account
+#    (`backstage-sync` en el realm local). Si el IdP corporativo NO expone
+#    ese API:
+#      - Plan B1: federación LDAP del IdP corporativo contra el directorio
+#        AST (389DS) + plugin LDAP de Backstage como fuente de catálogo.
+#      - Plan B2: export estático periódico de usuarios/grupos a YAML
+#        servido como `location` de tipo `file` o `url`.
+#    Documentado como trabajo futuro (RD-AUTH-10).
+#
+# 5. `auth.session.secret` debe rotarse periódicamente y vivir también en
+#    el secret manager.
+#
+# RD-AUTH-07: el provider `guest` queda explícitamente fuera de producción.
+# ---------------------------------------------------------------------------
 auth:
+  environment: production
+  session:
+    secret: ${AUTH_SESSION_SECRET}
   providers:
-    guest: {}
+    oidc:
+      production:
+        metadataUrl: ${AUTH_OIDC_METADATA_URL}
+        clientId: ${AUTH_OIDC_CLIENT_ID}
+        clientSecret: ${AUTH_OIDC_CLIENT_SECRET}
+        prompt: auto
 
 catalog:
-  # Overrides the default list locations from app-config.yaml as these contain example data.
-  # See https://backstage.io/docs/features/software-catalog/#adding-components-to-the-catalog for more details
-  # on how to get entities into the catalog.
-  locations:
-    # Local example data, replace this with your production config, these are intended for demo use only.
-    # File locations are relative to the backend process, typically in a deployed context, such as in a Docker container, this will be the root
-    - type: file
-      target: ./examples/entities.yaml
-
-    # Local example template
-    - type: file
-      target: ./examples/template/template.yaml
-      rules:
-        - allow: [Template]
-
-    # Local example organizational data
-    - type: file
-      target: ./examples/org.yaml
-      rules:
-        - allow: [User, Group]
+  # En producción la fuente de identidad es el IdP corporativo vía el
+  # provider `catalog.providers.keycloakOrg` definido en `app-config.yaml`,
+  # NO los ficheros de `examples/`. Las locations de ejemplo se eliminan
+  # explícitamente para no contaminar el catálogo de producción.
+  # Las locations reales (componentes, sistemas) se descubren desde GitLab
+  # vía `catalog.providers.gitlab` (Bloque C).
+  locations: []
