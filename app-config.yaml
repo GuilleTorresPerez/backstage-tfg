@@ -74,6 +74,10 @@ techdocs:
 
 auth:
   environment: development
+  # OIDC Authorization Code + PKCE necesita session middleware en el backend para
+  # preservar state/nonce entre el redirect al IdP y el callback.
+  session:
+    secret: ${AUTH_SESSION_SECRET}
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
     # See https://backstage.io/docs/auth/guest/provider
