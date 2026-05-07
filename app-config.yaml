@@ -132,11 +132,8 @@ catalog:
       rules:
         - allow: [Template]
 
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
+    # Identidad (User/Group) viene de Keycloak via catalog.providers.keycloakOrg.
+    # examples/org.yaml queda como referencia histórica pero no se carga.
 
     ## Uncomment these lines to add more example data
     # - type: url
