@@ -72,7 +72,7 @@ yarn prettier:check
 yarn new
 
 # Create architecture docs server (Structurizr on port 8080)
-docker compose up structurizr
+docker compose up structurizr   # alias of `podman compose up structurizr` (see "Container engine" below)
 ```
 
 To run a single test file:
@@ -97,8 +97,8 @@ This is a standard Backstage monorepo with Yarn workspaces:
 - `app-backend`, `proxy-backend`
 - `scaffolder-backend` + GitHub and notifications modules
 - `techdocs-backend`
-- `auth-backend` + guest and GitHub providers
-- `catalog-backend` + scaffolder entity model + logs modules
+- `auth-backend` + guest provider + custom OIDC (Keycloak) provider module
+- `catalog-backend` + scaffolder entity model + logs + GitHub + Keycloak (`@backstage-community/plugin-catalog-backend-module-keycloak`) modules
 - `permission-backend` + allow-all policy module
 - `search-backend` + pg engine + catalog and techdocs collators
 - `kubernetes-backend`
@@ -107,17 +107,18 @@ This is a standard Backstage monorepo with Yarn workspaces:
 ### Configuration
 
 - `app-config.yaml` — Base config (development defaults, SQLite in-memory DB).
-- `app-config.local.yaml` — Local overrides (GitHub OAuth credentials). Not committed with secrets in production.
+- `app-config.local.yaml` — Local overrides and secrets. Listed in `.gitignore`, not committed.
 - `app-config.production.yaml` — Production config (PostgreSQL via env vars).
 
 Key environment variables:
-- `GITHUB_TOKEN` — GitHub integration PAT
-- `AUTH_GITHUB_CLIENT_ID` / `AUTH_GITHUB_CLIENT_SECRET` — GitHub OAuth (or use `app-config.local.yaml` for dev)
+- `GITHUB_TOKEN` — GitHub integration PAT (still used for `catalog-backend-module-github` and scaffolder until Bloque C migrates to GitLab)
+- `AUTH_OIDC_METADATA_URL` / `AUTH_OIDC_CLIENT_ID` / `AUTH_OIDC_CLIENT_SECRET` — Keycloak OIDC provider for sign-in
+- `KEYCLOAK_BACKSTAGE_SYNC_SECRET` — service-account secret for the `backstage-sync` confidential client used by the `keycloakOrg` catalog provider
 - `POSTGRES_HOST/PORT/USER/PASSWORD` — Production database
 
 ### Auth
 
-GitHub OAuth is the primary sign-in provider. The resolver `usernameMatchingUserEntityName` maps GitHub usernames to catalog User entities. Guest access is also enabled for development.
+Keycloak (Docker container, realm `aragon-idp`) is the primary sign-in provider via OIDC Authorization Code + PKCE. The custom resolver in `packages/backend/src/modules/oidcAuthProvider.ts` extracts `preferred_username` from the id_token and resolves it against the catalog via `signInWithCatalogUser`. The Keycloak realm is exported in `keycloak/realm-export/aragon-idp-realm.json` and auto-imported on container startup. User and group entities are synchronized from Keycloak by `@backstage-community/plugin-catalog-backend-module-keycloak`. Guest access is also enabled for development.
 
 ### Architecture documentation
 
@@ -150,3 +151,13 @@ Commands that do **not** need the toolbox (run directly on the host):
 - File edits, `grep`, `find`, etc.
 
 Rule of thumb: if it touches `node_modules`, `yarn`, `node`, or the project's TypeScript/build pipeline → wrap in `toolbox run -c backstage-dev`. Otherwise run it directly.
+
+## Container engine — Podman
+
+The host uses **Podman** (rootless) as the container engine, with `podman-compose` (or `podman` exposing a `docker compose`-compatible CLI) handling the multi-service stack defined in `docker-compose.yml`. The `docker` and `docker compose` commands in this document are aliases to the Podman equivalents on this machine — they are not Docker. Practical implications:
+
+- `docker compose up -d <svc>` works as expected; under the hood it calls Podman.
+- Container introspection: prefer `podman ps`, `podman logs <container>`, `podman inspect <container>` over `docker` for reliable output.
+- Networking: containers expose ports on `localhost` from the host's perspective (rootless networking via slirp4netns or pasta). The `keycloak` container is reachable at `http://localhost:8081` from both the host and the toolbox.
+- Volumes are managed by Podman; `docker volume ls` ↔ `podman volume ls`.
+- The `restart: unless-stopped` policy is honored by the Podman systemd user units when the user session is active.
