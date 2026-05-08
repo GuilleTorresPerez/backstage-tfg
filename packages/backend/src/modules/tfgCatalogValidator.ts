@@ -29,7 +29,7 @@ class TfgCatalogValidator implements CatalogProcessor {
       return false;
     }
     if (entity.kind === 'Component') {
-      const spec = (entity.spec ?? {}) as { system?: unknown }; //convertimos a 1. undefined o entity.spec que 2. a su vez puede tener un system de cualquier tipo
+      const spec = (entity.spec ?? {}) as { system?: unknown }; // convertimos a 1. undefined o entity.spec que 2. a su vez puede tener un system de cualquier tipo
       const system = typeof spec.system === 'string' ? spec.system.trim() : ''; // obtenemos el valor de system solo si es una cadena, y eliminamos espacios en blanco
       if (!system) {
         throw new Error(
