@@ -45,6 +45,14 @@ integrations:
   bitbucketCloud:
     - username: ${BITBUCKET_USERNAME}
       appPassword: ${BITBUCKET_APP_PASSWORD}
+  gitlab:
+    # Token usado por catalog-backend (Bloque C) y por scaffolder-backend para
+    # operaciones de lectura/escritura sobre repos del grupo `aragon-idp`.
+    # Crear como Group Access Token (preferido) o Personal Access Token con
+    # scopes: api, read_repository, write_repository.
+    # Rotación documentada en docs/Implementación/Realm Keycloak - Autenticación Aragón IDP.md §9.
+    - host: gitlab.com
+      token: ${GITLAB_TOKEN}
 
 proxy:
   ### Example for how to add a proxy endpoint for the frontend.
@@ -96,15 +104,23 @@ catalog:
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
+  # RC-KIND-01 / RC-KIND-02: el prototipo gestiona exactamente estos 6 kinds
+  # (Component, API, System, User, Group, Template). Resource y Domain quedan
+  # fuera de scope. Location es necesario por el mecanismo interno de carga.
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, API, System, User, Group, Template, Location]
   providers:
-    github:
-      myOrg:
-        organization: ${GITHUB_ORG}
-        catalogPath: '/catalog-info.yaml'
-        filters:
-          branch: 'main'
+    # RC-DISC-01: descubrimiento automático sobre el grupo aragon-idp de
+    # GitLab.com. Cualquier repo del grupo (incluido el del propio IDP — ver
+    # RC-SEED-04) con un catalog-info.yaml en la raíz se ingesta sin
+    # intervención del platform-admin. El token GITLAB_TOKEN debe tener scope
+    # `read_api` y acceso al grupo (Group Access Token preferido).
+    gitlab:
+      aragonIdp:
+        host: gitlab.com
+        group: aragon-idp
+        branch: main
+        catalogFile: catalog-info.yaml
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
@@ -120,17 +136,23 @@ catalog:
           timeout: { minutes: 3 }
           initialDelay: { seconds: 15 }
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    # Seed del prototipo (RC-SEED-01 / RC-SEED-05): System portal-ciudadano,
+    # sus dos Components (frontend + backend) y las 3 APIs externas de
+    # Aragón Open Data. Las paths son relativas al cwd del backend
+    # (typically `packages/backend`).
     - type: file
-      target: ../../examples/entities.yaml
+      target: ../../catalog/seed/system-portal-ciudadano.yaml
 
-    # Local example template
+    - type: file
+      target: ../../catalog/seed/apis-opendata.yaml
+
+    # Templates del scaffolder (kind explícito para no entrar en conflicto
+    # con `catalog.rules` global).
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
 
-    # DESY project template
     - type: file
       target: ../../examples/templates/desy-project/template.yaml
       rules:

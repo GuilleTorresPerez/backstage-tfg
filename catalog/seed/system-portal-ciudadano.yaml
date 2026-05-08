@@ -1,0 +1,62 @@
+# Seed del prototipo (RC-SEED-01 / RC-SEED-05): un System completo con sus
+# dos Components conectados por partOf y dependsOn, listo para validar el
+# grafo del catalog-graph (RC-SYS-03) durante un arranque limpio.
+#
+# Los 3 Group de roles (developers, platform-admins, security-reviewers)
+# vienen sincronizados desde Keycloak vía catalog.providers.keycloakOrg
+# (RC-UG-01) — no se duplican como YAML estático aquí.
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: portal-ciudadano
+  description: |
+    Portal de Servicios Digitales del Gobierno de Aragón. System de
+    demostración del prototipo IDP: agrupa el frontend público y el
+    backend que lo alimenta con datos abiertos de Aragón Open Data.
+  tags:
+    - ciudadano
+    - desy
+spec:
+  owner: group:platform-admins
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: portal-ciudadano-frontend
+  description: |
+    Interfaz web del Portal de Servicios Digitales. Construida sobre el
+    Sistema de Diseño DESY (WCAG 2.1 AA). Consume el backend del portal
+    para obtener datos derivados de Aragón Open Data.
+  tags:
+    - ciudadano
+    - desy
+    - frontend
+spec:
+  type: website
+  owner: group:developers
+  lifecycle: production
+  system: portal-ciudadano
+  dependsOn:
+    - component:default/portal-ciudadano-backend
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: portal-ciudadano-backend
+  description: |
+    Servicio backend del Portal de Servicios Digitales. Agrega y cachea
+    datos de Aragón Open Data (GA_OD_Core, CKAN y el endpoint SPARQL)
+    para servirlos al frontend con baja latencia.
+  tags:
+    - ciudadano
+    - backend
+spec:
+  type: service
+  owner: group:developers
+  lifecycle: production
+  system: portal-ciudadano
+  consumesApis:
+    - api:default/api-opendata-aragon-core
+    - api:default/api-opendata-aragon-ckan
+    - api:default/api-opendata-aragon-sparql

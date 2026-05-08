@@ -8,6 +8,7 @@
 
 import { createBackend } from '@backstage/backend-defaults';
 import { oidcAuthProviderModule } from './modules/oidcAuthProvider';
+import { tfgCatalogValidatorModule } from './modules/tfgCatalogValidator';
 
 const backend = createBackend();
 
@@ -40,6 +41,11 @@ backend.add(
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 
+// Validador custom del prototipo:
+// - RC-COMP-05 / RC-VALID-01: spec.system obligatorio en Component (error bloqueante)
+// - RC-COMP-02 / RC-COMP-03 / RC-API-02 / RC-VALID-02: listas cerradas (warning)
+backend.add(tfgCatalogValidatorModule);
+
 // permission plugin
 backend.add(import('@backstage/plugin-permission-backend'));
 // See https://backstage.io/docs/permissions/getting-started for how to create your own permission policy
@@ -65,7 +71,6 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
 
-backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 backend.add(
   import('@backstage-community/plugin-catalog-backend-module-keycloak'),
 );
