@@ -9,6 +9,7 @@
 import { createBackend } from '@backstage/backend-defaults';
 import { oidcAuthProviderModule } from './modules/oidcAuthProvider';
 import { tfgCatalogValidatorModule } from './modules/tfgCatalogValidator';
+import { permissionPolicyModule } from './permission-policy';
 
 const backend = createBackend();
 
@@ -51,10 +52,7 @@ backend.add(tfgCatalogValidatorModule);
 
 // permission plugin
 backend.add(import('@backstage/plugin-permission-backend'));
-// See https://backstage.io/docs/permissions/getting-started for how to create your own permission policy
-backend.add(
-  import('@backstage/plugin-permission-backend-module-allow-all-policy'),
-);
+backend.add(permissionPolicyModule);
 
 // search plugin
 backend.add(import('@backstage/plugin-search-backend'));
