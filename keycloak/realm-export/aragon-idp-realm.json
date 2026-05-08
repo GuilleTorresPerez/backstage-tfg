@@ -27,9 +27,7 @@
     "clientRole": false,
     "containerId": "aragon-idp"
   },
-  "requiredCredentials": [
-    "password"
-  ],
+  "requiredCredentials": ["password"],
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
@@ -154,9 +152,7 @@
           "temporary": false
         }
       ],
-      "groups": [
-        "/developers"
-      ],
+      "groups": ["/developers"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",
@@ -178,9 +174,7 @@
           "temporary": false
         }
       ],
-      "groups": [
-        "/platform-admins"
-      ],
+      "groups": ["/platform-admins"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",
@@ -202,9 +196,7 @@
           "temporary": false
         }
       ],
-      "groups": [
-        "/security-reviewers"
-      ],
+      "groups": ["/security-reviewers"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",
@@ -226,10 +218,7 @@
           "temporary": false
         }
       ],
-      "groups": [
-        "/developers",
-        "/security-reviewers"
-      ],
+      "groups": ["/developers", "/security-reviewers"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",
@@ -273,12 +262,8 @@
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
       "secret": "",
-      "redirectUris": [
-        "http://localhost:7007/api/auth/oidc/handler/frame"
-      ],
-      "webOrigins": [
-        "http://localhost:7007"
-      ],
+      "redirectUris": ["http://localhost:7007/api/auth/oidc/handler/frame"],
+      "webOrigins": ["http://localhost:7007"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,

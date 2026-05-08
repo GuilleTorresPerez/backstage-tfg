@@ -71,11 +71,7 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
 
-// RC-DISC-01: discovery automático sobre el grupo aragon-idp de GitLab.com.
-// El provider GitHub anterior (`catalog-backend-module-github`) se retiró en
-// Bloque C: el catálogo del prototipo se nutre exclusivamente de GitLab y de
-// las Locations estáticas declaradas en app-config.yaml.
-backend.add(import('@backstage/plugin-catalog-backend-module-gitlab'));
+backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 backend.add(
   import('@backstage-community/plugin-catalog-backend-module-keycloak'),
 );
