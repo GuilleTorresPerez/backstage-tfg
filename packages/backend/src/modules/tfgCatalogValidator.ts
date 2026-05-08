@@ -64,7 +64,11 @@ class TfgCatalogValidator implements CatalogProcessor {
         emit(
           processingResult.generalError(
             location,
-            `Component '${entity.metadata.name}': spec.type='${spec.type}' no está en la lista permitida [${ALLOWED_COMPONENT_TYPES.join(', ')}] (RC-COMP-02)`,
+            `Component '${entity.metadata.name}': spec.type='${
+              spec.type
+            }' no está en la lista permitida [${ALLOWED_COMPONENT_TYPES.join(
+              ', ',
+            )}] (RC-COMP-02)`,
           ),
         );
       }
@@ -75,7 +79,11 @@ class TfgCatalogValidator implements CatalogProcessor {
         emit(
           processingResult.generalError(
             location,
-            `Component '${entity.metadata.name}': spec.lifecycle='${spec.lifecycle}' no está en la lista permitida [${ALLOWED_LIFECYCLES.join(', ')}] (RC-COMP-03)`,
+            `Component '${entity.metadata.name}': spec.lifecycle='${
+              spec.lifecycle
+            }' no está en la lista permitida [${ALLOWED_LIFECYCLES.join(
+              ', ',
+            )}] (RC-COMP-03)`,
           ),
         );
       }
@@ -89,7 +97,11 @@ class TfgCatalogValidator implements CatalogProcessor {
         emit(
           processingResult.generalError(
             location,
-            `API '${entity.metadata.name}': spec.type='${spec.type}' no está en la lista permitida [${ALLOWED_API_TYPES.join(', ')}] (RC-API-02)`,
+            `API '${entity.metadata.name}': spec.type='${
+              spec.type
+            }' no está en la lista permitida [${ALLOWED_API_TYPES.join(
+              ', ',
+            )}] (RC-API-02)`,
           ),
         );
       }
