@@ -1,4 +1,7 @@
-import { createBackendModule, coreServices } from '@backstage/backend-plugin-api';
+import {
+  createBackendModule,
+  coreServices,
+} from '@backstage/backend-plugin-api';
 import {
   PolicyDecision,
   AuthorizeResult,
@@ -80,7 +83,9 @@ export class AragonPermissionPolicy implements PermissionPolicy {
     const roles = extractRoles(user);
 
     this.logger.info(
-      `Permission request: ${request.permission.name}, roles=[${roles.join(', ')}]`,
+      `Permission request: ${request.permission.name}, roles=[${roles.join(
+        ', ',
+      )}]`,
     );
 
     if (roles.length === 0) {

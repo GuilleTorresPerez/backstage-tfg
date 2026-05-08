@@ -1,6 +1,9 @@
 import { AragonPermissionPolicy, extractRoles } from './permission-policy';
 import { AuthorizeResult } from '@backstage/plugin-permission-common';
-import { PolicyQuery, PolicyQueryUser } from '@backstage/plugin-permission-node';
+import {
+  PolicyQuery,
+  PolicyQueryUser,
+} from '@backstage/plugin-permission-node';
 
 const mockLogger = {
   info: jest.fn(),
