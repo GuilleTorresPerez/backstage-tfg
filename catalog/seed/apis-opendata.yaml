@@ -1,0 +1,173 @@
+# RC-DISC-02 / RC-SEED-02: las 3 APIs de Aragón Open Data como Location
+# estática. Demuestra el control op.ext.4.2 (documentación de interconexiones
+# autorizadas).
+#
+# NOTA sobre `definition`: las Locations de tipo `file:` no soportan
+# placeholders ($text/$json/$yaml/$openapi) — por eso las definiciones se
+# inlinean. La OAS3 completa del endpoint SPARQL vive también en
+# `examples/org/apis/sparql-openapi.yaml` como referencia canónica y futura
+# fuente $text cuando el seed se sirva vía discovery GitLab (url:).
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: api-opendata-aragon-core
+  description: |
+    GA_OD_Core v2 — API principal de datos abiertos del Gobierno de Aragón.
+    Expone los datasets del portal opendata.aragon.es en formatos JSON, XML
+    y CSV mediante una interfaz REST.
+  tags:
+    - opendata
+    - externa
+    - aragon
+  annotations:
+    aragon.es/data-classification: publica
+    aragon.es/interconnection-auth: autorizado-datos-abiertos
+spec:
+  type: openapi
+  owner: group:platform-admins
+  lifecycle: production
+  definition: |
+    openapi: 3.0.3
+    info:
+      title: GA_OD_Core v2 — Aragón Open Data
+      version: '2.0.0'
+      description: |
+        TODO: sustituir por la OAS3 oficial publicada por Aragón Open Data
+        (https://opendata.aragon.es/GA_OD_Core/swagger). Esta definición
+        mínima describe únicamente el listado de datasets para que la
+        entidad sea visible en la UI del catálogo.
+    servers:
+      - url: https://opendata.aragon.es/GA_OD_Core
+    paths:
+      /dataset:
+        get:
+          summary: Listado de datasets disponibles
+          parameters:
+            - name: format
+              in: query
+              schema:
+                type: string
+                enum: [json, xml, csv]
+          responses:
+            '200':
+              description: Lista paginada de datasets.
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: api-opendata-aragon-ckan
+  description: |
+    CKAN API del portal Aragón Open Data. CKAN es la plataforma de
+    publicación de datos abiertos sobre la que opera opendata.aragon.es;
+    expone su catálogo y sus datasets vía la Action API estándar de CKAN
+    (https://docs.ckan.org/en/2.10/api/).
+  tags:
+    - opendata
+    - externa
+    - ckan
+  annotations:
+    aragon.es/data-classification: publica
+spec:
+  type: openapi
+  owner: group:platform-admins
+  lifecycle: production
+  definition: |
+    openapi: 3.0.3
+    info:
+      title: CKAN Action API — Aragón Open Data
+      version: '3.0.0'
+      description: |
+        TODO: sustituir por la OAS3 oficial de CKAN. Esta definición
+        mínima cubre los endpoints más usados (package_list, package_show)
+        para que la entidad sea visible en la UI del catálogo.
+    servers:
+      - url: https://opendata.aragon.es/api/3
+    paths:
+      /action/package_list:
+        get:
+          summary: Listado de identificadores de datasets.
+          responses:
+            '200':
+              description: Array de identificadores.
+      /action/package_show:
+        get:
+          summary: Metadata completa de un dataset.
+          parameters:
+            - name: id
+              in: query
+              required: true
+              schema:
+                type: string
+          responses:
+            '200':
+              description: Metadata del dataset.
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: api-opendata-aragon-sparql
+  description: |
+    Endpoint SPARQL público de Aragón Open Data sobre la ontología EI2A.
+    Permite ejecutar consultas SPARQL 1.1 contra el triplestore del
+    Gobierno de Aragón (W3C SPARQL 1.1 Protocol).
+  tags:
+    - opendata
+    - externa
+    - sparql
+    - linked-data
+  annotations:
+    aragon.es/data-classification: publica
+    aragon.es/interconnection-auth: autorizado-datos-abiertos
+spec:
+  type: openapi
+  owner: group:platform-admins
+  lifecycle: production
+  definition: |
+    openapi: 3.0.3
+    info:
+      title: Aragón Open Data — Endpoint SPARQL
+      version: '1.0.0'
+      description: |
+        Endpoint SPARQL público de Aragón Open Data. Esta especificación
+        describe la interfaz HTTP del W3C SPARQL 1.1 Protocol
+        (https://www.w3.org/TR/sparql11-protocol/). La OAS3 canónica vive
+        en examples/org/apis/sparql-openapi.yaml.
+    servers:
+      - url: https://opendata.aragon.es
+    paths:
+      /sparql:
+        get:
+          summary: Ejecutar consulta SPARQL
+          parameters:
+            - name: query
+              in: query
+              required: true
+              schema:
+                type: string
+              example: |
+                SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10
+            - name: format
+              in: query
+              schema:
+                type: string
+                enum: [json, xml, csv, turtle]
+          responses:
+            '200':
+              description: Resultado de la consulta SPARQL.
+            '400':
+              description: Consulta SPARQL malformada.
+        post:
+          summary: Ejecutar consulta SPARQL (POST, para queries largas)
+          requestBody:
+            content:
+              application/x-www-form-urlencoded:
+                schema:
+                  type: object
+                  required: [query]
+                  properties:
+                    query:
+                      type: string
+          responses:
+            '200':
+              description: Resultado de la consulta SPARQL.
