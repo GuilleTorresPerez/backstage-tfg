@@ -1,0 +1,332 @@
+{
+  "id": "b8aa44ae-651d-4376-a09a-652be4a42abb",
+  "realm": "aragon-idp",
+  "displayName": "Aragon IDP",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "bruteForceProtected": false,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "waitIncrementSeconds": 60,
+  "quickLoginCheckMilliSeconds": 1000,
+  "maxDeltaTimeSeconds": 43200,
+  "failureFactor": 30,
+  "defaultRole": {
+    "id": "ee1435c0-f259-45bd-b987-aa0b100c2e00",
+    "name": "default-roles-aragon-idp",
+    "description": "${role_default-roles}",
+    "composite": true,
+    "clientRole": false,
+    "containerId": "aragon-idp"
+  },
+  "requiredCredentials": ["password"],
+  "otpPolicyType": "totp",
+  "otpPolicyAlgorithm": "HmacSHA1",
+  "otpPolicyInitialCounter": 0,
+  "otpPolicyDigits": 6,
+  "otpPolicyLookAheadWindow": 1,
+  "otpPolicyPeriod": 30,
+  "webAuthnPolicyRpEntityName": "keycloak",
+  "webAuthnPolicyRpId": "",
+  "webAuthnPolicyAttestationConveyancePreference": "not specified",
+  "webAuthnPolicyAuthenticatorAttachment": "not specified",
+  "webAuthnPolicyRequireResidentKey": "not specified",
+  "webAuthnPolicyUserVerificationRequirement": "not specified",
+  "webAuthnPolicyCreateTimeout": 0,
+  "webAuthnPolicyAvoidSameAuthenticatorRegister": false,
+  "webAuthnPolicyAcceptableAaguids": [],
+  "roles": {
+    "realm": [
+      {
+        "id": "ee1435c0-f259-45bd-b987-aa0b100c2e00",
+        "name": "default-roles-aragon-idp",
+        "description": "${role_default-roles}",
+        "composite": true,
+        "clientRole": false,
+        "containerId": "aragon-idp"
+      },
+      {
+        "id": "82568836-6b7f-4aa7-875c-b844f465c772",
+        "name": "offline_access",
+        "description": "${role_offline-access}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "aragon-idp"
+      },
+      {
+        "id": "d02755f0-2eea-4f05-9f4f-ec55838eda61",
+        "name": "uma_authorization",
+        "description": "${role_uma_authorization}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "aragon-idp"
+      }
+    ],
+    "client": {
+      "realm-management": [
+        {
+          "id": "6120d229-29f8-4eb5-b226-b4b450c4d0b6",
+          "name": "view-users",
+          "description": "${role_view-users}",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "95674e5b-a707-42fc-bc32-ec6db90d9122"
+        },
+        {
+          "id": "bbc2bf97-1f29-4a4b-a5fa-46c32d977327",
+          "name": "view-groups",
+          "description": "${role_view-groups}",
+          "composite": true,
+          "clientRole": true,
+          "containerId": "95674e5b-a707-42fc-bc32-ec6db90d9122"
+        },
+        {
+          "id": "eb43a680-4a43-40b7-a3bf-b723e0bb3cb7",
+          "name": "query-users",
+          "description": "${role_query-users}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "95674e5b-a707-42fc-bc32-ec6db90d9122"
+        },
+        {
+          "id": "ee8dfac7-ccf4-4091-91fe-36fb57527e2d",
+          "name": "query-groups",
+          "description": "${role_query-groups}",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "95674e5b-a707-42fc-bc32-ec6db90d9122"
+        }
+      ]
+    }
+  },
+  "groups": [
+    {
+      "id": "90b0913c-1c9b-4b30-bcf1-9ee1fad0fb08",
+      "name": "developers",
+      "path": "/developers",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "2ac126ad-5050-4ac1-ad3f-5e5a9a17d53f",
+      "name": "platform-admins",
+      "path": "/platform-admins",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "c136d9f9-7d76-4419-be7b-fbba3eaf8948",
+      "name": "security-reviewers",
+      "path": "/security-reviewers",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    }
+  ],
+  "users": [
+    {
+      "id": "d32f511e-5f61-46ca-b9bd-c6eeee98ed52",
+      "username": "jperez",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Juan",
+      "lastName": "Perez",
+      "email": "jperez@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/developers"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "5d758e24-6985-4563-88f8-3e206822c652",
+      "username": "agarcia",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Ana",
+      "lastName": "Garcia",
+      "email": "agarcia@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/platform-admins"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "a4c65c53-6aea-4d19-abfb-cfd6b7ef2a4b",
+      "username": "msanchez",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Maria",
+      "lastName": "Sanchez",
+      "email": "msanchez@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/security-reviewers"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "868f8515-25e9-4a34-ac0d-d28320c2ddc2",
+      "username": "mgarcia",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Manuel",
+      "lastName": "Garcia",
+      "email": "mgarcia@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/developers", "/security-reviewers"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "59f27ccc-d366-4996-b85b-d9cc6c62cd95",
+      "username": "service-account-backstage-sync",
+      "enabled": true,
+      "emailVerified": false,
+      "serviceAccountClientId": "backstage-sync",
+      "credentials": [],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users",
+          "view-groups",
+          "query-users",
+          "query-groups"
+        ]
+      },
+      "groups": []
+    }
+  ],
+  "clients": [
+    {
+      "id": "f2a360e1-9a46-4852-8a46-2c6f89328d76",
+      "clientId": "backstage",
+      "name": "Backstage",
+      "description": "Backstage public client for user authentication",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "",
+      "redirectUris": ["http://localhost:7007/api/auth/oidc/handler/frame"],
+      "webOrigins": ["http://localhost:7007"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+"
+      }
+    },
+    {
+      "id": "0ea385d7-29c0-4987-b1f9-93fbdd029eed",
+      "clientId": "backstage-sync",
+      "name": "Backstage Sync",
+      "description": "Backstage confidential client for syncing users and groups",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "backstage-sync-secret-change-me",
+      "redirectUris": [],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {}
+    },
+    {
+      "id": "95674e5b-a707-42fc-bc32-ec6db90d9122",
+      "clientId": "realm-management",
+      "name": "${client_realm-management}",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": true,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {}
+    }
+  ]
+}

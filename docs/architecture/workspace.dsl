@@ -22,7 +22,7 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
 
         gitlab = softwareSystem "GitLab" "Plataforma de repositorios Git del IDP y de los servicios generados. Fuente de verdad para catalog-info.yaml, plantillas Scaffolder, TechDocs en Markdown y código de las aplicaciones departamentales. Branch protection y CODEOWNERS aplican el flujo GitOps que materializa los controles op.exp.5.* y org.4.3." "ExternalSystem"
 
-        mockIdp = softwareSystem "Mock IdP (LDAP + OIDC)" "Stand-in del directorio corporativo del Gobierno de Aragón (389 Directory Server + portal micuenta.aragon.es sobre Keycloak/Red Hat SSO). Provee autenticación OIDC y sincronización de usuarios y grupos vía LDAP. En despliegue real se sustituye por el IdP corporativo gestionado por AST." "MockSystem"
+        keycloak = softwareSystem "Keycloak (IdP del prototipo)" "Servidor OIDC desplegado localmente en Docker (quay.io/keycloak/keycloak) con un realm versionado en el repositorio del IDP. Provee autenticación OIDC y sincroniza users y groups al catálogo Backstage vía @backstage-community/plugin-catalog-backend-module-keycloak. Stand-in del IdP corporativo del Gobierno de Aragón. La federación LDAP contra el directorio 389DS corporativo queda como trabajo futuro. En despliegue real se sustituye por el IdP corporativo gestionado por AST." "MockSystem"
 
         mockAst = softwareSystem "Mock AST (Cloud target)" "Entorno mockeado que simula la plataforma cloud de AST (certificada ENS ALTA). Recibe los artefactos desplegables generados por el pipeline CI/CD que arranca el Scaffolder. En despliegue real es Cloud AST (modelo cloud-first híbrido)." "MockSystem"
 
@@ -46,7 +46,7 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
 
         // IDP → Integraciones
         backstage -> gitlab "Descubre catalog-info.yaml automáticamente (RC-DISC-01); descarga esqueletos del Scaffolder (fetch:plain → skeletons/*); crea repositorios con branch protection y MR de bootstrapping (publish:gitlab); sirve TechDocs desde Markdown" "GitLab API / HTTPS"
-        backstage -> mockIdp "Autentica usuarios (OIDC) y sincroniza grupos a roles del Permission Framework (LDAP)" "OIDC / LDAP"
+        backstage -> keycloak "Autentica usuarios vía OIDC (Authorization Code Flow) y sincroniza users/groups al catálogo vía Keycloak Admin REST API; los grupos sincronizados alimentan el Permission Framework" "OIDC / Admin REST API"
         backstage -> desy "Referencia paquetes npm en plantillas y enlaza documentación pública" "npm / HTTPS"
         backstage -> opendata "Registra sus APIs (GA_OD_Core, CKAN, SPARQL) como entidades del catálogo vía Location estática (RC-DISC-02) — demostración op.ext.4.2" "OpenAPI / AsyncAPI"
 
