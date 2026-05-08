@@ -1,0 +1,97 @@
+# OAS3 mínimo del endpoint SPARQL de Aragón Open Data.
+# RC-API-04 / RC-SEED-02: SPARQL no es una API REST, pero el plugin de Backstage
+# renderiza Swagger UI sobre OAS3, así que describimos su interfaz HTTP
+# (GET /sparql?query=<SPARQL>) como un único path con parámetros.
+openapi: 3.0.3
+info:
+  title: Aragón Open Data — Endpoint SPARQL
+  version: '1.0.0'
+  description: |
+    Endpoint SPARQL público de Aragón Open Data sobre la ontología EI2A.
+    Permite ejecutar consultas SPARQL 1.1 contra el triplestore del Gobierno
+    de Aragón. Esta especificación describe la interfaz HTTP del protocolo
+    SPARQL (W3C Recommendation, https://www.w3.org/TR/sparql11-protocol/).
+  contact:
+    name: Aragón Open Data
+    url: https://opendata.aragon.es/
+  license:
+    name: CC BY 4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+servers:
+  - url: https://opendata.aragon.es
+    description: Endpoint público (verificar URL real con el equipo de Open Data)
+paths:
+  /sparql:
+    get:
+      summary: Ejecutar consulta SPARQL
+      description: |
+        Ejecuta una consulta SPARQL 1.1 sobre el triplestore de Aragón Open
+        Data. La consulta se pasa como query string. Para consultas largas se
+        recomienda usar POST con `application/x-www-form-urlencoded`.
+      operationId: executeSparqlQuery
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Consulta SPARQL 1.1 (SELECT, ASK, CONSTRUCT, DESCRIBE).
+          schema:
+            type: string
+          example: |
+            SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 10
+        - name: default-graph-uri
+          in: query
+          required: false
+          description: URI del grafo por defecto sobre el que se ejecuta la consulta.
+          schema:
+            type: string
+            format: uri
+        - name: format
+          in: query
+          required: false
+          description: Formato de respuesta (alias de Accept).
+          schema:
+            type: string
+            enum: [json, xml, csv, tsv, turtle, n3]
+      responses:
+        '200':
+          description: Resultado de la consulta SPARQL.
+          content:
+            application/sparql-results+json:
+              schema:
+                type: object
+                description: SPARQL 1.1 Query Results JSON Format.
+            application/sparql-results+xml:
+              schema:
+                type: string
+            text/csv:
+              schema:
+                type: string
+            text/turtle:
+              schema:
+                type: string
+        '400':
+          description: Consulta SPARQL malformada.
+        '500':
+          description: Error interno del servidor SPARQL.
+    post:
+      summary: Ejecutar consulta SPARQL (POST)
+      description: |
+        Variante POST para consultas largas. El body debe llevar el parámetro
+        `query` codificado como `application/x-www-form-urlencoded`.
+      operationId: executeSparqlQueryPost
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [query]
+              properties:
+                query:
+                  type: string
+                  description: Consulta SPARQL 1.1.
+      responses:
+        '200':
+          description: Resultado de la consulta SPARQL.
+        '400':
+          description: Consulta SPARQL malformada.
