@@ -3,10 +3,10 @@ import { Entity } from '@backstage/catalog-model';
 import {
   CatalogProcessor,
   CatalogProcessorEmit,
-  catalogProcessingExtensionPoint,
   LocationSpec,
   processingResult,
 } from '@backstage/plugin-catalog-node';
+import { catalogProcessingExtensionPoint } from '@backstage/plugin-catalog-node/alpha';
 
 const ALLOWED_COMPONENT_TYPES = [
   'service',
