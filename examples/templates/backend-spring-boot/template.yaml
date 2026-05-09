@@ -1,0 +1,156 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: backend-spring-boot
+  title: Microservicio Spring Boot (Golden Path)
+  description: Crea un microservicio Spring Boot con configuración de seguridad ENS, OpenAPI y pipeline CI/CD con SBOM
+  tags:
+    - spring-boot
+    - java
+    - backend
+    - golden-path
+spec:
+  type: service
+  owner: platform-team
+
+  parameters:
+    - title: Información del servicio
+      required: [name, system, owner, nivel_ens]
+      properties:
+        name:
+          title: Nombre del servicio
+          type: string
+          description: Nombre único del componente (kebab-case)
+          pattern: '^[a-z0-9-]{3,50}$'
+          ui:autofocus: true
+          ui:help: 'Debe estar en kebab-case (minúsculas, números y guiones). Ejemplo: mi-servicio-api'
+        description:
+          title: Descripción
+          type: string
+          description: Breve descripción del servicio
+        owner:
+          title: Propietario
+          type: string
+          description: Grupo responsable del servicio
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+        system:
+          title: Sistema
+          type: string
+          description: Sistema al que pertenece el servicio
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds: [System]
+        nivel_ens:
+          title: Nivel ENS
+          type: string
+          description: Categoría del Esquema Nacional de Seguridad
+          enum: [basico, medio, alto]
+          enumNames: [Básica, Media, Alta]
+        groupId:
+          title: Group ID Maven
+          type: string
+          description: Identificador de grupo Maven (reverse domain)
+          default: es.aragon
+          pattern: '^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$'
+          ui:help: 'Ejemplo: es.aragon, es.aragon.idp'
+        javaVersion:
+          title: Versión de Java
+          type: string
+          description: Versión de Java objetivo
+          default: '21'
+          enum: ['21']
+          enumNames: ['Java 21 (LTS)']
+
+    - title: Repositorio destino
+      required: [repoUrl]
+      properties:
+        repoUrl:
+          title: Ubicación del repositorio
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.com
+            allowedOwners:
+              - aragon-idp
+
+  steps:
+    - id: fetchSkeleton
+      name: Descargar esqueleto Spring Boot
+      action: fetch:template
+      input:
+        url: https://gitlab.com/aragon-idp/skeletons/backend-spring-boot
+        targetPath: .
+        values:
+          artifactId: ${{ parameters.name }}
+          groupId: ${{ parameters.groupId }}
+          packagePath: ${{ parameters.groupId | replace(".", "/") }}
+          packageName: ${{ parameters.groupId }}
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description | default("Microservicio Spring Boot", true) }}
+          version: '0.0.1-SNAPSHOT'
+
+    - id: renameMainPackage
+      name: Renombrar paquete fuente principal
+      action: fs:rename
+      input:
+        files:
+          - from: src/main/java/com/example/app
+            to: src/main/java/${{ parameters.groupId | replace(".", "/") }}
+
+    - id: renameTestPackage
+      name: Renombrar paquete fuente de tests
+      action: fs:rename
+      input:
+        files:
+          - from: src/test/java/com/example/app
+            to: src/test/java/${{ parameters.groupId | replace(".", "/") }}
+
+    - id: fetchOverlay
+      name: Aplicar overlay de catálogo
+      action: fetch:template
+      input:
+        url: ./content
+        targetPath: .
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description | default("Microservicio Spring Boot", true) }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          nivel_ens: ${{ parameters.nivel_ens }}
+          repoUrl: ${{ parameters.repoUrl }}
+          skeletonVersion: '0.1.0'
+
+    - id: publish
+      name: Publicar en GitLab
+      action: publish:gitlab
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+
+    - id: register
+      name: Registrar en el catálogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+    - id: notify
+      name: Notificar al solicitante
+      action: notification:send
+      input:
+        recipients: broadcast
+        title: 'Nuevo microservicio Spring Boot creado'
+        info: 'El proyecto ${{ parameters.name }} ha sido creado correctamente'
+        severity: normal
+
+  output:
+    links:
+      - title: Repositorio
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Abrir en el catálogo
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
