@@ -57,7 +57,7 @@ const PERMISSION_MATRIX: Record<string, Role[]> = {
   // Catalog: gestion (platform-admin + developer para scaffolder)
   'catalog.entity.create': ['platform-admin', 'developer'],
   'catalog.entity.delete': ['platform-admin'],
-  'catalog.location.create': ['platform-admin'],
+  'catalog.location.create': ['platform-admin', 'developer'],
   'catalog.location.analyze': ['platform-admin'],
   'catalog.location.delete': ['platform-admin'],
 

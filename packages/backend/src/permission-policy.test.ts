@@ -103,6 +103,14 @@ describe('AragonPermissionPolicy', () => {
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
 
+    it('allows developer to create location (from scaffolder)', async () => {
+      const result = await policy.handle(
+        makeQuery('catalog.location.create'),
+        makeUser(['group:default/developers']),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
     it('allows developer to create catalog entity (from scaffolder)', async () => {
       const result = await policy.handle(
         makeQuery('catalog.entity.create'),
