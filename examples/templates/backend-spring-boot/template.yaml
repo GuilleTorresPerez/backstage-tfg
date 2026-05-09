@@ -31,11 +31,8 @@ spec:
         owner:
           title: Propietario
           type: string
-          description: Grupo responsable del servicio
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
+          description: Grupo responsable del servicio (solo tus grupos)
+          ui:field: MyGroupsPicker
         system:
           title: Sistema
           type: string
@@ -46,16 +43,9 @@ spec:
         nivel_ens:
           title: Nivel ENS
           type: string
-          description: Categoría del Esquema Nacional de Seguridad
+          description: Categoría del Esquema Nacional de Seguridad (informativo)
           enum: [basico, medio, alto]
           enumNames: [Básica, Media, Alta]
-        groupId:
-          title: Group ID Maven
-          type: string
-          description: Identificador de grupo Maven (reverse domain)
-          default: es.aragon
-          pattern: '^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+$'
-          ui:help: 'Ejemplo: es.aragon, es.aragon.idp'
         javaVersion:
           title: Versión de Java
           type: string
@@ -86,9 +76,9 @@ spec:
         targetPath: .
         values:
           artifactId: ${{ parameters.name }}
-          groupId: ${{ parameters.groupId }}
-          packagePath: ${{ parameters.groupId | replace(".", "/") }}
-          packageName: ${{ parameters.groupId }}
+          groupId: es.aragon
+          packagePath: es/aragon
+          packageName: es.aragon
           name: ${{ parameters.name }}
           description: ${{ parameters.description | default("Microservicio Spring Boot", true) }}
           version: '0.0.1-SNAPSHOT'
@@ -99,7 +89,7 @@ spec:
       input:
         files:
           - from: src/main/java/com/example/app
-            to: src/main/java/${{ parameters.groupId | replace(".", "/") }}
+            to: src/main/java/es/aragon
 
     - id: renameTestPackage
       name: Renombrar paquete fuente de tests
@@ -107,7 +97,7 @@ spec:
       input:
         files:
           - from: src/test/java/com/example/app
-            to: src/test/java/${{ parameters.groupId | replace(".", "/") }}
+            to: src/test/java/es/aragon
 
     - id: fetchOverlay
       name: Aplicar overlay de catálogo
