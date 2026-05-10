@@ -181,7 +181,7 @@ spec:
         targetPath: .
         replace: true
         templateFileExtension: true
-        trimBlocks: true
+        trimBlocks: false
         lstripBlocks: true
         values:
           name: ${{ parameters.name }}
