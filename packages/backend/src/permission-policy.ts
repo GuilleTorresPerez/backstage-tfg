@@ -54,10 +54,10 @@ const PERMISSION_MATRIX: Record<string, Role[]> = {
   'catalog.entity.read': ['developer', 'platform-admin', 'security-reviewer'],
   'catalog.location.read': ['developer', 'platform-admin', 'security-reviewer'],
 
-  // Catalog: gestion (solo platform-admin)
-  'catalog.entity.create': ['platform-admin'],
+  // Catalog: gestion (platform-admin + developer para scaffolder)
+  'catalog.entity.create': ['platform-admin', 'developer'],
   'catalog.entity.delete': ['platform-admin'],
-  'catalog.location.create': ['platform-admin'],
+  'catalog.location.create': ['platform-admin', 'developer'],
   'catalog.location.analyze': ['platform-admin'],
   'catalog.location.delete': ['platform-admin'],
 
@@ -69,8 +69,8 @@ const PERMISSION_MATRIX: Record<string, Role[]> = {
   'scaffolder.task.cancel': ['developer', 'platform-admin'],
   'scaffolder.template.management': ['platform-admin'],
 
-  // Scaffolder: auditoria (platform-admin + security-reviewer)
-  'scaffolder.task.read': ['platform-admin', 'security-reviewer'],
+  // Scaffolder: auditoria (todos los roles)
+  'scaffolder.task.read': ['developer', 'platform-admin', 'security-reviewer'],
 };
 
 export class AragonPermissionPolicy implements PermissionPolicy {

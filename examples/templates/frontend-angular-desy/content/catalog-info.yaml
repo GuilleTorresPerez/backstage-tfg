@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    aragon.es/nivel-ens: ${{ values.nivel_ens }}
+    aragon.es/skeleton-version: ${{ values.skeletonVersion }}
+  tags:
+    - desy
+    - angular
+    - frontend
+    - layout-${{ values.headerType }}
+    - ens-${{ values.nivel_ens }}
+    {%- if values.hasSidebar %}
+    - with-sidebar
+    {%- endif %}
+    {%- if values.hasSubheader %}
+    - with-subheader
+    {%- endif %}
+spec:
+  type: website
+  lifecycle: experimental
+  owner: ${{ values.owner | default("user:guest", true) }}
+  {%- if values.system %}
+  system: ${{ values.system }}
+  {%- endif %}

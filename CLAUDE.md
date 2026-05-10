@@ -91,6 +91,7 @@ This is a standard Backstage monorepo with Yarn workspaces:
 - `plugins/` — Empty directory reserved for custom plugins.
 - `examples/` — Local catalog data (entities, org, templates) loaded in development.
 - `docs/` — Architecture diagrams (Structurizr DSL in `docs/architecture/`) and Obsidian notes.
+- `docker-compose.yml` — Defines the local infrastructure stack (PostgreSQL, Keycloak, MinIO) and the Structurizr docs server.
 
 ### Backend plugins loaded (`packages/backend/src/index.ts`)
 
@@ -152,12 +153,5 @@ Commands that do **not** need the toolbox (run directly on the host):
 
 Rule of thumb: if it touches `node_modules`, `yarn`, `node`, or the project's TypeScript/build pipeline → wrap in `toolbox run -c backstage-dev`. Otherwise run it directly.
 
-## Container engine — Podman
 
-The host uses **Podman** (rootless) as the container engine, with `podman-compose` (or `podman` exposing a `docker compose`-compatible CLI) handling the multi-service stack defined in `docker-compose.yml`. The `docker` and `docker compose` commands in this document are aliases to the Podman equivalents on this machine — they are not Docker. Practical implications:
 
-- `docker compose up -d <svc>` works as expected; under the hood it calls Podman.
-- Container introspection: prefer `podman ps`, `podman logs <container>`, `podman inspect <container>` over `docker` for reliable output.
-- Networking: containers expose ports on `localhost` from the host's perspective (rootless networking via slirp4netns or pasta). The `keycloak` container is reachable at `http://localhost:8081` from both the host and the toolbox.
-- Volumes are managed by Podman; `docker volume ls` ↔ `podman volume ls`.
-- The `restart: unless-stopped` policy is honored by the Podman systemd user units when the user session is active.

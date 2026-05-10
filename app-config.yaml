@@ -101,6 +101,7 @@ scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
+  orphanStrategy: delete
   import:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
@@ -155,6 +156,11 @@ catalog:
 
     - type: file
       target: ../../examples/templates/desy-project/template.yaml
+      rules:
+        - allow: [Template]
+
+    - type: file
+      target: ../../examples/templates/backend-spring-boot/template.yaml
       rules:
         - allow: [Template]
 

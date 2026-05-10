@@ -1,0 +1,13 @@
+site_name: ${{ values.name }}
+docs_dir: docs
+
+nav:
+  - Inicio: index.md
+  - Runbook operativo: runbook.md
+  - Responsabilidades: responsabilidades.md
+  {%- if values.nivel_ens == "alto" %}
+  - Continuidad de negocio (BCP): runbook-bcp.md
+  {%- endif %}
+
+theme:
+  name: readthedocs
