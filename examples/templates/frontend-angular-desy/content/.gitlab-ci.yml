@@ -5,7 +5,7 @@ stages:
   - install
   - test
   - build
-  {%- if values.nivel_ens != "bajo" %}
+  {%- if values.nivel_ens != "basico" %}
   - security
   {%- endif %}
   - sbom
@@ -43,7 +43,7 @@ build:
     paths:
       - dist/
 
-{%- if values.nivel_ens != "bajo" %}
+{%- if values.nivel_ens != "basico" %}
 
 sast:eslint-security:
   stage: security

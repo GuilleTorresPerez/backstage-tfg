@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
 {% if values.hasSubheader %}
 export class HomeLayoutComponent implements OnInit {
   subheaderRelativeRoute = './';
-  title = '${{ values.name }}. Gobierno de Aragon';
+  title = '{{ values.name }}. Gobierno de Aragon';
 
   constructor(
     private activatedRoute: ActivatedRoute,

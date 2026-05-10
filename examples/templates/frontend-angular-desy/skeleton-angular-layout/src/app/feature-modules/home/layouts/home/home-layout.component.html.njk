@@ -37,7 +37,7 @@
     </desy-menu-navigation>
   </desy-header-advanced-custom-navigation>
   <desy-header-advanced-title-container>
-    <desy-header-advanced-title>${{ values.name }}</desy-header-advanced-title>
+    <desy-header-advanced-title>{{ values.name }}</desy-header-advanced-title>
   </desy-header-advanced-title-container>
   <desy-header-advanced-offcanvas>
     <desy-header-advanced-offcanvas-button>Menu</desy-header-advanced-offcanvas-button>
@@ -51,7 +51,7 @@
           class="sr-only">
           Menu principal
         </h2>
-        <h3 class="p-base text-base font-bold">${{ values.name }}</h3>
+        <h3 class="p-base text-base font-bold">{{ values.name }}</h3>
         <desy-menu-vertical
           [idPrefix]="'menu-mobile'"
           [classes]="''"
@@ -110,17 +110,17 @@
 {% endif %}
 {% if values.hasAppSelector %}
   <desy-header-subnav>
-    ${{ values.name }}
+    {{ values.name }}
     <desy-nav>
       <desy-nav-item
         [routerLink]="[]"
         [active]="true">
-        ${{ values.name }}
+        {{ values.name }}
       </desy-nav-item>
     </desy-nav>
   </desy-header-subnav>
 {% else %}
-  <desy-header-subnav>${{ values.name }}</desy-header-subnav>
+  <desy-header-subnav>{{ values.name }}</desy-header-subnav>
 {% endif %}
   <desy-header-navigation>
     <desy-header-navigation-item
@@ -144,7 +144,7 @@
         <nav
           class="w-full p-2"
           aria-label="Menu movil">
-          <h3 class="p-base text-base font-bold">${{ values.name }}</h3>
+          <h3 class="p-base text-base font-bold">{{ values.name }}</h3>
           <desy-nav
             [idPrefix]="'nav-mobile-pages'"
             [ariaLabel]="'Lista de paginas'"
@@ -175,7 +175,7 @@
               <desy-nav-item
                 [routerLink]="[]"
                 [active]="true">
-                ${{ values.name }}
+                {{ values.name }}
               </desy-nav-item>
             </desy-nav>
           </desy-details>
