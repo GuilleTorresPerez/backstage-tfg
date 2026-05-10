@@ -20,7 +20,7 @@ Este componente está clasificado como **ENS Medio**. Aplica:
 - Análisis estático (SAST) y escaneo de dependencias en cada MR.
 - Revisión periódica de versiones de dependencias.
 {%- else -%}
-Este componente está clasificado como **ENS Bajo**. Aplica:
+Este componente está clasificado como **ENS Básico**. Aplica:
 
 - Buenas prácticas estándar de desarrollo.
 - Tests unitarios y revisión por pares.

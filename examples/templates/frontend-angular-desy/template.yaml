@@ -26,7 +26,7 @@ spec:
           title: Nombre
           type: string
           description: Nombre del componente (kebab-case, 3-50 caracteres)
-          pattern: '^[a-z][a-z0-9-]{2,49}$'
+          pattern: '^[a-z0-9-]{3,50}$'
           ui:autofocus: true
         description:
           title: Descripción
@@ -36,23 +36,20 @@ spec:
     - title: Propietario y sistema
       required:
         - owner
+        - system
       properties:
         owner:
           title: Propietario
           type: string
-          description: Grupo propietario del componente (RS-FORM-03)
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: [Group]
+          description: Grupo responsable del componente (solo tus grupos)
+          ui:field: MyGroupsPicker
         system:
           title: Sistema
           type: string
-          description: Sistema al que pertenece el componente (opcional)
+          description: Sistema al que pertenece el componente
           ui:field: EntityPicker
           ui:options:
-            catalogFilter:
-              kind: [System]
+            allowedKinds: [System]
 
     - title: Cumplimiento ENS
       required:
@@ -62,18 +59,18 @@ spec:
           title: Nivel ENS
           type: string
           description: >-
-            Nivel del Esquema Nacional de Seguridad (RD 311/2022) aplicable.
+            Categoría del Esquema Nacional de Seguridad (RD 311/2022) aplicable.
             Determina los jobs de seguridad del pipeline y la generación del
             runbook BCP.
-          default: bajo
+          default: basico
           enum:
-            - bajo
+            - basico
             - medio
             - alto
           enumNames:
-            - Bajo
-            - Medio (añade SAST y Trivy en CI)
-            - Alto (añade SAST, Trivy y runbook BCP)
+            - Básica
+            - Media (añade SAST y Trivy en CI)
+            - Alta (añade SAST, Trivy y runbook BCP)
 
     - title: Configuración del frontend
       required:
@@ -159,15 +156,13 @@ spec:
         repoUrl:
           title: Ubicación del repositorio
           type: string
-          description: >-
-            Repositorio donde se publicará el componente. GitHub es provisional
-            hasta que Bloque C complete la migración a GitLab.
+          description: Repositorio del grupo `aragon-idp/projects` donde se publicará el componente.
           ui:field: RepoUrlPicker
           ui:options:
             allowedHosts:
-              - github.com
+              - gitlab.com
             allowedOwners:
-              - portal-aragon
+              - aragon-idp/projects
 
   steps:
     - id: fetch-starter
@@ -211,11 +206,10 @@ spec:
       action: fetch:template
       input:
         url: ./content
-        trimBlocks: true
         lstripBlocks: true
         values:
           name: ${{ parameters.name }}
-          description: ${{ parameters.description }}
+          description: ${{ parameters.description | default("Frontend Angular DESY", true) }}
           owner: ${{ parameters.owner }}
           system: ${{ parameters.system }}
           nivel_ens: ${{ parameters.nivel_ens }}
@@ -225,7 +219,7 @@ spec:
           hasAppSelector: ${{ parameters.hasAppSelector }}
           hasSubheader: ${{ parameters.hasSubheader }}
           hasSidebar: ${{ parameters.hasSidebar }}
-          skeletonVersion: '1.0.0-prototype'
+          skeletonVersion: '0.1.0-bitbucket-master'
 
     - id: drop-bcp-when-not-alto
       name: Eliminar runbook BCP si nivel_ens != alto
@@ -236,10 +230,9 @@ spec:
           - docs/runbook-bcp.md
 
     - id: publish
-      name: Publicar en el repositorio
-      action: publish:github
+      name: Publicar en GitLab
+      action: publish:gitlab
       input:
-        description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
 

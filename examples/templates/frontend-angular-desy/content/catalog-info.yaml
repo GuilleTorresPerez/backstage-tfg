@@ -4,7 +4,6 @@ metadata:
   name: ${{ values.name }}
   description: ${{ values.description }}
   annotations:
-    github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
     aragon.es/nivel-ens: ${{ values.nivel_ens }}
     aragon.es/skeleton-version: ${{ values.skeletonVersion }}
   tags:
@@ -22,7 +21,5 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: ${{ values.owner | default("user:guest", true) }}
-  {%- if values.system %}
+  owner: ${{ values.owner }}
   system: ${{ values.system }}
-  {%- endif %}
