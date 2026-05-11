@@ -81,8 +81,10 @@ spec:
           title: URL base de la API backend
           type: string
           description: >-
-            URL del backend al que apuntará el cliente HTTP. Se inyecta en
-            src/environments/environment.ts.
+            URL del backend al que apuntará el cliente HTTP. Debe pertenecer al
+            dominio aragon.es. Se inyecta en src/environments/environment.ts y
+            en la directiva connect-src de la Content Security Policy (nginx).
+          pattern: '^https://([a-zA-Z0-9_-]+\.)*aragon\.es(/.*)?$'
           default: https://api.aragon.es
         headerType:
           title: Tipo de cabecera
