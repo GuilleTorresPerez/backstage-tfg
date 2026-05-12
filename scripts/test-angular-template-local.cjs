@@ -80,9 +80,13 @@ const values = {
   skeletonVersion: '0.1.0-bitbucket-master',
 };
 
-const TEMPLATE_DIR = path.resolve(__dirname, '../examples/templates/frontend-angular-desy');
+const TEMPLATE_DIR = path.resolve(
+  __dirname,
+  '../examples/templates/frontend-angular-desy',
+);
 const TARGET_DIR = path.resolve(`/tmp/${values.name}`);
-const STARTER_TARBALL = 'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
+const STARTER_TARBALL =
+  'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
 
 // ---------------------------------------------------------------------------
 // AUXILIARES
@@ -109,35 +113,35 @@ function applyTemplates(srcDir, destDir, vars, options) {
       const entryRel = path.join(currentRel, entry.name);
       const srcPath = path.join(srcDir, entryRel);
 
-        const ctx = { values: vars };
-        const renderedName = env.renderString(entry.name, ctx);
-        let destRel = path.join(currentRel, renderedName);
+      const ctx = { values: vars };
+      const renderedName = env.renderString(entry.name, ctx);
+      let destRel = path.join(currentRel, renderedName);
 
-        if (templateFileExtension && entry.name.endsWith('.njk')) {
-          const withoutExt = renderedName.slice(0, -4);
-          destRel = path.join(currentRel, withoutExt);
+      if (templateFileExtension && entry.name.endsWith('.njk')) {
+        const withoutExt = renderedName.slice(0, -4);
+        destRel = path.join(currentRel, withoutExt);
+      }
+
+      const destPath = path.join(destDir, destRel);
+
+      if (entry.isDirectory()) {
+        if (!fs.existsSync(destPath)) {
+          fs.mkdirSync(destPath, { recursive: true });
+        }
+        walk(entryRel);
+      } else {
+        if (fs.existsSync(destPath) && !replace) {
+          console.log(`  [skip] ${destRel}`);
+          continue;
         }
 
-        const destPath = path.join(destDir, destRel);
+        const parent = path.dirname(destPath);
+        if (!fs.existsSync(parent)) {
+          fs.mkdirSync(parent, { recursive: true });
+        }
 
-        if (entry.isDirectory()) {
-          if (!fs.existsSync(destPath)) {
-            fs.mkdirSync(destPath, { recursive: true });
-          }
-          walk(entryRel);
-        } else {
-          if (fs.existsSync(destPath) && !replace) {
-            console.log(`  [skip] ${destRel}`);
-            continue;
-          }
-
-          const parent = path.dirname(destPath);
-          if (!fs.existsSync(parent)) {
-            fs.mkdirSync(parent, { recursive: true });
-          }
-
-          const raw = fs.readFileSync(srcPath, 'utf8');
-          const rendered = env.renderString(raw, ctx);
+        const raw = fs.readFileSync(srcPath, 'utf8');
+        const rendered = env.renderString(raw, ctx);
         fs.writeFileSync(destPath, rendered);
         console.log(`  [write] ${destRel}`);
       }
@@ -180,7 +184,9 @@ async function main() {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'desy-starter-'));
   const tarPath = path.join(tmpDir, 'starter.tar.gz');
   execSync(`curl -sL ${STARTER_TARBALL} -o ${tarPath}`, { stdio: 'inherit' });
-  execSync(`tar -xzf ${tarPath} -C ${TARGET_DIR} --strip-components=1`, { stdio: 'inherit' });
+  execSync(`tar -xzf ${tarPath} -C ${TARGET_DIR} --strip-components=1`, {
+    stdio: 'inherit',
+  });
 
   // 3. Aplicar skeleton-angular-layout
   console.log('\n🔧  Aplicando layout (skeleton-angular-layout)...');
@@ -225,7 +231,9 @@ async function main() {
 
   // 8. Levantar servidor de desarrollo
   console.log('\n🌐  Levantando Angular dev server (npm run dev)...');
-  console.log('    Accede a http://localhost:4200 cuando termine de compilar.\n');
+  console.log(
+    '    Accede a http://localhost:4200 cuando termine de compilar.\n',
+  );
   const child = spawn('npm', ['run', 'dev'], {
     cwd: TARGET_DIR,
     stdio: 'inherit',
@@ -240,7 +248,7 @@ async function main() {
   });
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error('\n❌ Error:', err.message);
   process.exit(1);
 });

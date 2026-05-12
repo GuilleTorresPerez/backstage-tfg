@@ -19,15 +19,27 @@ const COLORS = {
   yellow: '\x1b[33m',
 };
 
-function ok(msg) { console.log(`${COLORS.green}✓${COLORS.reset} ${msg}`); }
-function fail(msg) { console.log(`${COLORS.red}✗${COLORS.reset} ${msg}`); }
-function info(msg) { console.log(`${COLORS.cyan}ℹ${COLORS.reset} ${msg}`); }
-function warn(msg) { console.log(`${COLORS.yellow}⚠${COLORS.reset} ${msg}`); }
+function ok(msg) {
+  console.log(`${COLORS.green}✓${COLORS.reset} ${msg}`);
+}
+function fail(msg) {
+  console.log(`${COLORS.red}✗${COLORS.reset} ${msg}`);
+}
+function info(msg) {
+  console.log(`${COLORS.cyan}ℹ${COLORS.reset} ${msg}`);
+}
+function warn(msg) {
+  console.log(`${COLORS.yellow}⚠${COLORS.reset} ${msg}`);
+}
 
 let errors = 0;
 function check(condition, passMsg, failMsg) {
-  if (condition) { ok(passMsg); }
-  else { fail(failMsg); errors++; }
+  if (condition) {
+    ok(passMsg);
+  } else {
+    fail(failMsg);
+    errors++;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -48,9 +60,13 @@ const values = {
   skeletonVersion: '0.1.0-bitbucket-master',
 };
 
-const TEMPLATE_DIR = path.resolve(__dirname, '../examples/templates/frontend-angular-desy');
+const TEMPLATE_DIR = path.resolve(
+  __dirname,
+  '../examples/templates/frontend-angular-desy',
+);
 const TARGET_DIR = path.resolve(`/tmp/${values.name}`);
-const STARTER_TARBALL = 'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
+const STARTER_TARBALL =
+  'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
 
 // ---------------------------------------------------------------------------
 // AUXILIARES (copiados de test-angular-template-local.cjs)
@@ -144,7 +160,9 @@ async function main() {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'desy-starter-'));
   const tarPath = path.join(tmpDir, 'starter.tar.gz');
   execSync(`curl -sL ${STARTER_TARBALL} -o ${tarPath}`, { stdio: 'inherit' });
-  execSync(`tar -xzf ${tarPath} -C ${TARGET_DIR} --strip-components=1`, { stdio: 'inherit' });
+  execSync(`tar -xzf ${tarPath} -C ${TARGET_DIR} --strip-components=1`, {
+    stdio: 'inherit',
+  });
   ok('Starter descargado y extraído');
 
   // 3. Aplicar skeleton-angular-layout
@@ -170,7 +188,9 @@ async function main() {
   }
 
   // 5. Renderizar contenido adicional
-  console.log('\n📝  Generando contenido adicional (catalog-info, CI, docs)...');
+  console.log(
+    '\n📝  Generando contenido adicional (catalog-info, CI, docs)...',
+  );
   const contentDir = path.join(TEMPLATE_DIR, 'content');
   applyTemplates(contentDir, TARGET_DIR, values, {
     lstripBlocks: true,
@@ -193,91 +213,129 @@ async function main() {
 
   // 6.1 nginx.conf
   const nginxPath = path.join(TARGET_DIR, 'nginx.conf');
-  check(fs.existsSync(nginxPath), 'nginx.conf generado', 'nginx.conf NO generado');
+  check(
+    fs.existsSync(nginxPath),
+    'nginx.conf generado',
+    'nginx.conf NO generado',
+  );
 
   if (fs.existsSync(nginxPath)) {
     const nginxContent = fs.readFileSync(nginxPath, 'utf-8');
     check(
       nginxContent.includes(values.apiBaseUrl),
       `nginx.conf contiene apiBaseUrl: ${values.apiBaseUrl}`,
-      'nginx.conf NO contiene la apiBaseUrl'
+      'nginx.conf NO contiene la apiBaseUrl',
     );
     check(
-      nginxContent.includes("Content-Security-Policy"),
+      nginxContent.includes('Content-Security-Policy'),
       'nginx.conf incluye header CSP',
-      'nginx.conf NO incluye CSP'
+      'nginx.conf NO incluye CSP',
     );
     check(
-      nginxContent.includes("Strict-Transport-Security"),
+      nginxContent.includes('Strict-Transport-Security'),
       'nginx.conf incluye header HSTS',
-      'nginx.conf NO incluye HSTS'
+      'nginx.conf NO incluye HSTS',
     );
     check(
-      nginxContent.includes("try_files $uri $uri/ /index.html"),
+      nginxContent.includes('try_files $uri $uri/ /index.html'),
       'nginx.conf tiene SPA fallback (try_files)',
-      'nginx.conf NO tiene SPA fallback'
+      'nginx.conf NO tiene SPA fallback',
     );
   }
 
   // 6.2 SECURITY.md
   const securityPath = path.join(TARGET_DIR, 'SECURITY.md');
-  check(fs.existsSync(securityPath), 'SECURITY.md generado', 'SECURITY.md NO generado');
+  check(
+    fs.existsSync(securityPath),
+    'SECURITY.md generado',
+    'SECURITY.md NO generado',
+  );
 
   if (fs.existsSync(securityPath)) {
     const securityContent = fs.readFileSync(securityPath, 'utf-8');
     check(
       securityContent.includes('Content-Security-Policy'),
       'SECURITY.md documenta CSP',
-      'SECURITY.md NO documenta CSP'
+      'SECURITY.md NO documenta CSP',
     );
     check(
       securityContent.includes('CORS'),
       'SECURITY.md documenta CORS',
-      'SECURITY.md NO documenta CORS'
+      'SECURITY.md NO documenta CORS',
     );
   }
 
   // 6.3 environment.ts
   const envPath = path.join(TARGET_DIR, 'src/environments/environment.ts');
-  check(fs.existsSync(envPath), 'environment.ts generado', 'environment.ts NO generado');
+  check(
+    fs.existsSync(envPath),
+    'environment.ts generado',
+    'environment.ts NO generado',
+  );
 
   if (fs.existsSync(envPath)) {
     const envContent = fs.readFileSync(envPath, 'utf-8');
     check(
       envContent.includes(values.apiBaseUrl),
       `environment.ts contiene apiBaseUrl: ${values.apiBaseUrl}`,
-      'environment.ts NO contiene apiBaseUrl'
+      'environment.ts NO contiene apiBaseUrl',
     );
   }
 
   // 6.4 api.service.ts
-  const apiServicePath = path.join(TARGET_DIR, 'src/app/core/api/api.service.ts');
-  check(fs.existsSync(apiServicePath), 'api.service.ts presente', 'api.service.ts NO presente');
+  const apiServicePath = path.join(
+    TARGET_DIR,
+    'src/app/core/api/api.service.ts',
+  );
+  check(
+    fs.existsSync(apiServicePath),
+    'api.service.ts presente',
+    'api.service.ts NO presente',
+  );
 
   if (fs.existsSync(apiServicePath)) {
     const apiContent = fs.readFileSync(apiServicePath, 'utf-8');
     check(
       apiContent.includes('environment.apiBaseUrl'),
       'api.service.ts consume environment.apiBaseUrl',
-      'api.service.ts NO consume environment.apiBaseUrl'
+      'api.service.ts NO consume environment.apiBaseUrl',
     );
   }
 
   // 6.5 catalog-info.yaml
   const catalogPath = path.join(TARGET_DIR, 'catalog-info.yaml');
-  check(fs.existsSync(catalogPath), 'catalog-info.yaml generado', 'catalog-info.yaml NO generado');
+  check(
+    fs.existsSync(catalogPath),
+    'catalog-info.yaml generado',
+    'catalog-info.yaml NO generado',
+  );
 
   // 6.6 .gitlab-ci.yml
   const ciPath = path.join(TARGET_DIR, '.gitlab-ci.yml');
-  check(fs.existsSync(ciPath), '.gitlab-ci.yml generado', '.gitlab-ci.yml NO generado');
+  check(
+    fs.existsSync(ciPath),
+    '.gitlab-ci.yml generado',
+    '.gitlab-ci.yml NO generado',
+  );
 
   // 6.7 runbook-bcp.md eliminado (nivel_ens=medio)
   const bcpPath = path.join(TARGET_DIR, 'docs/runbook-bcp.md');
-  check(!fs.existsSync(bcpPath), 'runbook-bcp.md eliminado (ENS medio)', 'runbook-bcp.md NO debería existir con ENS medio');
+  check(
+    !fs.existsSync(bcpPath),
+    'runbook-bcp.md eliminado (ENS medio)',
+    'runbook-bcp.md NO debería existir con ENS medio',
+  );
 
   // 6.8 Verificar que los layouts de ejemplo fueron eliminados
-  const exampleLayoutPath = path.join(TARGET_DIR, 'src/app/feature-modules/page-templates/layouts');
-  check(!fs.existsSync(exampleLayoutPath), 'Layouts de ejemplo eliminados', 'Layouts de ejemplo NO eliminados');
+  const exampleLayoutPath = path.join(
+    TARGET_DIR,
+    'src/app/feature-modules/page-templates/layouts',
+  );
+  check(
+    !fs.existsSync(exampleLayoutPath),
+    'Layouts de ejemplo eliminados',
+    'Layouts de ejemplo NO eliminados',
+  );
 
   // ---------------------------------------------------------------------------
   // RESUMEN
@@ -287,18 +345,22 @@ async function main() {
   console.log('='.repeat(60));
 
   if (errors === 0) {
-    console.log(`${COLORS.green}✅ TODAS LAS VERIFICACIONES PASARON${COLORS.reset}`);
+    console.log(
+      `${COLORS.green}✅ TODAS LAS VERIFICACIONES PASARON${COLORS.reset}`,
+    );
     console.log(`\n📂 Archivos generados en: ${TARGET_DIR}`);
     console.log('   Puedes inspeccionar nginx.conf, SECURITY.md, etc.');
   } else {
-    console.log(`${COLORS.red}❌ ${errors} VERIFICACIÓN/ES FALLARON${COLORS.reset}`);
+    console.log(
+      `${COLORS.red}❌ ${errors} VERIFICACIÓN/ES FALLARON${COLORS.reset}`,
+    );
   }
 
   // Limpieza opcional: comentar la siguiente línea si quieres inspeccionar los archivos
   // fs.rmSync(TARGET_DIR, { recursive: true, force: true });
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error('\n❌ Error:', err.message);
   process.exit(1);
 });

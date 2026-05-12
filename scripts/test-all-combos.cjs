@@ -20,9 +20,13 @@ const os = require('os');
 const { execSync, spawn } = require('child_process');
 const nunjucks = require('nunjucks');
 
-const TEMPLATE_DIR = path.resolve(__dirname, '../examples/templates/frontend-angular-desy');
+const TEMPLATE_DIR = path.resolve(
+  __dirname,
+  '../examples/templates/frontend-angular-desy',
+);
 const BASE_TARGET_DIR = path.resolve('/tmp/desy-combos');
-const STARTER_TARBALL = 'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
+const STARTER_TARBALL =
+  'https://bitbucket.org/sdaragon/desy-angular-starter/get/master.tar.gz';
 
 // ---------------------------------------------------------------------------
 // COMBINACIONES A PROBAR
@@ -31,62 +35,146 @@ const combos = [
   {
     name: '01-minimal-basico',
     desc: 'Minimal — página pública sin sesión',
-    values: { headerType: 'minimal', headerPosition: 'relative', hasSidebar: false, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'minimal',
+      headerPosition: 'relative',
+      hasSidebar: false,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '02-standard-basico',
     desc: 'Standard básico — webapp con sesión',
-    values: { headerType: 'standard', headerPosition: 'relative', hasSidebar: false, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'relative',
+      hasSidebar: false,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '03-standard-sidebar',
     desc: 'Standard + sidebar',
-    values: { headerType: 'standard', headerPosition: 'relative', hasSidebar: true, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'relative',
+      hasSidebar: true,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '04-standard-subheader',
     desc: 'Standard + subheader con pestañas',
-    values: { headerType: 'standard', headerPosition: 'relative', hasSidebar: false, hasSubheader: true, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'relative',
+      hasSidebar: false,
+      hasSubheader: true,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '05-standard-sidebar-subheader',
     desc: 'Standard + sidebar + subheader',
-    values: { headerType: 'standard', headerPosition: 'relative', hasSidebar: true, hasSubheader: true, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'relative',
+      hasSidebar: true,
+      hasSubheader: true,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '06-standard-headroom-sidebar',
     desc: 'Standard headroom + sidebar (auto-ocultar)',
-    values: { headerType: 'standard', headerPosition: 'headroom', hasSidebar: true, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'headroom',
+      hasSidebar: true,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '07-standard-fixed-all',
     desc: 'Standard fixed + sidebar + subheader + app-selector',
-    values: { headerType: 'standard', headerPosition: 'fixed', hasSidebar: true, hasSubheader: true, hasAppSelector: true, nivel_ens: 'basico' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'fixed',
+      hasSidebar: true,
+      hasSubheader: true,
+      hasAppSelector: true,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '08-advanced-all',
     desc: 'Advanced + sidebar + subheader + app-selector (portal megamenú)',
-    values: { headerType: 'advanced', headerPosition: 'relative', hasSidebar: true, hasSubheader: true, hasAppSelector: true, nivel_ens: 'basico' },
+    values: {
+      headerType: 'advanced',
+      headerPosition: 'relative',
+      hasSidebar: true,
+      hasSubheader: true,
+      hasAppSelector: true,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '09-edit-fixed',
     desc: 'Edit (formularios/CRUD) — cabecera fija forzada',
-    values: { headerType: 'edit', headerPosition: 'fixed', hasSidebar: false, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'edit',
+      headerPosition: 'fixed',
+      hasSidebar: false,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '10-edit-sidebar',
     desc: 'Edit + sidebar (CRUD con navegación lateral)',
-    values: { headerType: 'edit', headerPosition: 'fixed', hasSidebar: true, hasSubheader: false, hasAppSelector: false, nivel_ens: 'basico' },
+    values: {
+      headerType: 'edit',
+      headerPosition: 'fixed',
+      hasSidebar: true,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'basico',
+    },
   },
   {
     name: '11-ens-medio',
     desc: 'Standard + sidebar, ENS medio (SAST + Trivy en CI)',
-    values: { headerType: 'standard', headerPosition: 'relative', hasSidebar: true, hasSubheader: false, hasAppSelector: false, nivel_ens: 'medio' },
+    values: {
+      headerType: 'standard',
+      headerPosition: 'relative',
+      hasSidebar: true,
+      hasSubheader: false,
+      hasAppSelector: false,
+      nivel_ens: 'medio',
+    },
   },
   {
     name: '12-ens-alto-full',
     desc: 'Advanced + todo activado + ENS alto (incluye runbook BCP)',
-    values: { headerType: 'advanced', headerPosition: 'fixed', hasSidebar: true, hasSubheader: true, hasAppSelector: true, nivel_ens: 'alto' },
+    values: {
+      headerType: 'advanced',
+      headerPosition: 'fixed',
+      hasSidebar: true,
+      hasSubheader: true,
+      hasAppSelector: true,
+      nivel_ens: 'alto',
+    },
   },
 ];
 
@@ -177,7 +265,13 @@ function generateProject(combo, targetDir, tmpDir) {
 
   // 2. Descargar y extraer starter (solo una vez, luego copiamos)
   // Para eficiencia, descomprimimos en tmpDir y copiamos
-  execSync(`tar -xzf ${path.join(tmpDir, 'starter.tar.gz')} -C ${targetDir} --strip-components=1`, { stdio: 'pipe' });
+  execSync(
+    `tar -xzf ${path.join(
+      tmpDir,
+      'starter.tar.gz',
+    )} -C ${targetDir} --strip-components=1`,
+    { stdio: 'pipe' },
+  );
 
   // 3. Aplicar skeleton-angular-layout
   const skeletonDir = path.join(TEMPLATE_DIR, 'skeleton-angular-layout');
@@ -228,7 +322,9 @@ function buildProject(targetDir) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  console.log('🚀  Generando y validando combinaciones del template Angular DESY\n');
+  console.log(
+    '🚀  Generando y validando combinaciones del template Angular DESY\n',
+  );
 
   // Limpiar base
   if (fs.existsSync(BASE_TARGET_DIR)) {
@@ -262,7 +358,11 @@ async function main() {
       } else {
         console.log(`❌  BUILD FAILED (${duration}s)`);
         console.log(`     ${buildResult.error}`);
-        results.push({ name: combo.name, status: 'FAIL', error: buildResult.error });
+        results.push({
+          name: combo.name,
+          status: 'FAIL',
+          error: buildResult.error,
+        });
       }
     } catch (err) {
       const duration = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -310,7 +410,7 @@ async function main() {
   }
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error('\n❌ Error inesperado:', err.message);
   process.exit(1);
 });
