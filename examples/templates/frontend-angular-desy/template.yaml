@@ -237,6 +237,11 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+        branches:
+          - name: main
+            protect: true
+        settings:
+          only_allow_merge_if_pipeline_succeeds: true
 
     - id: register
       name: Registrar en el catálogo
