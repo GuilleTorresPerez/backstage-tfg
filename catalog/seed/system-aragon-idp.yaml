@@ -1,0 +1,39 @@
+# Seed del sistema aragon-idp y su documentación TechDocs.
+# El componente aragon-idp-docs aloja la documentación estática del IDP
+# generada con MkDocs y publicada en MinIO vía techdocs-cli.
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: aragon-idp
+  description: |
+    Plataforma Interna de Desarrollo (IDP) del Gobierno de Aragón.
+    Sistema que agrupa las herramientas, plantillas y documentación
+    orientadas a estandarizar y acelerar el desarrollo de software
+    en el entorno público aragonés.
+  tags:
+    - idp
+    - plataforma
+    - desy
+spec:
+  owner: group:platform-admins
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: aragon-idp-docs
+  description: |
+    Documentación estática de la Plataforma IDP Aragón.
+    Incluye guías de uso del catálogo, las Golden Paths disponibles,
+    y el mapeo de controles ENS aplicados en el prototipo.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - idp
+    - documentacion
+    - desy
+spec:
+  type: documentation
+  owner: group:platform-admins
+  lifecycle: production
+  system: aragon-idp

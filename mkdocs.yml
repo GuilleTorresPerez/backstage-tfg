@@ -1,0 +1,14 @@
+site_name: Plataforma IDP Aragón
+docs_dir: docs
+nav:
+  - Inicio: index.md
+  - Catálogo: catalogo.md
+  - Plantillas: plantillas.md
+  - ENS: ens.md
+exclude_docs: |
+  architecture/**
+  PRD-*.md
+theme:
+  name: material
+plugins:
+  - techdocs-core
