@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.name }}
+  description: ${{ values.description }}
+  annotations:
+    aragon.es/nivel-ens: ${{ values.nivel_ens }}
+    aragon.es/skeleton-version: ${{ values.skeletonVersion }}
+spec:
+  type: service
+  owner: ${{ values.owner }}
+  lifecycle: experimental
+  system: ${{ values.system }}

@@ -1,0 +1,255 @@
+{% if values.headerType == "advanced" %}
+<desy-header-advanced [classes]="'relative z-40'">
+  <desy-header-advanced-custom-navigation class="hidden lg:flex lg:flex-wrap lg:flex-1 lg:gap-base">
+    <desy-menu-navigation
+      [idPrefix]="'header-custom-nav'"
+      [classes]="'bg-neutral-lighter c-menu-navigation--last-right w-full'"
+      [ariaLabel]="'Menu de navegacion principal'">
+      <desy-menu-navigation-item
+        id="header-custom-nav-item-0"
+        classes="c-menu-navigation__button--header -mr-base"
+        [active]="true">
+        Inicio
+      </desy-menu-navigation-item>
+      <desy-menu-navigation-item
+        id="header-custom-nav-item-1"
+        classes="c-menu-navigation__button--header -mr-base"
+        [sub]="{}"
+        aria-labelledby="header-custom-nav-item-1">
+        Seccion 1
+        <desy-menu-navigation-subitem href="#">Subseccion 1</desy-menu-navigation-subitem>
+        <desy-menu-navigation-subitem href="#">Subseccion 2</desy-menu-navigation-subitem>
+      </desy-menu-navigation-item>
+      <desy-menu-navigation-item
+        id="header-custom-nav-item-2"
+        classes="c-menu-navigation__button--header -mr-base"
+        [sub]="{}"
+        aria-labelledby="header-custom-nav-item-2">
+        Seccion 2
+        <desy-menu-navigation-subitem href="#">Subseccion 1</desy-menu-navigation-subitem>
+        <desy-menu-navigation-subitem href="#">Subseccion 2</desy-menu-navigation-subitem>
+      </desy-menu-navigation-item>
+      <desy-menu-navigation-item
+        id="header-custom-nav-item-3"
+        classes="c-menu-navigation__button--header">
+        Contacto
+      </desy-menu-navigation-item>
+    </desy-menu-navigation>
+  </desy-header-advanced-custom-navigation>
+  <desy-header-advanced-title-container>
+    <desy-header-advanced-title>{{ values.name }}</desy-header-advanced-title>
+  </desy-header-advanced-title-container>
+  <desy-header-advanced-offcanvas>
+    <desy-header-advanced-offcanvas-button>Menu</desy-header-advanced-offcanvas-button>
+    <desy-header-advanced-offcanvas-close-button>Cerrar menu</desy-header-advanced-offcanvas-close-button>
+    <desy-content>
+      <nav
+        class="w-full p-2"
+        aria-labelledby="menu-movil-title">
+        <h2
+          id="menu-movil-title"
+          class="sr-only">
+          Menu principal
+        </h2>
+        <h3 class="p-base text-base font-bold">{{ values.name }}</h3>
+        <desy-menu-vertical
+          [idPrefix]="'menu-mobile'"
+          [classes]="''"
+          [ariaLabel]="'Lista de paginas'">
+          <desy-menu-vertical-item
+            id="menu-mobile-item-0"
+            href="#"
+            [active]="true">
+            Inicio
+          </desy-menu-vertical-item>
+          <desy-menu-vertical-item
+            id="menu-mobile-item-1"
+            href="#">
+            Seccion 1
+            <desy-menu-vertical-item-sub>
+              <desy-menu-vertical-item-sub-item>Subseccion 1</desy-menu-vertical-item-sub-item>
+              <desy-menu-vertical-item-sub-item>Subseccion 2</desy-menu-vertical-item-sub-item>
+            </desy-menu-vertical-item-sub>
+          </desy-menu-vertical-item>
+          <desy-menu-vertical-item
+            id="menu-mobile-item-2"
+            href="#">
+            Seccion 2
+            <desy-menu-vertical-item-sub>
+              <desy-menu-vertical-item-sub-item>Subseccion 1</desy-menu-vertical-item-sub-item>
+              <desy-menu-vertical-item-sub-item>Subseccion 2</desy-menu-vertical-item-sub-item>
+            </desy-menu-vertical-item-sub>
+          </desy-menu-vertical-item>
+          <desy-menu-vertical-item
+            id="menu-mobile-item-3"
+            href="#">
+            Contacto
+          </desy-menu-vertical-item>
+        </desy-menu-vertical>
+      </nav>
+    </desy-content>
+  </desy-header-advanced-offcanvas>
+</desy-header-advanced>
+{% elif values.headerType == "edit" %}
+<app-page-edit-header></app-page-edit-header>
+{% elif values.headerType == "minimal" %}
+<desy-header
+  [expandedLogo]="true"
+  [homepageRouterLink]="'/'"
+  [classes]="'relative z-40'"></desy-header>
+{% else %}
+{% if values.headerPosition == "headroom" %}
+<ngx-headroom>
+{% endif %}
+<desy-header
+  [homepageRouterLink]="''"
+{% if values.headerPosition == "fixed" %}
+  [classes]="'lg:fixed lg:w-full lg:top-0 lg:inset-x-0 z-40'">
+{% else %}
+  [classes]="'relative z-40'">
+{% endif %}
+{% if values.hasAppSelector %}
+  <desy-header-subnav>
+    {{ values.name }}
+    <desy-nav>
+      <desy-nav-item
+        [routerLink]="[]"
+        [active]="true">
+        {{ values.name }}
+      </desy-nav-item>
+    </desy-nav>
+  </desy-header-subnav>
+{% else %}
+  <desy-header-subnav>{{ values.name }}</desy-header-subnav>
+{% endif %}
+  <desy-header-navigation>
+    <desy-header-navigation-item
+      [href]="'/'"
+      [active]="true">
+      Inicio
+    </desy-header-navigation-item>
+  </desy-header-navigation>
+  <desy-header-dropdown>
+    Usuario
+    <desy-nav>
+      <desy-nav-item [routerLink]="'/'">Perfil</desy-nav-item>
+      <desy-nav-item [routerLink]="'/'">Cerrar sesion</desy-nav-item>
+    </desy-nav>
+  </desy-header-dropdown>
+  <desy-header-offcanvas>
+    <desy-header-offcanvas-button>Menu</desy-header-offcanvas-button>
+    <desy-header-offcanvas-close-button>Cerrar menu</desy-header-offcanvas-close-button>
+    <desy-content>
+      <aside>
+        <nav
+          class="w-full p-2"
+          aria-label="Menu movil">
+          <h3 class="p-base text-base font-bold">{{ values.name }}</h3>
+          <desy-nav
+            [idPrefix]="'nav-mobile-pages'"
+            [ariaLabel]="'Lista de paginas'"
+            [hasNav]="false">
+            <desy-nav-item
+              [routerLink]="['/']"
+              [active]="true">
+              Inicio
+            </desy-nav-item>
+          </desy-nav>
+          <h3 class="p-base text-base font-bold">Usuario/a</h3>
+          <desy-nav
+            [idPrefix]="'nav-mobile-user'"
+            [ariaLabel]="'Lista de acciones de usuario'"
+            [hasNav]="false">
+            <desy-nav-item [routerLink]="'/'">Perfil</desy-nav-item>
+            <desy-nav-item [routerLink]="'/'">Cerrar sesion</desy-nav-item>
+          </desy-nav>
+{% if values.hasAppSelector %}
+          <desy-details
+            [summaryHtml]="'Cambiar de aplicacion'"
+            [summaryClasses]="'c-link text-sm'"
+            [classes]="'px-base'">
+            <desy-nav
+              [idPrefix]="'nav-mobile-apps'"
+              [ariaLabel]="'Lista de aplicaciones'"
+              [hasNav]="false">
+              <desy-nav-item
+                [routerLink]="[]"
+                [active]="true">
+                {{ values.name }}
+              </desy-nav-item>
+            </desy-nav>
+          </desy-details>
+{% endif %}
+        </nav>
+      </aside>
+    </desy-content>
+  </desy-header-offcanvas>
+</desy-header>
+{% if values.headerPosition == "headroom" %}
+</ngx-headroom>
+{% endif %}
+{% endif %}
+{% if values.hasSubheader %}
+<app-logged-selector-subheader [relativeRoute]="subheaderRelativeRoute"></app-logged-selector-subheader>
+{% endif %}
+<main
+  id="content"
+  tabindex="0"
+{% if values.headerType == "edit" %}
+  class="lg:pt-2xl container mx-auto px-base">
+  <app-page-notification-edit></app-page-notification-edit>
+{% elif values.headerPosition == "fixed" %}
+  class="lg:pt-14 container mx-auto px-base">
+  <app-page-notification-header-fixed></app-page-notification-header-fixed>
+{% elif values.headerPosition == "headroom" %}
+  class="relative container mx-auto px-base lg:pt-14">
+  <app-page-notification-header-fixed></app-page-notification-header-fixed>
+{% else %}
+  class="container mx-auto px-base">
+  <app-page-notification-header></app-page-notification-header>
+{% endif %}
+{% if values.hasSidebar %}
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-xl">
+    <div class="col-span-2 lg:col-span-1">
+      <div class="pb-lg"></div>
+      <h2
+        id="apartados-de-pagina"
+        class="sr-only">
+        Indice de apartados de esta pagina
+      </h2>
+      <desy-menu-vertical
+        [idPrefix]="'sidebar-item'"
+        [ariaLabelledBy]="'apartados-de-pagina'">
+        <desy-menu-vertical-item
+          [routerLink]="'./'"
+          [routerLinkActiveClasses]="''"
+          [fragment]="'seccion-1'">
+          Seccion 1
+        </desy-menu-vertical-item>
+        <desy-menu-vertical-item
+          [routerLink]="'./'"
+          [routerLinkActiveClasses]="''"
+          [fragment]="'seccion-2'">
+          Seccion 2
+        </desy-menu-vertical-item>
+        <desy-menu-vertical-item
+          [routerLink]="'./'"
+          [routerLinkActiveClasses]="''"
+          [fragment]="'seccion-3'">
+          Seccion 3
+        </desy-menu-vertical-item>
+      </desy-menu-vertical>
+    </div>
+    <section
+      id="content-center"
+      class="col-span-2 lg:col-span-3"
+      aria-label="Contenido central">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+{% else %}
+  <router-outlet></router-outlet>
+{% endif %}
+  <app-page-notification-footer></app-page-notification-footer>
+</main>
+<app-page-footer></app-page-footer>

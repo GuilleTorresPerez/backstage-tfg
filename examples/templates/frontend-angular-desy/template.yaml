@@ -1,0 +1,268 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: frontend-angular-desy
+  title: Frontend Angular DESY
+  description: >-
+    Genera un frontend Angular alineado con el Sistema de Diseño DESY del
+    Gobierno de Aragón. El layout (cabecera, posición, sidebar, subcabecera,
+    selector de aplicaciones) se configura desde el formulario y se aplica
+    sobre el starter oficial de desy-angular.
+  tags:
+    - desy
+    - gobierno-de-aragon
+    - frontend
+    - angular
+spec:
+  owner: group:default/platform-admin
+  type: website
+
+  parameters:
+    - title: Información del proyecto
+      required:
+        - name
+      properties:
+        name:
+          title: Nombre
+          type: string
+          description: Nombre del componente (kebab-case, 3-50 caracteres)
+          pattern: '^[a-z0-9-]{3,50}$'
+          ui:autofocus: true
+        description:
+          title: Descripción
+          type: string
+          description: Breve descripción del componente
+
+    - title: Propietario y sistema
+      required:
+        - owner
+        - system
+      properties:
+        owner:
+          title: Propietario
+          type: string
+          description: Grupo responsable del componente (solo tus grupos)
+          ui:field: MyGroupsPicker
+        system:
+          title: Sistema
+          type: string
+          description: Sistema al que pertenece el componente
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds: [System]
+
+    - title: Cumplimiento ENS
+      required:
+        - nivel_ens
+      properties:
+        nivel_ens:
+          title: Nivel ENS
+          type: string
+          description: >-
+            Categoría del Esquema Nacional de Seguridad (RD 311/2022) aplicable.
+            Determina los jobs de seguridad del pipeline y la generación del
+            runbook BCP.
+          default: basico
+          enum:
+            - basico
+            - medio
+            - alto
+          enumNames:
+            - Básica
+            - Media (añade SAST y Trivy en CI)
+            - Alta (añade SAST, Trivy y runbook BCP)
+
+    - title: Configuración del frontend
+      required:
+        - apiBaseUrl
+        - headerType
+      properties:
+        apiBaseUrl:
+          title: URL base de la API backend
+          type: string
+          description: >-
+            URL del backend al que apuntará el cliente HTTP. Debe pertenecer al
+            dominio aragon.es. Se inyecta en src/environments/environment.ts y
+            en la directiva connect-src de la Content Security Policy (nginx).
+          pattern: '^https://([a-zA-Z0-9_-]+\.)*aragon\.es(/.*)?$'
+          default: https://api.aragon.es
+        headerType:
+          title: Tipo de cabecera
+          type: string
+          description: Variante visual de la cabecera DESY que se aplicará al layout
+          default: standard
+          enum:
+            - minimal
+            - standard
+            - advanced
+            - edit
+          enumNames:
+            - Minimal (páginas públicas sin sesión)
+            - Estándar (webapp con sesión)
+            - Avanzada (portal con megamenú)
+            - Edición (formularios y CRUD)
+        hasAppSelector:
+          title: Selector de aplicaciones en la cabecera
+          type: boolean
+          default: false
+        hasSubheader:
+          title: Subcabecera con pestañas de navegación
+          type: boolean
+          default: false
+        hasSidebar:
+          title: Sidebar de navegación lateral
+          type: boolean
+          default: false
+      dependencies:
+        # headerType=edit fuerza headerPosition=fixed (lg:fixed hardcodeado en
+        # <app-page-edit-header>, los otros tipos admiten las 3 posiciones).
+        headerType:
+          oneOf:
+            - properties:
+                headerType:
+                  enum: [minimal, standard, advanced]
+                headerPosition:
+                  title: Posición de la cabecera
+                  type: string
+                  description: Comportamiento de la cabecera al hacer scroll
+                  default: relative
+                  enum:
+                    - relative
+                    - fixed
+                    - headroom
+                  enumNames:
+                    - Normal (se desplaza con la página)
+                    - Fija (siempre visible arriba)
+                    - Auto-ocultar al hacer scroll
+              required:
+                - headerPosition
+            - properties:
+                headerType:
+                  const: edit
+                headerPosition:
+                  title: Posición de la cabecera
+                  type: string
+                  description: La cabecera de edición siempre es fija
+                  default: fixed
+                  enum:
+                    - fixed
+                  enumNames:
+                    - Fija (siempre visible arriba)
+              required:
+                - headerPosition
+
+    - title: Repositorio
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Ubicación del repositorio
+          type: string
+          description: Repositorio del grupo `aragon-idp/projects` donde se publicará el componente.
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.com
+            allowedOwners:
+              - aragon-idp/projects
+
+  steps:
+    - id: fetch-starter
+      name: Descargar starter desy-angular
+      action: fetch:plain
+      input:
+        url: https://bitbucket.org/sdaragon/desy-angular-starter/src/master/
+        targetPath: .
+
+    - id: apply-layout
+      name: Aplicar layout y configuración del frontend
+      action: fetch:template
+      input:
+        url: ./skeleton-angular-layout
+        targetPath: .
+        replace: true
+        templateFileExtension: true
+        trimBlocks: true
+        lstripBlocks: true
+        values:
+          name: ${{ parameters.name }}
+          apiBaseUrl: ${{ parameters.apiBaseUrl }}
+          headerType: ${{ parameters.headerType }}
+          headerPosition: ${{ parameters.headerPosition }}
+          hasAppSelector: ${{ parameters.hasAppSelector }}
+          hasSubheader: ${{ parameters.hasSubheader }}
+          hasSidebar: ${{ parameters.hasSidebar }}
+
+    - id: cleanup-starter-examples
+      name: Eliminar layouts de ejemplo del starter
+      action: fs:delete
+      input:
+        files:
+          - src/app/feature-modules/page-templates/layouts
+          - src/app/feature-modules/page-templates/components
+          - src/app/feature-modules/page-templates/page-templates.module.ts
+          - src/app/feature-modules/page-templates/page-templates-routing.module.ts
+
+    - id: render-content
+      name: Generar catalog-info, CODEOWNERS, CI y docs
+      action: fetch:template
+      input:
+        url: ./content
+        lstripBlocks: true
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description | default("Frontend Angular DESY", true) }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          nivel_ens: ${{ parameters.nivel_ens }}
+          apiBaseUrl: ${{ parameters.apiBaseUrl }}
+          headerType: ${{ parameters.headerType }}
+          headerPosition: ${{ parameters.headerPosition }}
+          hasAppSelector: ${{ parameters.hasAppSelector }}
+          hasSubheader: ${{ parameters.hasSubheader }}
+          hasSidebar: ${{ parameters.hasSidebar }}
+          skeletonVersion: '0.1.0-bitbucket-master'
+
+    - id: drop-bcp-when-not-alto
+      name: Eliminar runbook BCP si nivel_ens != alto
+      if: ${{ parameters.nivel_ens !== 'alto' }}
+      action: fs:delete
+      input:
+        files:
+          - docs/runbook-bcp.md
+
+    - id: publish
+      name: Publicar en GitLab
+      action: publish:gitlab
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        branches:
+          - name: main
+            protect: true
+        settings:
+          only_allow_merge_if_pipeline_succeeds: true
+
+    - id: register
+      name: Registrar en el catálogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+    - id: notify
+      name: Notificar
+      action: notification:send
+      input:
+        recipients: broadcast
+        title: 'Nuevo frontend Angular DESY creado'
+        info: 'El componente ${{ parameters.name }} ha sido creado correctamente'
+        severity: normal
+
+  output:
+    links:
+      - title: Repositorio
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Abrir en el catálogo
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

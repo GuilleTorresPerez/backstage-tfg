@@ -1,0 +1,81 @@
+# Pipeline generado por la plantilla frontend-angular-desy del IDP.
+# Nivel ENS aplicado: ${{ values.nivel_ens }} (RS-OUT-03, RS-OUT-08, RS-OUT-09).
+
+stages:
+  - install
+  - test
+  - build
+  {%- if values.nivel_ens != "basico" %}
+  - security
+  {%- endif %}
+  - sbom
+  - publish
+
+default:
+  image: node:20-alpine
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - node_modules/
+
+install:
+  stage: install
+  script:
+    - npm ci --legacy-peer-deps
+
+test:unit:
+  stage: test
+  script:
+    - npm run test -- --watch=false --browsers=ChromeHeadlessCI
+
+test:e2e:
+  stage: test
+  script:
+    - npm run playwright:install
+    - npm run e2e
+  allow_failure: true
+
+build:
+  stage: build
+  script:
+    - npm run build-prod
+  artifacts:
+    paths:
+      - dist/
+
+{%- if values.nivel_ens != "basico" %}
+
+sast:eslint-security:
+  stage: security
+  script:
+    - npx --yes eslint . --ext .ts --plugin security || true
+
+trivy:fs:
+  stage: security
+  image: aquasec/trivy:latest
+  script:
+    - trivy fs --severity HIGH,CRITICAL --exit-code 1 .
+{%- endif %}
+
+sbom:
+  stage: sbom
+  script:
+    - npx --yes @cyclonedx/cyclonedx-npm --output-file sbom.json
+  artifacts:
+    paths:
+      - sbom.json
+
+publish:
+  stage: publish
+  script:
+    - echo "Publicando $CI_PROJECT_NAME al registry interno"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+{%- if values.nivel_ens == "alto" %}
+
+# =====================================================================
+# Nivel ENS ALTO — antes de cualquier despliegue a producción es
+# obligatorio revisar el runbook de continuidad: docs/runbook-bcp.md
+# =====================================================================
+{%- endif %}

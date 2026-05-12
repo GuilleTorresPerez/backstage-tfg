@@ -4,13 +4,14 @@ metadata:
   name: ${{ values.name }}
   description: ${{ values.description }}
   annotations:
-    github.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    aragon.es/nivel-ens: ${{ values.nivel_ens }}
+    aragon.es/skeleton-version: ${{ values.skeletonVersion }}
   tags:
     - desy
-    - ${{ values.architectureType }}
-    {%- if values.headerType %}
+    - angular
+    - frontend
     - layout-${{ values.headerType }}
-    {%- endif %}
+    - ens-${{ values.nivel_ens }}
     {%- if values.hasSidebar %}
     - with-sidebar
     {%- endif %}
@@ -20,4 +21,5 @@ metadata:
 spec:
   type: website
   lifecycle: experimental
-  owner: ${{ values.owner | default("user:guest", true) }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}

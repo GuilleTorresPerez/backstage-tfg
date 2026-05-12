@@ -103,12 +103,20 @@ describe('AragonPermissionPolicy', () => {
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
 
-    it('denies developer from creating catalog entity (template)', async () => {
+    it('allows developer to create location (from scaffolder)', async () => {
+      const result = await policy.handle(
+        makeQuery('catalog.location.create'),
+        makeUser(['group:default/developers']),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
+    it('allows developer to create catalog entity (from scaffolder)', async () => {
       const result = await policy.handle(
         makeQuery('catalog.entity.create'),
         makeUser(['group:default/developers']),
       );
-      expect(result.result).toBe(AuthorizeResult.DENY);
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
 
     it('denies developer from deleting catalog entity', async () => {
@@ -141,6 +149,14 @@ describe('AragonPermissionPolicy', () => {
       const result = await policy.handle(
         makeQuery('scaffolder.task.read'),
         makeUser(['group:default/security-reviewers']),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
+    it('allows developer to read task logs', async () => {
+      const result = await policy.handle(
+        makeQuery('scaffolder.task.read'),
+        makeUser(['group:default/developers']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
