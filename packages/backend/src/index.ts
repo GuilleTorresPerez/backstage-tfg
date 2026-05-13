@@ -10,6 +10,7 @@ import { createBackend } from '@backstage/backend-defaults';
 import { oidcAuthProviderModule } from './modules/oidcAuthProvider';
 import { tfgCatalogValidatorModule } from './modules/tfgCatalogValidator';
 import { permissionPolicyModule } from './permission-policy';
+import { techdocsPublishModule } from './modules/scaffolder/techdocsPublishModule';
 
 const backend = createBackend();
 
@@ -23,6 +24,7 @@ backend.add(import('@backstage/plugin-scaffolder-backend-module-gitlab'));
 backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
 );
+backend.add(techdocsPublishModule);
 
 // techdocs plugin
 backend.add(import('@backstage/plugin-techdocs-backend'));

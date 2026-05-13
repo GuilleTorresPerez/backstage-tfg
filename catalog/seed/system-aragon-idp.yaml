@@ -1,0 +1,17 @@
+# Seed del sistema aragon-idp.
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: aragon-idp
+  description: |
+    Plataforma Interna de Desarrollo (IDP) del Gobierno de Aragón.
+    Sistema que agrupa las herramientas, plantillas y documentación
+    orientadas a estandarizar y acelerar el desarrollo de software
+    en el entorno público aragonés.
+  tags:
+    - idp
+    - plataforma
+    - desy
+spec:
+  owner: group:platform-admins

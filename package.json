@@ -20,7 +20,8 @@
     "lint": "backstage-cli repo lint --since origin/master",
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
-    "new": "backstage-cli new"
+    "new": "backstage-cli new",
+    "techdocs:publish-idp": "npx cross-env AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=minioadmin AWS_SECRET_ACCESS_KEY=minioadmin techdocs-cli generate --no-docker --source-dir . --output-dir .techdocs-output && npx cross-env AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=minioadmin AWS_SECRET_ACCESS_KEY=minioadmin techdocs-cli publish --publisher-type awsS3 --storage-name techdocs --awsEndpoint http://localhost:9000 --awsS3ForcePathStyle --entity default/component/aragon-idp-docs --directory .techdocs-output"
   },
   "workspaces": {
     "packages": [
@@ -33,6 +34,7 @@
     "@backstage/e2e-test-utils": "^0.1.2",
     "@jest/environment-jsdom-abstract": "^30.0.0",
     "@playwright/test": "^1.32.3",
+    "@techdocs/cli": "^1.10.7",
     "@types/jest": "^30.0.0",
     "jest": "^30.2.0",
     "jsdom": "^27.1.0",

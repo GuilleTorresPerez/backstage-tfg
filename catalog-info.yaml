@@ -1,13 +1,23 @@
+# Componente de documentación TechDocs para la Plataforma IDP Aragón.
+# Vive en la raíz del repo para que backstage.io/techdocs-ref: dir:.
+# apunte correctamente a mkdocs.yml y docs/.
+---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: backstage-temp
-  description: An example of a Backstage application.
-  # Example for optional annotations
-  # annotations:
-  #   github.com/project-slug: backstage/backstage
-  #   backstage.io/techdocs-ref: dir:.
+  name: aragon-idp-docs
+  description: |
+    Documentación estática de la Plataforma IDP Aragón.
+    Incluye guías de uso del catálogo, las Golden Paths disponibles,
+    y el mapeo de controles ENS aplicados en el prototipo.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - idp
+    - documentacion
+    - desy
 spec:
-  type: website
-  owner: john@example.com
-  lifecycle: experimental
+  type: documentation
+  owner: group:platform-admins
+  lifecycle: production
+  system: aragon-idp

@@ -6,6 +6,7 @@ metadata:
   annotations:
     aragon.es/nivel-ens: ${{ values.nivel_ens }}
     aragon.es/skeleton-version: ${{ values.skeletonVersion }}
+    backstage.io/techdocs-ref: dir:.
   tags:
     - desy
     - angular
