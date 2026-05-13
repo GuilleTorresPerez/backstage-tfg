@@ -72,8 +72,7 @@ export async function techdocsPublishHandler(
 
   const bucketName = config.getString('techdocs.publisher.awsS3.bucketName');
   const endpoint = config.getString('techdocs.publisher.awsS3.endpoint');
-  const region =
-    config.getOptionalString('techdocs.publisher.awsS3.region') ?? 'us-east-1';
+  const region = 'us-east-1';
   const accessKeyId = config.getString(
     'techdocs.publisher.awsS3.credentials.accessKeyId',
   );
@@ -102,15 +101,15 @@ export async function techdocsPublishHandler(
       'publish',
       '--publisher-type', 'awsS3',
       '--storage-name', bucketName,
-      '--awsBucketAddressing', 'path',
       '--awsEndpoint', endpoint,
-      '--awsRegion', region,
+      '--awsS3ForcePathStyle',
       '--entity', entityTriplet,
       '--directory', outputDir,
     ],
     {
       cwd: ctx.workspacePath,
       env: {
+        AWS_REGION: region,
         AWS_ACCESS_KEY_ID: accessKeyId,
         AWS_SECRET_ACCESS_KEY: secretAccessKey,
       },

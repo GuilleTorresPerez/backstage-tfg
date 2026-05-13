@@ -21,7 +21,7 @@
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
     "new": "backstage-cli new",
-    "techdocs:publish-idp": "techdocs-cli generate --no-docker --source-dir . --output-dir .techdocs-output && techdocs-cli publish --publisher-type awsS3 --storage-name techdocs --awsBucketAddressing path --awsEndpoint http://localhost:9000 --awsRegion us-east-1 --entity default/component/aragon-idp-docs --directory .techdocs-output"
+    "techdocs:publish-idp": "npx cross-env AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=minioadmin AWS_SECRET_ACCESS_KEY=minioadmin techdocs-cli generate --no-docker --source-dir . --output-dir .techdocs-output && npx cross-env AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=minioadmin AWS_SECRET_ACCESS_KEY=minioadmin techdocs-cli publish --publisher-type awsS3 --storage-name techdocs --awsEndpoint http://localhost:9000 --awsS3ForcePathStyle --entity default/component/aragon-idp-docs --directory .techdocs-output"
   },
   "workspaces": {
     "packages": [

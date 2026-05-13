@@ -150,6 +150,9 @@ catalog:
     - type: file
       target: ../../catalog/seed/system-aragon-idp.yaml
 
+    - type: file
+      target: ../../catalog-info.yaml
+
     # Templates del scaffolder (kind explícito para no entrar en conflicto
     # con `catalog.rules` global).
     - type: file
