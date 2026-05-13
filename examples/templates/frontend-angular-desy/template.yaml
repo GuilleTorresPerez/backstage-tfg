@@ -231,6 +231,12 @@ spec:
         files:
           - docs/runbook-bcp.md
 
+    - id: publish-techdocs
+      name: Publicar documentación inicial en TechDocs
+      action: aragon:techdocs:publish
+      input:
+        entityRef: component:default/${{ parameters.name }}
+
     - id: publish
       name: Publicar en GitLab
       action: publish:gitlab

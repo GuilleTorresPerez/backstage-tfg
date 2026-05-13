@@ -21,7 +21,7 @@
     "lint:all": "backstage-cli repo lint",
     "prettier:check": "prettier --check .",
     "new": "backstage-cli new",
-    "techdocs:publish-idp": "techdocs-cli generate --no-docker --source-dir . --output-dir .techdocs-output && techdocs-cli publish --publisher-type awsS3 --storage-name techdocs --awsBucketAddressing path --awsEndpoint http://localhost:9000 --awsRegion us-east-1 --entity component:default/aragon-idp-docs --directory .techdocs-output"
+    "techdocs:publish-idp": "techdocs-cli generate --no-docker --source-dir . --output-dir .techdocs-output && techdocs-cli publish --publisher-type awsS3 --storage-name techdocs --awsBucketAddressing path --awsEndpoint http://localhost:9000 --awsRegion us-east-1 --entity default/component/aragon-idp-docs --directory .techdocs-output"
   },
   "workspaces": {
     "packages": [

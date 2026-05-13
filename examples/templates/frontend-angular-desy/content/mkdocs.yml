@@ -10,4 +10,7 @@ nav:
   {%- endif %}
 
 theme:
-  name: readthedocs
+  name: material
+
+plugins:
+  - techdocs-core
