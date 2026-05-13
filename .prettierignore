@@ -21,3 +21,6 @@ docker-compose.yml
 
 # Template skeletons contain Jinja2/Nunjucks syntax that Prettier cannot parse as YAML
 examples/templates/*/content/
+
+# Generated TechDocs output
+.techdocs-output/

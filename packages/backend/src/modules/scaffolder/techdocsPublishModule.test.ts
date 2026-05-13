@@ -1,4 +1,8 @@
-import { techdocsPublishHandler, runCommand, entityRefToTriplet } from './techdocsPublishModule';
+import {
+  techdocsPublishHandler,
+  runCommand,
+  entityRefToTriplet,
+} from './techdocsPublishModule';
 import { Config } from '@backstage/config';
 import { EventEmitter } from 'events';
 import { spawn } from 'child_process';
@@ -16,7 +20,10 @@ function mockSpawnSuccess() {
     setTimeout(() => {
       emitter.emit('close', 0);
     }, 0);
-    return Object.assign(emitter, { stdout: stdoutEmitter, stderr: stderrEmitter }) as any;
+    return Object.assign(emitter, {
+      stdout: stdoutEmitter,
+      stderr: stderrEmitter,
+    }) as any;
   });
 
   return { emitter, stdoutEmitter, stderrEmitter };
@@ -32,7 +39,10 @@ function mockSpawnFailure(stderrText: string) {
       stderrEmitter.emit('data', Buffer.from(stderrText));
       emitter.emit('close', 1);
     }, 0);
-    return Object.assign(emitter, { stdout: stdoutEmitter, stderr: stderrEmitter }) as any;
+    return Object.assign(emitter, {
+      stdout: stdoutEmitter,
+      stderr: stderrEmitter,
+    }) as any;
   });
 
   return { emitter, stdoutEmitter, stderrEmitter };
@@ -76,7 +86,10 @@ describe('techdocsPublishHandler', () => {
     const config = makeMockConfig();
     await techdocsPublishHandler(
       { config, logger: mockLogger as any },
-      { workspacePath: '/tmp/workspace', input: { entityRef: 'component:default/my-service' } },
+      {
+        workspacePath: '/tmp/workspace',
+        input: { entityRef: 'component:default/my-service' },
+      },
     );
 
     // Assert that the generate command was invoked
@@ -93,13 +106,20 @@ describe('techdocsPublishHandler', () => {
     expect(publishCall[1]).toContain('http://localhost:9000');
     expect(publishCall[1]).toContain('--storage-name');
     expect(publishCall[1]).toContain('techdocs');
-    expect(publishCall[1]).toContain('--awsRegion');
-    expect(publishCall[1]).toContain('us-east-1');
+
+    // Region is passed via env, not as a CLI flag
+    expect(publishCall[2].env).toMatchObject({
+      AWS_REGION: 'us-east-1',
+      AWS_ACCESS_KEY_ID: 'minioadmin',
+      AWS_SECRET_ACCESS_KEY: 'minioadmin',
+    });
 
     // Assert entityRef is converted from kind:namespace/name to namespace/kind/name
     const entityIndex = publishCall[1].indexOf('--entity');
     expect(entityIndex).toBeGreaterThan(-1);
-    expect(publishCall[1][entityIndex + 1]).toBe('default/component/my-service');
+    expect(publishCall[1][entityIndex + 1]).toBe(
+      'default/component/my-service',
+    );
   });
 
   it('completes without error for a valid workspace', async () => {
@@ -109,12 +129,17 @@ describe('techdocsPublishHandler', () => {
     await expect(
       techdocsPublishHandler(
         { config, logger: mockLogger as any },
-        { workspacePath: '/tmp/workspace', input: { entityRef: 'component:default/my-service' } },
+        {
+          workspacePath: '/tmp/workspace',
+          input: { entityRef: 'component:default/my-service' },
+        },
       ),
     ).resolves.toBeUndefined();
 
     expect(mockLogger.info).toHaveBeenCalledWith(
-      expect.stringContaining('Successfully published TechDocs for component:default/my-service'),
+      expect.stringContaining(
+        'Successfully published TechDocs for component:default/my-service',
+      ),
     );
   });
 
@@ -125,7 +150,10 @@ describe('techdocsPublishHandler', () => {
     await expect(
       techdocsPublishHandler(
         { config, logger: mockLogger as any },
-        { workspacePath: '/tmp/workspace', input: { entityRef: 'component:default/my-service' } },
+        {
+          workspacePath: '/tmp/workspace',
+          input: { entityRef: 'component:default/my-service' },
+        },
       ),
     ).rejects.toThrow('AWS credentials invalid');
   });

@@ -1,4 +1,7 @@
-import { createBackendModule, coreServices } from '@backstage/backend-plugin-api';
+import {
+  createBackendModule,
+  coreServices,
+} from '@backstage/backend-plugin-api';
 import {
   createTemplateAction,
   scaffolderActionsExtensionPoint,
@@ -39,7 +42,9 @@ export function runCommand(
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(stderr || stdout || `Command exited with code ${code}`));
+        reject(
+          new Error(stderr || stdout || `Command exited with code ${code}`),
+        );
       }
     });
   });
@@ -88,23 +93,38 @@ export async function techdocsPublishHandler(
 
   await runCommand(
     'npx',
-    ['@techdocs/cli@latest', 'generate', '--no-docker', '--source-dir', ctx.workspacePath, '--output-dir', outputDir],
+    [
+      '@techdocs/cli@latest',
+      'generate',
+      '--no-docker',
+      '--source-dir',
+      ctx.workspacePath,
+      '--output-dir',
+      outputDir,
+    ],
     { cwd: ctx.workspacePath, env: {} },
   );
 
-  logger.info(`[aragon:techdocs:publish] Publishing TechDocs for ${entityRef} to bucket ${bucketName}`);
+  logger.info(
+    `[aragon:techdocs:publish] Publishing TechDocs for ${entityRef} to bucket ${bucketName}`,
+  );
 
   await runCommand(
     'npx',
     [
       '@techdocs/cli@latest',
       'publish',
-      '--publisher-type', 'awsS3',
-      '--storage-name', bucketName,
-      '--awsEndpoint', endpoint,
+      '--publisher-type',
+      'awsS3',
+      '--storage-name',
+      bucketName,
+      '--awsEndpoint',
+      endpoint,
       '--awsS3ForcePathStyle',
-      '--entity', entityTriplet,
-      '--directory', outputDir,
+      '--entity',
+      entityTriplet,
+      '--directory',
+      outputDir,
     ],
     {
       cwd: ctx.workspacePath,
@@ -116,13 +136,18 @@ export async function techdocsPublishHandler(
     },
   );
 
-  logger.info(`[aragon:techdocs:publish] Successfully published TechDocs for ${entityRef}`);
+  logger.info(
+    `[aragon:techdocs:publish] Successfully published TechDocs for ${entityRef}`,
+  );
 }
 
-export function createTechdocsPublishAction(options: TechdocsPublishActionOptions) {
+export function createTechdocsPublishAction(
+  options: TechdocsPublishActionOptions,
+) {
   return createTemplateAction({
     id: 'aragon:techdocs:publish',
-    description: 'Genera y publica TechDocs para un componente en el publisher S3 configurado',
+    description:
+      'Genera y publica TechDocs para un componente en el publisher S3 configurado',
     schema: {
       input: {
         entityRef: z =>
