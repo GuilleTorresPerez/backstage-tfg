@@ -1,5 +1,8 @@
 import { createBackendModule, coreServices } from '@backstage/backend-plugin-api';
-import { scaffolderActionsExtensionPoint, createTemplateAction } from '@backstage/plugin-scaffolder-node';
+import {
+  createTemplateAction,
+  scaffolderActionsExtensionPoint,
+} from '@backstage/plugin-scaffolder-node';
 import { spawn } from 'child_process';
 import { join } from 'path';
 import { LoggerService } from '@backstage/backend-plugin-api';
