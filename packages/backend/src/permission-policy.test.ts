@@ -210,6 +210,48 @@ describe('AragonPermissionPolicy', () => {
     });
   });
 
+  describe('Audit permissions', () => {
+    it('allows platform-admin to read audit events', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        makeUser(['group:default/platform-admins']),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
+    it('allows security-reviewer to read audit events', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        makeUser(['group:default/security-reviewers']),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
+    it('denies developer from reading audit events', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        makeUser(['group:default/developers']),
+      );
+      expect(result.result).toBe(AuthorizeResult.DENY);
+    });
+
+    it('denies audit.event.read for user without group', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        makeUser([]),
+      );
+      expect(result.result).toBe(AuthorizeResult.DENY);
+    });
+
+    it('denies audit.event.read for undefined user', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        undefined,
+      );
+      expect(result.result).toBe(AuthorizeResult.DENY);
+    });
+  });
+
   describe('Default deny', () => {
     it('denies unlisted permissions', async () => {
       const result = await policy.handle(

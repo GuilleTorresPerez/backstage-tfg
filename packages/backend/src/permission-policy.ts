@@ -71,6 +71,9 @@ const PERMISSION_MATRIX: Record<string, Role[]> = {
 
   // Scaffolder: auditoria (todos los roles)
   'scaffolder.task.read': ['developer', 'platform-admin', 'security-reviewer'],
+
+  // Audit log: lectura (platform-admin + security-reviewer)
+  'audit.event.read': ['platform-admin', 'security-reviewer'],
 };
 
 export class AragonPermissionPolicy implements PermissionPolicy {
