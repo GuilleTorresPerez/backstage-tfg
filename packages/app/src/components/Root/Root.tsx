@@ -27,7 +27,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
+import SecurityIcon from '@material-ui/icons/Security';
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
+import { RequirePermission } from '@backstage/plugin-permission-react';
+import { auditEventReadPermission } from '@internal/backstage-plugin-audit';
 
 const useSidebarLogoStyles = makeStyles({
   root: {
@@ -76,6 +79,12 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
         <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
+        <RequirePermission
+          permission={auditEventReadPermission}
+          errorPage={<></>}
+        >
+          <SidebarItem icon={SecurityIcon} to="audit" text="Audit log" />
+        </RequirePermission>
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>

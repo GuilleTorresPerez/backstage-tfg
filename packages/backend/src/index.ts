@@ -7,6 +7,10 @@
  */
 
 import { createBackend } from '@backstage/backend-defaults';
+import {
+  auditStoreServiceFactory,
+  auditorServiceFactory,
+} from '@internal/backstage-plugin-audit-backend';
 import { oidcAuthProviderModule } from './modules/oidcAuthProvider';
 import { tfgCatalogValidatorModule } from './modules/tfgCatalogValidator';
 import { permissionPolicyModule } from './permission-policy';
@@ -78,5 +82,13 @@ backend.add(import('@backstage/plugin-signals-backend'));
 backend.add(
   import('@backstage-community/plugin-catalog-backend-module-keycloak'),
 );
+
+// audit-log plugin (issue #65)
+// - audit-backend mounts GET /api/audit/events
+// - auditStoreServiceFactory exposes a shared AuditStore singleton
+// - auditorServiceFactory replaces the core auditor: stdout + persistence
+backend.add(import('@internal/backstage-plugin-audit-backend'));
+backend.add(auditStoreServiceFactory);
+backend.add(auditorServiceFactory);
 
 backend.start();

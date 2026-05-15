@@ -31,6 +31,11 @@ backend:
     client: better-sqlite3
     connection: ':memory:'
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  # Audit log (issue #65). Events of severity `low` are not persisted; this
+  # mapping keeps them visible in stdout for debugging.
+  auditor:
+    severityLogLevelMappings:
+      low: info
 
 integrations:
   github:

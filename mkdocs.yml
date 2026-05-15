@@ -5,6 +5,8 @@ nav:
   - Catálogo: catalogo.md
   - Plantillas: plantillas.md
   - ENS: ens.md
+  - Cumplimiento:
+      - 'op.exp.8 Registro de actividad': cumplimiento/op-exp-8.md
 exclude_docs: |
   architecture/**
   PRD-*.md

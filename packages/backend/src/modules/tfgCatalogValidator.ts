@@ -1,5 +1,9 @@
-import { createBackendModule } from '@backstage/backend-plugin-api';
-import { Entity } from '@backstage/catalog-model';
+import {
+  AuditorService,
+  coreServices,
+  createBackendModule,
+} from '@backstage/backend-plugin-api';
+import { Entity, stringifyEntityRef } from '@backstage/catalog-model';
 import {
   CatalogProcessor,
   CatalogProcessorEmit,
@@ -17,7 +21,9 @@ const ALLOWED_COMPONENT_TYPES = [
 const ALLOWED_LIFECYCLES = ['experimental', 'production', 'deprecated'];
 const ALLOWED_API_TYPES = ['openapi', 'asyncapi', 'graphql'];
 
-class TfgCatalogValidator implements CatalogProcessor {
+export class TfgCatalogValidator implements CatalogProcessor {
+  constructor(private readonly auditor: AuditorService) {}
+
   getProcessorName(): string {
     return 'TfgCatalogValidator';
   }
@@ -29,15 +35,38 @@ class TfgCatalogValidator implements CatalogProcessor {
       return false;
     }
     if (entity.kind === 'Component') {
-      const spec = (entity.spec ?? {}) as { system?: unknown }; // convertimos a 1. undefined o entity.spec que 2. a su vez puede tener un system de cualquier tipo
-      const system = typeof spec.system === 'string' ? spec.system.trim() : ''; // obtenemos el valor de system solo si es una cadena, y eliminamos espacios en blanco
+      const spec = (entity.spec ?? {}) as { system?: unknown };
+      const system = typeof spec.system === 'string' ? spec.system.trim() : '';
       if (!system) {
+        await this.emitViolation(entity, 'RC-COMP-05', spec.system);
         throw new Error(
           `Component '${entity.metadata.name}': spec.system es obligatorio (RC-COMP-05 / RC-VALID-01)`,
         );
       }
     }
     return false;
+  }
+
+  private async emitViolation(
+    entity: Entity,
+    rule: 'RC-COMP-05' | 'RC-COMP-02' | 'RC-COMP-03' | 'RC-API-02',
+    value: unknown,
+  ): Promise<void> {
+    const meta = {
+      rule,
+      entityRef: stringifyEntityRef(entity),
+      kind: entity.kind,
+      value: value as any,
+    };
+    const event = await this.auditor.createEvent({
+      eventId: 'entity-validate-tfg',
+      severityLevel: 'medium',
+      meta,
+    });
+    await event.fail({
+      meta,
+      error: new Error(`${rule}: validation failed`),
+    });
   }
 
   // RC-COMP-02 / RC-COMP-03 / RC-API-02 / RC-VALID-02:
@@ -71,6 +100,7 @@ class TfgCatalogValidator implements CatalogProcessor {
             )}] (RC-COMP-02)`,
           ),
         );
+        await this.emitViolation(entity, 'RC-COMP-02', spec.type);
       }
       if (
         typeof spec.lifecycle === 'string' &&
@@ -86,6 +116,7 @@ class TfgCatalogValidator implements CatalogProcessor {
             )}] (RC-COMP-03)`,
           ),
         );
+        await this.emitViolation(entity, 'RC-COMP-03', spec.lifecycle);
       }
     }
 
@@ -104,6 +135,7 @@ class TfgCatalogValidator implements CatalogProcessor {
             )}] (RC-API-02)`,
           ),
         );
+        await this.emitViolation(entity, 'RC-API-02', spec.type);
       }
     }
 
@@ -116,9 +148,12 @@ export const tfgCatalogValidatorModule = createBackendModule({
   moduleId: 'tfg-validator',
   register(reg) {
     reg.registerInit({
-      deps: { catalog: catalogProcessingExtensionPoint },
-      async init({ catalog }) {
-        catalog.addProcessor(new TfgCatalogValidator());
+      deps: {
+        catalog: catalogProcessingExtensionPoint,
+        auditor: coreServices.auditor,
+      },
+      async init({ catalog, auditor }) {
+        catalog.addProcessor(new TfgCatalogValidator(auditor));
       },
     });
   },
