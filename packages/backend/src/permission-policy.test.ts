@@ -13,6 +13,20 @@ const mockLogger = {
   child: jest.fn(),
 };
 
+function makeMockAuditor() {
+  const success = jest.fn().mockResolvedValue(undefined);
+  const fail = jest.fn().mockResolvedValue(undefined);
+  const createEvent = jest
+    .fn()
+    .mockResolvedValue({ success, fail });
+  return {
+    createEvent,
+    success,
+    fail,
+    asService: { createEvent } as any,
+  };
+}
+
 function makeQuery(name: string): PolicyQuery {
   return {
     permission: { name, attributes: { action: 'read' } },
@@ -74,10 +88,13 @@ describe('extractRoles', () => {
 });
 
 describe('AragonPermissionPolicy', () => {
-  const policy = new AragonPermissionPolicy(mockLogger as any);
+  let auditor: ReturnType<typeof makeMockAuditor>;
+  let policy: AragonPermissionPolicy;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    auditor = makeMockAuditor();
+    policy = new AragonPermissionPolicy(mockLogger as any, auditor.asService);
   });
 
   describe('Catalog permissions', () => {
@@ -249,6 +266,76 @@ describe('AragonPermissionPolicy', () => {
         undefined,
       );
       expect(result.result).toBe(AuthorizeResult.DENY);
+    });
+  });
+
+  describe('Audit emission on DENY', () => {
+    it('emits permission-decision with reason "no-roles" when user has no recognized groups', async () => {
+      await policy.handle(makeQuery('catalog.entity.read'), makeUser([]));
+
+      expect(auditor.createEvent).toHaveBeenCalledTimes(1);
+      expect(auditor.createEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          eventId: 'permission-decision',
+          severityLevel: 'medium',
+          meta: expect.objectContaining({
+            permission: 'catalog.entity.read',
+            roles: [],
+            reason: 'no-roles',
+          }),
+        }),
+      );
+      expect(auditor.fail).toHaveBeenCalledTimes(1);
+      expect(auditor.success).not.toHaveBeenCalled();
+    });
+
+    it('emits permission-decision with reason "unknown-permission" when permission is not in the matrix', async () => {
+      await policy.handle(
+        makeQuery('some.unknown.permission'),
+        makeUser(['group:default/developers']),
+      );
+
+      expect(auditor.createEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          eventId: 'permission-decision',
+          severityLevel: 'medium',
+          meta: expect.objectContaining({
+            permission: 'some.unknown.permission',
+            roles: ['developer'],
+            reason: 'unknown-permission',
+          }),
+        }),
+      );
+    });
+
+    it('emits permission-decision with reason "no-matching-role" when user role does not match', async () => {
+      await policy.handle(
+        makeQuery('catalog.entity.delete'),
+        makeUser(['group:default/developers']),
+      );
+
+      expect(auditor.createEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          eventId: 'permission-decision',
+          severityLevel: 'medium',
+          meta: expect.objectContaining({
+            permission: 'catalog.entity.delete',
+            roles: ['developer'],
+            reason: 'no-matching-role',
+          }),
+        }),
+      );
+    });
+
+    it('does NOT emit on ALLOW', async () => {
+      await policy.handle(
+        makeQuery('catalog.entity.read'),
+        makeUser(['group:default/developers']),
+      );
+
+      expect(auditor.createEvent).not.toHaveBeenCalled();
+      expect(auditor.success).not.toHaveBeenCalled();
+      expect(auditor.fail).not.toHaveBeenCalled();
     });
   });
 

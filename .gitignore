@@ -75,3 +75,7 @@ minio-data/
 
 # TechDocs local output
 .techdocs-output/
+
+# Local dev SQLite databases (regenerated on `yarn start`)
+.local-db/
+*.sqlite
