@@ -6734,6 +6734,7 @@ __metadata:
     "@backstage/cli": "npm:^0.35.4"
     "@backstage/errors": "npm:^1.2.7"
     "@backstage/plugin-catalog-node": "npm:^2.0.0"
+    "@backstage/plugin-permission-common": "npm:^0.9.6"
     "@backstage/types": "npm:^1.2.2"
     "@types/express": "npm:^4.17.6"
     "@types/supertest": "npm:^2.0.12"
@@ -6741,6 +6742,36 @@ __metadata:
     express-promise-router: "npm:^4.1.0"
     supertest: "npm:^6.2.4"
     zod: "npm:^3.25.76 || ^4.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@internal/backstage-plugin-audit@workspace:^, @internal/backstage-plugin-audit@workspace:plugins/audit":
+  version: 0.0.0-use.local
+  resolution: "@internal/backstage-plugin-audit@workspace:plugins/audit"
+  dependencies:
+    "@backstage/catalog-model": "npm:^1.7.6"
+    "@backstage/cli": "npm:^0.35.4"
+    "@backstage/core-components": "npm:^0.18.7"
+    "@backstage/core-plugin-api": "npm:^1.12.3"
+    "@backstage/errors": "npm:^1.2.7"
+    "@backstage/plugin-catalog-react": "npm:^2.0.0"
+    "@backstage/plugin-permission-common": "npm:^0.9.6"
+    "@backstage/plugin-permission-react": "npm:^0.4.40"
+    "@backstage/test-utils": "npm:^1.7.15"
+    "@backstage/theme": "npm:^0.7.2"
+    "@material-ui/core": "npm:^4.12.2"
+    "@material-ui/icons": "npm:^4.9.1"
+    "@material-ui/lab": "npm:^4.0.0-alpha.61"
+    "@testing-library/dom": "npm:^9.0.0"
+    "@testing-library/jest-dom": "npm:^6.0.0"
+    "@testing-library/react": "npm:^14.0.0"
+    "@testing-library/user-event": "npm:^14.0.0"
+    "@types/react-dom": "npm:*"
+    react-router-dom: "npm:^6.30.2"
+    react-use: "npm:^17.6.0"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
   languageName: unknown
   linkType: soft
 
@@ -16327,6 +16358,7 @@ __metadata:
     "@backstage/test-utils": "npm:^1.7.15"
     "@backstage/theme": "npm:^0.7.2"
     "@backstage/ui": "npm:^0.12.0"
+    "@internal/backstage-plugin-audit": "workspace:^"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
     "@playwright/test": "npm:^1.32.3"
@@ -30560,7 +30592,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-use@npm:^17.2.4, react-use@npm:^17.3.2, react-use@npm:^17.4.0":
+"react-use@npm:^17.2.4, react-use@npm:^17.3.2, react-use@npm:^17.4.0, react-use@npm:^17.6.0":
   version: 17.6.0
   resolution: "react-use@npm:17.6.0"
   dependencies:
