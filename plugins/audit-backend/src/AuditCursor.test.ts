@@ -32,9 +32,10 @@ describe('AuditCursor', () => {
   });
 
   it('decode rejects payloads missing ts', () => {
-    const partial = Buffer.from(JSON.stringify({ id: 'abc' }), 'utf-8').toString(
-      'base64url',
-    );
+    const partial = Buffer.from(
+      JSON.stringify({ id: 'abc' }),
+      'utf-8',
+    ).toString('base64url');
     expect(() => decodeCursor(partial)).toThrow(/cursor/i);
   });
 

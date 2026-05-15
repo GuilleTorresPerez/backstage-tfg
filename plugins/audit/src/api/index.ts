@@ -1,8 +1,4 @@
-export {
-  AuditClient,
-  AuditForbiddenError,
-  auditApiRef,
-} from './AuditApi';
+export { AuditClient, AuditForbiddenError, auditApiRef } from './AuditApi';
 export type {
   AuditApi,
   AuditEvent,

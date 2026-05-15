@@ -59,9 +59,15 @@ itIfPg('AuditStore (integration)', () => {
 
   describe('sort', () => {
     it('returns rows in ts DESC order (newest first)', async () => {
-      await store.insert(row({ ts: '2026-05-14T10:00:00.000Z', eventId: 'old' }));
-      await store.insert(row({ ts: '2026-05-14T12:00:00.000Z', eventId: 'new' }));
-      await store.insert(row({ ts: '2026-05-14T11:00:00.000Z', eventId: 'mid' }));
+      await store.insert(
+        row({ ts: '2026-05-14T10:00:00.000Z', eventId: 'old' }),
+      );
+      await store.insert(
+        row({ ts: '2026-05-14T12:00:00.000Z', eventId: 'new' }),
+      );
+      await store.insert(
+        row({ ts: '2026-05-14T11:00:00.000Z', eventId: 'mid' }),
+      );
 
       const result = await store.query({}, undefined, 50);
 
@@ -140,18 +146,10 @@ itIfPg('AuditStore (integration)', () => {
       const first = await store.query({}, undefined, 2);
       expect(first.items.map(i => i.eventId)).toEqual(['e4', 'e3']);
 
-      const second = await store.query(
-        {},
-        decodeCursor(first.nextCursor!),
-        2,
-      );
+      const second = await store.query({}, decodeCursor(first.nextCursor!), 2);
       expect(second.items.map(i => i.eventId)).toEqual(['e2', 'e1']);
 
-      const third = await store.query(
-        {},
-        decodeCursor(second.nextCursor!),
-        2,
-      );
+      const third = await store.query({}, decodeCursor(second.nextCursor!), 2);
       expect(third.items.map(i => i.eventId)).toEqual(['e0']);
       expect(third.hasMore).toBe(false);
     });
@@ -176,11 +174,7 @@ itIfPg('AuditStore (integration)', () => {
         row({ ts: '2026-05-14T11:01:00.000Z', eventId: 'newer2' }),
       );
 
-      const second = await store.query(
-        {},
-        decodeCursor(first.nextCursor!),
-        2,
-      );
+      const second = await store.query({}, decodeCursor(first.nextCursor!), 2);
       // Original old1, old0 still returned — no skipping.
       expect(second.items.map(i => i.eventId)).toEqual(['old1', 'old0']);
     });
@@ -219,7 +213,11 @@ itIfPg('AuditStore (integration)', () => {
     });
 
     it('narrows by actor', async () => {
-      const r = await store.query({ actor: 'user:default/alice' }, undefined, 50);
+      const r = await store.query(
+        { actor: 'user:default/alice' },
+        undefined,
+        50,
+      );
       expect(r.items.map(i => i.eventId)).toEqual([
         'catalog.entity.delete',
         'catalog.entity.create',

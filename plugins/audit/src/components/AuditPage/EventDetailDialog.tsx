@@ -65,7 +65,9 @@ export function EventDetailDialog(props: {
             <Typography className={classes.fieldLabel}>User agent</Typography>
             <Typography>{event.userAgent ?? '—'}</Typography>
 
-            <Typography className={classes.fieldLabel}>Error message</Typography>
+            <Typography className={classes.fieldLabel}>
+              Error message
+            </Typography>
             <Typography>{event.errorMessage ?? '—'}</Typography>
 
             <Typography className={classes.fieldLabel}>Meta</Typography>

@@ -57,9 +57,9 @@ describe('createSignInResolver', () => {
   it('emits user-sign-in (high / failed) when preferred_username is missing', async () => {
     const resolver = createSignInResolver(auditor.asService);
 
-    await expect(
-      resolver(makeInfo(undefined), ctx as any),
-    ).rejects.toThrow(/preferred_username/);
+    await expect(resolver(makeInfo(undefined), ctx as any)).rejects.toThrow(
+      /preferred_username/,
+    );
 
     expect(ctx.signInWithCatalogUser).not.toHaveBeenCalled();
     expect(auditor.createEvent).toHaveBeenCalledWith(

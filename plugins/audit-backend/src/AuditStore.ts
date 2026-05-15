@@ -65,7 +65,9 @@ function parseMeta(value: DbRow['meta']): Record<string, unknown> {
 
 function rowFromDb(row: DbRow): AuditEventRow {
   const ts =
-    row.ts instanceof Date ? row.ts.toISOString() : new Date(row.ts).toISOString();
+    row.ts instanceof Date
+      ? row.ts.toISOString()
+      : new Date(row.ts).toISOString();
   return {
     id: row.id,
     ts,

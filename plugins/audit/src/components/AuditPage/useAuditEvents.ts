@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useApi, errorApiRef } from '@backstage/core-plugin-api';
-import {
-  AuditEvent,
-  ListEventsOptions,
-  auditApiRef,
-} from '../../api';
+import { AuditEvent, ListEventsOptions, auditApiRef } from '../../api';
 
 export interface UseAuditEventsResult {
   items: AuditEvent[];
@@ -15,7 +11,9 @@ export interface UseAuditEventsResult {
   loadMore: () => void;
 }
 
-export function useAuditEvents(filter: ListEventsOptions): UseAuditEventsResult {
+export function useAuditEvents(
+  filter: ListEventsOptions,
+): UseAuditEventsResult {
   const api = useApi(auditApiRef);
   const errorApi = useApi(errorApiRef);
   const [items, setItems] = useState<AuditEvent[]>([]);

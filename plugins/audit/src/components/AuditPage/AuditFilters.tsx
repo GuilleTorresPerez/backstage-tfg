@@ -32,11 +32,7 @@ export const DEFAULT_FILTER_STATE: FilterState = {
   status: 'any',
 };
 
-const KNOWN_EVENT_IDS = [
-  'entity-mutate',
-  'location-mutate',
-  'task',
-];
+const KNOWN_EVENT_IDS = ['entity-mutate', 'location-mutate', 'task'];
 
 const SEVERITIES: AuditSeverity[] = ['low', 'medium', 'high', 'critical'];
 
@@ -228,9 +224,7 @@ export function AuditFilters(props: {
   );
 }
 
-export function filterStateToListOptions(
-  state: FilterState,
-): {
+export function filterStateToListOptions(state: FilterState): {
   actor?: string;
   eventId?: string;
   severity?: AuditSeverity[];

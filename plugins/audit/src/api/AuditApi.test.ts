@@ -1,16 +1,16 @@
 import { AuditClient, AuditForbiddenError } from './AuditApi';
 
-function jsonResponse(body: unknown, init: ResponseInit = { status: 200 }): Response {
+function jsonResponse(
+  body: unknown,
+  init: ResponseInit = { status: 200 },
+): Response {
   return new Response(JSON.stringify(body), {
     ...init,
     headers: { 'Content-Type': 'application/json', ...(init.headers ?? {}) },
   });
 }
 
-function makeClient(opts: {
-  fetchMock: jest.Mock;
-  baseUrl?: string;
-}) {
+function makeClient(opts: { fetchMock: jest.Mock; baseUrl?: string }) {
   return new AuditClient({
     discoveryApi: {
       getBaseUrl: jest
@@ -48,7 +48,10 @@ describe('AuditClient', () => {
     const [url] = fetchMock.mock.calls[0];
     const parsed = new URL(url as string);
     expect(parsed.pathname).toBe('/api/audit/events');
-    expect(parsed.searchParams.getAll('severity')).toEqual(['high', 'critical']);
+    expect(parsed.searchParams.getAll('severity')).toEqual([
+      'high',
+      'critical',
+    ]);
   });
 
   it('wires single-value filters into the query string', async () => {
@@ -88,15 +91,13 @@ describe('AuditClient', () => {
       pluginId: 'catalog',
     };
 
-    const fetchEnd = jest
-      .fn()
-      .mockResolvedValueOnce(
-        jsonResponse({
-          items: [sampleItem],
-          hasMore: false,
-          nextCursor: null,
-        }),
-      );
+    const fetchEnd = jest.fn().mockResolvedValueOnce(
+      jsonResponse({
+        items: [sampleItem],
+        hasMore: false,
+        nextCursor: null,
+      }),
+    );
     const endPage = await makeClient({ fetchMock: fetchEnd }).listEvents();
     expect(endPage).toEqual({
       items: [sampleItem],
@@ -104,15 +105,13 @@ describe('AuditClient', () => {
       nextCursor: undefined,
     });
 
-    const fetchMore = jest
-      .fn()
-      .mockResolvedValueOnce(
-        jsonResponse({
-          items: [sampleItem],
-          hasMore: true,
-          nextCursor: 'next-page-cursor',
-        }),
-      );
+    const fetchMore = jest.fn().mockResolvedValueOnce(
+      jsonResponse({
+        items: [sampleItem],
+        hasMore: true,
+        nextCursor: 'next-page-cursor',
+      }),
+    );
     const morePage = await makeClient({ fetchMock: fetchMore }).listEvents();
     expect(morePage.nextCursor).toBe('next-page-cursor');
     expect(morePage.hasMore).toBe(true);
@@ -121,9 +120,7 @@ describe('AuditClient', () => {
   it('throws AuditForbiddenError when the API responds 403', async () => {
     const fetchMock = jest
       .fn()
-      .mockResolvedValue(
-        jsonResponse({ error: 'Forbidden' }, { status: 403 }),
-      );
+      .mockResolvedValue(jsonResponse({ error: 'Forbidden' }, { status: 403 }));
     const client = makeClient({ fetchMock });
 
     await expect(client.listEvents()).rejects.toBeInstanceOf(

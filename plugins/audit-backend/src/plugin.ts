@@ -16,9 +16,7 @@ export const auditPlugin = createBackendPlugin({
         store: auditStoreServiceRef,
       },
       async init({ httpAuth, httpRouter, permissions, store }) {
-        httpRouter.use(
-          await createRouter({ store, permissions, httpAuth }),
-        );
+        httpRouter.use(await createRouter({ store, permissions, httpAuth }));
       },
     });
   },

@@ -119,7 +119,11 @@ describe('audit router', () => {
       httpAuth: makeHttpAuth({ authenticated: true }),
     });
     await request(app).get('/events').expect(200);
-    expect(store.query).toHaveBeenCalledWith(expect.anything(), undefined, DEFAULT_LIMIT);
+    expect(store.query).toHaveBeenCalledWith(
+      expect.anything(),
+      undefined,
+      DEFAULT_LIMIT,
+    );
   });
 
   it('caps limit at 200 when over-requested', async () => {
@@ -130,7 +134,11 @@ describe('audit router', () => {
       httpAuth: makeHttpAuth({ authenticated: true }),
     });
     await request(app).get('/events?limit=1000').expect(200);
-    expect(store.query).toHaveBeenCalledWith(expect.anything(), undefined, MAX_LIMIT);
+    expect(store.query).toHaveBeenCalledWith(
+      expect.anything(),
+      undefined,
+      MAX_LIMIT,
+    );
   });
 
   it('passes filter params through to the store', async () => {
@@ -193,10 +201,14 @@ describe('audit router', () => {
     });
     const cursorStr = encodeCursor({ ts: '2026-05-14T10:00:00Z', id: 'abc' });
     await request(app).get(`/events?cursor=${cursorStr}`).expect(200);
-    expect(store.query).toHaveBeenCalledWith(expect.anything(), {
-      ts: '2026-05-14T10:00:00Z',
-      id: 'abc',
-    }, DEFAULT_LIMIT);
+    expect(store.query).toHaveBeenCalledWith(
+      expect.anything(),
+      {
+        ts: '2026-05-14T10:00:00Z',
+        id: 'abc',
+      },
+      DEFAULT_LIMIT,
+    );
   });
 
   it('returns 400 on malformed cursor', async () => {

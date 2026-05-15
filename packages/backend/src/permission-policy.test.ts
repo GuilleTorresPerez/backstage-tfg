@@ -16,9 +16,7 @@ const mockLogger = {
 function makeMockAuditor() {
   const success = jest.fn().mockResolvedValue(undefined);
   const fail = jest.fn().mockResolvedValue(undefined);
-  const createEvent = jest
-    .fn()
-    .mockResolvedValue({ success, fail });
+  const createEvent = jest.fn().mockResolvedValue({ success, fail });
   return {
     createEvent,
     success,

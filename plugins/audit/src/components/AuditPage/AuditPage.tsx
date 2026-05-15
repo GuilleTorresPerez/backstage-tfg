@@ -76,9 +76,8 @@ function StatusIcon({ status }: { status: string }) {
 
 export function AuditPage() {
   const classes = useStyles();
-  const [filterState, setFilterState] = useState<FilterState>(
-    DEFAULT_FILTER_STATE,
-  );
+  const [filterState, setFilterState] =
+    useState<FilterState>(DEFAULT_FILTER_STATE);
   const listOptions = useMemo(
     () => filterStateToListOptions(filterState),
     [filterState],

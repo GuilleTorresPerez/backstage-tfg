@@ -6,6 +6,8 @@ const PERSISTED_SEVERITIES: ReadonlySet<AuditSeverity> = new Set([
   'critical',
 ]);
 
-export function shouldPersist(event: { severityLevel: AuditSeverity }): boolean {
+export function shouldPersist(event: {
+  severityLevel: AuditSeverity;
+}): boolean {
   return PERSISTED_SEVERITIES.has(event.severityLevel);
 }

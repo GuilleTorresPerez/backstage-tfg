@@ -76,10 +76,7 @@ const PERMISSION_MATRIX: Record<string, Role[]> = {
   'audit.event.read': ['platform-admin', 'security-reviewer'],
 };
 
-export type DenyReason =
-  | 'no-roles'
-  | 'unknown-permission'
-  | 'no-matching-role';
+export type DenyReason = 'no-roles' | 'unknown-permission' | 'no-matching-role';
 
 export class AragonPermissionPolicy implements PermissionPolicy {
   constructor(
