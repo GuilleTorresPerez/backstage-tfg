@@ -57,12 +57,10 @@ export async function createRouter(options: {
     const { actor, eventId, severity, status, from, to, cursor, limit } =
       parsed.data;
 
-    const severityList: AuditSeverity[] | undefined =
-      severity === undefined
-        ? undefined
-        : Array.isArray(severity)
-          ? severity
-          : [severity];
+    let severityList: AuditSeverity[] | undefined;
+    if (severity !== undefined) {
+      severityList = Array.isArray(severity) ? severity : [severity];
+    }
 
     const limitClamped = Math.min(limit ?? DEFAULT_LIMIT, MAX_LIMIT);
     const decodedCursor = cursor ? decodeCursor(cursor) : undefined;

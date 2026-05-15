@@ -1,13 +1,16 @@
-import path from 'path';
 import {
   coreServices,
   createServiceFactory,
   createServiceRef,
+  resolvePackagePath,
 } from '@backstage/backend-plugin-api';
 import { DatabaseManager } from '@backstage/backend-defaults/database';
 import { AuditStore } from './AuditStore';
 
-const MIGRATIONS_DIR = path.resolve(__dirname, '..', 'migrations');
+const MIGRATIONS_DIR = resolvePackagePath(
+  '@internal/backstage-plugin-audit-backend',
+  'migrations',
+);
 
 export const auditStoreServiceRef = createServiceRef<AuditStore>({
   id: 'audit.store',

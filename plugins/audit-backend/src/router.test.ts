@@ -208,6 +208,7 @@ describe('audit router', () => {
     });
     // Decoded as bytes that aren't JSON.
     const bad = Buffer.from('not-json', 'utf-8').toString('base64url');
-    await request(app).get(`/events?cursor=${bad}`).expect(400);
+    const res = await request(app).get(`/events?cursor=${bad}`);
+    expect(res.status).toBe(400);
   });
 });

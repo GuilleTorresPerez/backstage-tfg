@@ -1,12 +1,14 @@
-import knex from 'knex';
-import path from 'path';
-import { Knex } from 'knex';
+import knex, { Knex } from 'knex';
+import { resolvePackagePath } from '@backstage/backend-plugin-api';
 
 export const PG_TEST_URL = process.env.PG_TEST_URL;
 
 export const itIfPg = PG_TEST_URL ? describe : describe.skip;
 
-const MIGRATIONS_DIR = path.resolve(__dirname, '..', 'migrations');
+const MIGRATIONS_DIR = resolvePackagePath(
+  '@internal/backstage-plugin-audit-backend',
+  'migrations',
+);
 
 export async function createTestKnex(): Promise<Knex> {
   if (!PG_TEST_URL) {
