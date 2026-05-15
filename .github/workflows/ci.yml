@@ -68,6 +68,7 @@ jobs:
           node-version: 22
           cache: yarn
       - run: yarn install --immutable
+      - run: yarn tsc
       - run: yarn build:all
 
   auto-merge:
