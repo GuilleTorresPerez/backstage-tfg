@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+import { randomUUID } from 'crypto';
 import { encodeCursor, AuditCursor } from './AuditCursor';
 
 export type AuditSeverity = 'low' | 'medium' | 'high' | 'critical';
@@ -36,7 +37,7 @@ export interface AuditQueryResult {
 
 interface DbRow {
   id: string;
-  ts: Date;
+  ts: Date | string;
   event_id: string;
   severity: string;
   status: string;
@@ -46,14 +47,28 @@ interface DbRow {
   user_agent: string | null;
   http_method: string | null;
   http_path: string | null;
-  meta: Record<string, unknown>;
+  meta: Record<string, unknown> | string | null;
   error_message: string | null;
 }
 
+function parseMeta(value: DbRow['meta']): Record<string, unknown> {
+  if (value === null || value === undefined) return {};
+  if (typeof value === 'string') {
+    try {
+      return value === '' ? {} : (JSON.parse(value) as Record<string, unknown>);
+    } catch {
+      return {};
+    }
+  }
+  return value;
+}
+
 function rowFromDb(row: DbRow): AuditEventRow {
+  const ts =
+    row.ts instanceof Date ? row.ts.toISOString() : new Date(row.ts).toISOString();
   return {
     id: row.id,
-    ts: row.ts.toISOString(),
+    ts,
     eventId: row.event_id,
     severity: row.severity as AuditSeverity,
     status: row.status,
@@ -63,7 +78,7 @@ function rowFromDb(row: DbRow): AuditEventRow {
     userAgent: row.user_agent,
     httpMethod: row.http_method,
     httpPath: row.http_path,
-    meta: row.meta ?? {},
+    meta: parseMeta(row.meta),
     errorMessage: row.error_message,
   };
 }
@@ -72,8 +87,10 @@ export class AuditStore {
   constructor(private readonly db: Knex) {}
 
   async insert(event: AuditEventRow): Promise<void> {
+    const isPg = this.db.client.config.client === 'pg';
+    const meta = event.meta ?? {};
     await this.db('audit_events').insert({
-      id: event.id,
+      id: event.id ?? randomUUID(),
       ts: event.ts,
       event_id: event.eventId,
       severity: event.severity,
@@ -84,7 +101,7 @@ export class AuditStore {
       user_agent: event.userAgent ?? null,
       http_method: event.httpMethod ?? null,
       http_path: event.httpPath ?? null,
-      meta: event.meta ?? {},
+      meta: isPg ? meta : JSON.stringify(meta),
       error_message: event.errorMessage ?? null,
     });
   }

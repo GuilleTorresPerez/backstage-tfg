@@ -33,13 +33,9 @@ export const DEFAULT_FILTER_STATE: FilterState = {
 };
 
 const KNOWN_EVENT_IDS = [
-  'catalog.entity.create',
-  'catalog.entity.delete',
-  'catalog.location.create',
-  'catalog.location.delete',
-  'catalog.location.refresh',
-  'scaffolder.task.create',
-  'scaffolder.task.cancel',
+  'entity-mutate',
+  'location-mutate',
+  'task',
 ];
 
 const SEVERITIES: AuditSeverity[] = ['low', 'medium', 'high', 'critical'];

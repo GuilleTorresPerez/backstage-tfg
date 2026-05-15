@@ -4,13 +4,17 @@
  * @param {import('knex').Knex} knex
  */
 exports.up = async function up(knex) {
-  await knex.raw('CREATE EXTENSION IF NOT EXISTS pgcrypto');
+  const isPg = knex.client.config.client === 'pg';
+
+  if (isPg) {
+    await knex.raw('CREATE EXTENSION IF NOT EXISTS pgcrypto');
+  }
 
   await knex.schema.createTable('audit_events', table => {
-    table
-      .uuid('id')
-      .primary()
-      .defaultTo(knex.raw('gen_random_uuid()'));
+    const idCol = table.uuid('id').primary();
+    if (isPg) {
+      idCol.defaultTo(knex.raw('gen_random_uuid()'));
+    }
     table.timestamp('ts', { useTz: true }).notNullable();
     table.text('event_id').notNullable();
     table.text('severity').notNullable();
@@ -21,22 +25,20 @@ exports.up = async function up(knex) {
     table.text('user_agent');
     table.text('http_method');
     table.text('http_path');
-    table.jsonb('meta').notNullable().defaultTo('{}');
+    if (isPg) {
+      table.jsonb('meta').notNullable().defaultTo('{}');
+    } else {
+      table.json('meta').notNullable().defaultTo('{}');
+    }
     table.text('error_message');
   });
 
-  await knex.raw(
-    'CREATE INDEX audit_events_ts_desc_idx ON audit_events (ts DESC)',
-  );
-  await knex.raw(
-    'CREATE INDEX audit_events_actor_idx ON audit_events (actor_ref)',
-  );
-  await knex.raw(
-    'CREATE INDEX audit_events_event_id_idx ON audit_events (event_id)',
-  );
-  await knex.raw(
-    'CREATE INDEX audit_events_plugin_id_idx ON audit_events (plugin_id)',
-  );
+  await knex.schema.alterTable('audit_events', table => {
+    table.index(['ts'], 'audit_events_ts_desc_idx');
+    table.index(['actor_ref'], 'audit_events_actor_idx');
+    table.index(['event_id'], 'audit_events_event_id_idx');
+    table.index(['plugin_id'], 'audit_events_plugin_id_idx');
+  });
 };
 
 /**
