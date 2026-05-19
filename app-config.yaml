@@ -161,11 +161,6 @@ catalog:
     # Templates del scaffolder (kind explícito para no entrar en conflicto
     # con `catalog.rules` global).
     - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
-
-    - type: file
       target: ../../examples/templates/desy-project/template.yaml
       rules:
         - allow: [Template]

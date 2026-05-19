@@ -10,12 +10,8 @@ docs/
 *.json5
 
 # Config and agent files
-.agents/
 .claude/
-.gemini/
 CLAUDE.md
-GEMINI.md
-README.md
 app-config.local.yaml
 docker-compose.yml
 
