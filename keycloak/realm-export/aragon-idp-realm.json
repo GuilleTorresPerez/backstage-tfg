@@ -246,6 +246,28 @@
         ]
       },
       "groups": []
+    },
+    {
+      "id": "c1a2b3c4-d5e6-7f89-0a1b-2c3d4e5f6a7b",
+      "username": "psingrupo",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Usuario",
+      "lastName": "Sin Grupo",
+      "email": "psingrupo@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": [],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
     }
   ],
   "clients": [

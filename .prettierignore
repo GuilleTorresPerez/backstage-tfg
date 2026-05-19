@@ -10,12 +10,8 @@ docs/
 *.json5
 
 # Config and agent files
-.agents/
 .claude/
-.gemini/
 CLAUDE.md
-GEMINI.md
-README.md
 app-config.local.yaml
 docker-compose.yml
 
@@ -24,3 +20,6 @@ examples/templates/*/content/
 
 # Generated TechDocs output
 .techdocs-output/
+
+# Generated static site output (e.g. MkDocs)
+site/

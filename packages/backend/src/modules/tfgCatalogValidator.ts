@@ -70,8 +70,10 @@ export class TfgCatalogValidator implements CatalogProcessor {
   }
 
   // RC-COMP-02 / RC-COMP-03 / RC-API-02 / RC-VALID-02:
-  // listas cerradas. Emitimos warning no bloqueante (generalError) para que
-  // la entidad sea visible pero con badge de error en la UI.
+  // listas cerradas. processingResult.generalError es BLOQUEANTE en
+  // Backstage: la entidad no se persiste en final_entities (API devuelve 404,
+  // UI "Entity not found"). Decisión consciente para entorno ENS — la
+  // violación queda trazada en audit_events vía emitViolation ([op.exp.8]).
   async preProcessEntity(
     entity: Entity,
     location: LocationSpec,
