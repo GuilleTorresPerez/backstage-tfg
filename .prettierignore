@@ -20,3 +20,6 @@ examples/templates/*/content/
 
 # Generated TechDocs output
 .techdocs-output/
+
+# Generated static site output (e.g. MkDocs)
+site/
