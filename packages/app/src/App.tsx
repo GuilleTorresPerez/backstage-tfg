@@ -31,6 +31,8 @@ import {
   SignInPage,
 } from '@backstage/core-components';
 import { createApp } from '@backstage/app-defaults';
+import { UnifiedThemeProvider } from '@backstage/theme';
+import { desyTheme } from './theme/desyTheme';
 import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
@@ -44,6 +46,18 @@ import {
 
 const app = createApp({
   apis,
+  themes: [
+    {
+      id: 'desy',
+      title: 'DESY',
+      variant: 'light',
+      Provider: ({ children }) => (
+        <UnifiedThemeProvider theme={desyTheme}>
+          {children}
+        </UnifiedThemeProvider>
+      ),
+    },
+  ],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
