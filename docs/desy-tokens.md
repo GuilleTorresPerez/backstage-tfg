@@ -67,7 +67,41 @@ starter*.
 | Heading colors (`--color-heading-*`)   | Headings inherit MUI typography defaults; collapsing them is out of the tracer-bullet slice. |
 | Prose / `--tw-prose-*` overrides       | Apply to long-form content; the chrome rebrand targets the portal shell only. |
 | Header backgrounds (`/images/header-background*`) | Out of scope until the logo/asset slice (sibling issue).         |
-| Font loading (`fontUrl` Google CDN)    | Not honoured — the DESY default points at Google Fonts CDN, which conflicts with GDPR/AEPD/ENS. Self-hosting via `@fontsource` is the sibling issue's responsibility. The tracer bullet only declares the family name; it does not yet load the webfont locally, so Backstage falls back to the system stack until that work lands. |
+| Font loading (`fontUrl` Google CDN)    | Not honoured — the DESY default points at Google Fonts CDN, which conflicts with GDPR/AEPD/ENS. The webfont files are now bundled locally via `@fontsource/open-sans` (see "Self-hosted font weights" below). |
+
+## Self-hosted font weights
+
+The corporate face is **Open Sans**, served from the `@fontsource/open-sans`
+package and bundled with the `app` workspace — never fetched from
+`fonts.googleapis.com`. Self-hosting is defensible against GDPR/AEPD/ENS and
+the LG München ruling of 20.01.2022 (3 O 17493/20), which held that loading
+Google Fonts from the CDN leaks user IP addresses to a third country without
+consent.
+
+The exact weights are derived from the starter's `branding.config.js`:
+
+```js
+fontUrl: 'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap'
+```
+
+That URL declares `ital,wght@0,400;0,600;0,700;1,400;1,600;1,700`, i.e. the
+six faces 400 / 600 / 700 in both upright and italic. The Backstage chrome
+imports exactly those six faces in `packages/app/src/index.tsx` and no others:
+
+| Face         | Upstream role in DESY                                          |
+| ------------ | -------------------------------------------------------------- |
+| 400          | Body copy, default UI text.                                    |
+| 600          | Emphasised text, table headers, control labels (semibold).     |
+| 700          | Headings and strong inline emphasis.                           |
+| 400-italic   | Inline italic body copy.                                       |
+| 600-italic   | Emphasised semibold italic (mirrors 600 for symmetry).         |
+| 700-italic   | Bold italic in headings or inline emphasis.                    |
+
+Importing more weights would inflate the bundle with faces the design
+system never references; importing fewer would force Backstage to
+synthesise the missing weight from the closest neighbour, defeating the
+"corporate face" guarantee. The set is locked by the regression test at
+`packages/app/src/fonts.test.ts`.
 
 ## Verification
 
