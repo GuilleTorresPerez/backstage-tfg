@@ -66,7 +66,7 @@ starter*.
 | Dark mode variants                     | DESY does not codify a dark variant; the portal is light-only and the user theme toggle is hidden by registering a single theme. |
 | Heading colors (`--color-heading-*`)   | Headings inherit MUI typography defaults; collapsing them is out of the tracer-bullet slice. |
 | Prose / `--tw-prose-*` overrides       | Apply to long-form content; the chrome rebrand targets the portal shell only. |
-| Header backgrounds (`/images/header-background*`) | Out of scope until the logo/asset slice (sibling issue).         |
+| Header backgrounds (`/images/header-background*`) | Out of scope for the chrome rebrand slice.                       |
 | Font loading (`fontUrl` Google CDN)    | Not honoured — the DESY default points at Google Fonts CDN, which conflicts with GDPR/AEPD/ENS. The webfont files are now bundled locally via `@fontsource/open-sans` (see "Self-hosted font weights" below). |
 
 ## Self-hosted font weights
@@ -102,6 +102,47 @@ system never references; importing fewer would force Backstage to
 synthesise the missing weight from the closest neighbour, defeating the
 "corporate face" guarantee. The set is locked by the regression test at
 `packages/app/src/fonts.test.ts`.
+
+## Logos / wordmark
+
+The Backstage chrome logos are sourced from the pinned starter under
+`branding/logos/`. The default Backstage spiral (fill `#7df3e1`) is gone;
+no fill is hardcoded in the TSX or in `makeStyles` — fills travel inside
+the SVG so the brand colours are part of the asset, not the styling.
+
+| Variant   | Source file in the pinned starter                            | Component                                          | Used when                |
+| --------- | ------------------------------------------------------------ | -------------------------------------------------- | ------------------------ |
+| Expanded  | `node_modules/desy-html/branding/logos/aragon-expanded.svg`  | `packages/app/src/components/Root/LogoFull.tsx`    | Sidebar is open          |
+| Mini      | `node_modules/desy-html/branding/logos/aragon-mini.svg`      | `packages/app/src/components/Root/LogoIcon.tsx`    | Sidebar is collapsed     |
+
+The responsive height set by `makeStyles` is preserved (30 px expanded,
+28 px mini); width is `auto` so the SVG scales by its `viewBox`.
+
+### Wordmark text fill — derived value
+
+The starter's `aragon-expanded.svg` paints the "Gobierno de Aragón"
+wordmark text in `#161615` (near-black) because DESY uses the wordmark on
+a light header background. The Backstage chrome places the logo *inside*
+the sidebar, which is `--color-primary-dark` (`#00475c`). `#161615` on
+`#00475c` is well below WCAG AA contrast for text.
+
+`LogoFull.tsx` therefore overrides the text fill to `#ffffff`. This is a
+**derived value, not directly from the starter** — recorded here per the
+same convention as the [Sidebar contrast note](#sidebar-contrast-note).
+The cuatribarrada (yellow `rgb(252, 228, 0)` + red `#dd171b`) is kept
+intact; it contrasts adequately with the dark sidebar on its own.
+
+The mini variant (`LogoIcon.tsx`) needs no derivation — it contains only
+the cuatribarrada, no near-black glyphs.
+
+### Wordmark, not escudo
+
+This prototype renders the DESY **wordmark** and not the institutional
+**escudo de Aragón**. Reproducing the escudo without explicit authorisation
+collides with Ley 2/1984, de 16 de abril, sobre los símbolos de Aragón.
+The wordmark is the brand mark distributed in the public starter under
+`branding/logos/`; it is the defensible choice for an academic prototype.
+Tracked under issue [#74](https://github.com/GuilleTorresPerez/backstage-tfg/issues/74).
 
 ## Verification
 
