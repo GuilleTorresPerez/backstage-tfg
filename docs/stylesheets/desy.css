@@ -1,0 +1,20 @@
+/*
+ * DESY chromatic adjustment for TechDocs (Material theme).
+ *
+ * Scope: minimal recolour of the Material accent so H1s and links no longer
+ * clash with the DESY blue header of the Backstage chrome. The Material theme
+ * itself is NOT replaced — a DESY-aware MkDocs theme is out of scope for the
+ * tracer bullet (documented in docs/desy-tokens.md).
+ *
+ * Single source of truth for the hex value: palette.primary.main in
+ * packages/app/src/theme/desyTokens.ts (--color-primary-base in DESY upstream).
+ * Keep these two locations in sync; the regression test at
+ * packages/app/src/techdocsTheme.test.ts asserts the equality.
+ */
+
+:root {
+  --md-primary-fg-color: #00607a;
+  --md-primary-fg-color--light: #00607a;
+  --md-primary-fg-color--dark: #00475c;
+  --md-accent-fg-color: #00607a;
+}

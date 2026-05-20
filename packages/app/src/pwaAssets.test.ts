@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports */
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { desyTokens } from './theme/desyTokens';
@@ -144,9 +145,10 @@ describe('safari-pinned-tab.svg is a monochrome mini wordmark', () => {
     );
     const unique = new Set(fills);
     expect(unique.size).toBeLessThanOrEqual(1);
-    if (unique.size === 1) {
-      expect(['#000', '#000000', 'black']).toContain([...unique][0]);
-    }
+    const color = [...unique][0];
+    expect(
+      unique.size === 0 || ['#000', '#000000', 'black'].includes(color),
+    ).toBe(true);
   });
 });
 

@@ -192,6 +192,42 @@ The script invokes ImageMagick 7 (`magick`) on the host and writes the five
 files above. It is idempotent and strips creation timestamps so re-runs only
 diff when the SVG source changes.
 
+## TechDocs chromatic adjustment
+
+The Backstage chrome and the TechDocs surface live side by side: the chrome
+runs in React with `createUnifiedTheme`, the docs run in MkDocs under the
+`material` theme served by `techdocs-core`. Without coordination the
+Material default indigo accent clashes with the DESY blue header of the
+chrome — H1s and inline links read as a different brand.
+
+The fix is the **minimum chromatic alignment** allowed by Material's public
+configuration surface:
+
+| File                              | Change                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------- |
+| `mkdocs.yml`                      | `theme.palette.primary: custom` (Material escape hatch for arbitrary hex).      |
+| `mkdocs.yml`                      | `extra_css: [stylesheets/desy.css]` — the stylesheet ships with the docs site.  |
+| `docs/stylesheets/desy.css`       | `--md-primary-fg-color: #00607a` (and the matching `--light`/`--dark`/`--accent` siblings). |
+
+The hex `#00607a` is the same value as `palette.primary.main` in
+`desyTokens.ts` (= `--color-primary-base` in the DESY upstream). The
+regression test at `packages/app/src/techdocsTheme.test.ts` reads both
+sources and asserts equality, so the two locations cannot drift.
+
+### Limitation — TechDocs sin tema completo
+
+The `material` MkDocs theme is **not** replaced by a DESY-aware MkDocs
+theme. Only the accent CSS variables are overridden. The typography
+(Roboto by default in Material, not Open Sans), the layout (Material's
+left rail and top tabs, not DESY's institutional chrome), and the
+component shapes (cards, admonitions, code blocks) remain Material's
+defaults.
+
+A custom MkDocs theme that mirrors DESY would have to reimplement
+`techdocs-core`'s asset pipeline and addon hooks; that work is logged as
+future work in the TFG memoria's *Limitaciones* section, not in this
+tracer bullet.
+
 ## Verification
 
 - Unit tests covering the mapping logic live at

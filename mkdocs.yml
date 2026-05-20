@@ -12,5 +12,9 @@ exclude_docs: |
   PRD-*.md
 theme:
   name: material
+  palette:
+    primary: custom
+extra_css:
+  - stylesheets/desy.css
 plugins:
   - techdocs-core
