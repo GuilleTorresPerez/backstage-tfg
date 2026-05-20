@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+# Regenerate the PWA static assets (favicons, apple-touch-icon, android-chrome
+# icon, ICO) from the DESY "mini" wordmark.
+#
+# Source of truth for the SVG path data: the cuatribarrada paths rendered by
+# packages/app/src/components/Root/LogoIcon.tsx (slice #74).
+#
+# Requires ImageMagick 7 (`magick`) on PATH. Run from any directory; outputs
+# land in packages/app/public/.
+
+set -euo pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PUBLIC="$DIR/public"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+# Mini wordmark — yellow cuatribarrada background + red wave bars, viewBox 0 0 32 32.
+# Path data is the bars-path from LogoIcon.tsx (sourced from desy-html starter
+# branding/logos/aragon-mini.svg, slice #74).
+cat > "$TMP/mini.svg" <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <path fill="rgb(252, 228, 0)" d="M0 0h32v32H0z"/>
+  <g transform="translate(0 .305)" fill="#dd171b" fill-rule="evenodd">
+    <path d="m31.997 6.145-7.686 1.539a14.764 14.764 0 0 1-8.028-1.042 15.267 15.267 0 0 0-5.073-1.846 12.725 12.725 0 0 0-3.59-.011l-5.13.918a94.41 94.41 0 0 1-2.491.442V.324a7.213 7.213 0 0 1 3.952-.09 10.087 10.087 0 0 1 2.118.951 17.859 17.859 0 0 0 4.36 1.993 14.13 14.13 0 0 0 6.7-.034l4.8-.872 5.016-.906 5.048-1.04ZM6.705 24.619a14.812 14.812 0 0 1 9.7 1.03 12.363 12.363 0 0 0 8.437 1.529l7.154-1.291v5.8a8.37 8.37 0 0 1-3.055.26 6.509 6.509 0 0 1-1.619-.464l-3.714-1.948a12.4 12.4 0 0 0-7.2-.838l-15.366 2.82L0 31.686v-5.8l1.28-.26 3.363-.623c.679-.125 1.393-.249 2.061-.385ZM-.003 15.32v-4.462l13.23-2.417a15.734 15.734 0 0 1 9.252 1.665 12.723 12.723 0 0 0 8.606.94l.914-.192v4.462L29.08 13.65a12.472 12.472 0 0 0-6.941-1.031l-8.131 1.483c-.974.182-2.921.532-2.921.532l-7.406 1.371a5.23 5.23 0 0 1-3.684-.685ZM31.997 16.851v4.393l-13.11 2.413a15.735 15.735 0 0 1-9.252-1.665 12.721 12.721 0 0 0-8.606-.94l-1.03.193v-4.394l3.035 1.6a12.476 12.476 0 0 0 6.941 1.03l8.13-1.483c.974-.182 2.922-.532 2.922-.532l7.406-1.371a5.219 5.219 0 0 1 3.564.756Z"/>
+  </g>
+</svg>
+SVG
+
+COMMENT="DESY mini wordmark — derived from packages/app/src/components/Root/LogoIcon.tsx"
+STRIP_DATES=(+set date:create +set date:modify +set date:timestamp)
+
+render_png() {
+  local size="$1"
+  local out="$2"
+  magick -background none -size "${size}x${size}" "$TMP/mini.svg" \
+    "${STRIP_DATES[@]}" -set comment "$COMMENT" "$out"
+}
+
+render_png 16  "$PUBLIC/favicon-16x16.png"
+render_png 32  "$PUBLIC/favicon-32x32.png"
+render_png 180 "$PUBLIC/apple-touch-icon.png"
+render_png 192 "$PUBLIC/android-chrome-192x192.png"
+
+# Single-entry 32x32 ICO. Convert from the 32x32 PNG so the entry inherits
+# the rasterised content; ICO does not carry tEXt, so the DESY marker only
+# lives in the PNGs.
+magick "$PUBLIC/favicon-32x32.png" "${STRIP_DATES[@]}" "$PUBLIC/favicon.ico"
+
+echo "Generated:"
+ls -la "$PUBLIC"/favicon.ico "$PUBLIC"/favicon-16x16.png "$PUBLIC"/favicon-32x32.png "$PUBLIC"/apple-touch-icon.png "$PUBLIC"/android-chrome-192x192.png

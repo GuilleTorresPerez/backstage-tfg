@@ -5987,6 +5987,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/open-sans@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "@fontsource/open-sans@npm:5.2.7"
+  checksum: 10c0/6f104ec67506992a58afc47d1820f895bd50462dfc69d12740bd0c7d68f60d513e6ddccff73c4b308239c92558b6587f7054d3243882eda6e5f7f7be3babd09a
+  languageName: node
+  linkType: hard
+
 "@formatjs/ecma402-abstract@npm:2.3.6":
   version: 2.3.6
   resolution: "@formatjs/ecma402-abstract@npm:2.3.6"
@@ -16359,6 +16366,7 @@ __metadata:
     "@backstage/test-utils": "npm:^1.7.15"
     "@backstage/theme": "npm:^0.7.2"
     "@backstage/ui": "npm:^0.12.0"
+    "@fontsource/open-sans": "npm:^5.2.7"
     "@internal/backstage-plugin-audit": "workspace:^"
     "@material-ui/core": "npm:^4.12.2"
     "@material-ui/icons": "npm:^4.9.1"
@@ -16369,6 +16377,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.0.0"
     "@types/react-dom": "npm:*"
     cross-env: "npm:^7.0.0"
+    js-yaml: "npm:^4.1.1"
     react: "npm:^18.0.2"
     react-dom: "npm:^18.0.2"
     react-router: "npm:^6.30.2"
