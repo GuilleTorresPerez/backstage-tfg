@@ -144,6 +144,54 @@ The wordmark is the brand mark distributed in the public starter under
 `branding/logos/`; it is the defensible choice for an academic prototype.
 Tracked under issue [#74](https://github.com/GuilleTorresPerez/backstage-tfg/issues/74).
 
+## PWA static assets
+
+The browser tab, mobile home-screen shortcut and PWA install card all need to
+reflect the DESY identity, not the Backstage default spiral. The favicon and
+all PNG icons are derived from the `mini` wordmark shipped in `LogoIcon.tsx`
+(slice #74). The Safari pinned-tab mask icon is a bars-only black silhouette
+(Apple's mask-icon spec is a single-color silhouette; the user agent applies
+the `color` attribute).
+
+| File                                        | Size      | Source                                                                |
+| ------------------------------------------- | --------- | --------------------------------------------------------------------- |
+| `packages/app/public/favicon.ico`           | 32×32     | Single-entry ICO rasterised from the mini wordmark.                   |
+| `packages/app/public/favicon-16x16.png`     | 16×16     | PNG rasterised from the mini wordmark.                                |
+| `packages/app/public/favicon-32x32.png`     | 32×32     | PNG rasterised from the mini wordmark.                                |
+| `packages/app/public/apple-touch-icon.png`  | 180×180   | PNG rasterised from the mini wordmark.                                |
+| `packages/app/public/android-chrome-192x192.png` | 192×192 | PNG rasterised from the mini wordmark.                                |
+| `packages/app/public/safari-pinned-tab.svg` | 32×32     | Bars-only black silhouette; same path data as the mini wordmark.      |
+
+Each generated PNG embeds a tEXt comment chunk identifying it as the DESY
+mini wordmark; the regression test at `packages/app/src/pwaAssets.test.ts`
+greps for that marker so the Backstage default cannot be accidentally
+reintroduced.
+
+### Manifest and HTML chrome colors
+
+`packages/app/public/manifest.json` carries `theme_color` =
+`palette.primary.main` (`#00607a`) and `background_color` =
+`palette.background.default` (`#f6f6f5`), both pulled directly from the
+DESY tokens so any future palette change cascades. `manifest.name` /
+`short_name` are `"Portal DESY"` / `"DESY"` — not the Backstage default.
+
+The same `palette.primary.main` propagates to `index.html`:
+
+- `<meta name="theme-color" content="#00607a">` (Android Chrome address bar).
+- `<link rel="mask-icon" color="#00607a">` (Safari pinned-tab tint).
+
+The cross-token consistency is locked by the same regression test.
+
+### Regenerating the assets
+
+```bash
+packages/app/scripts/generate-pwa-assets.sh
+```
+
+The script invokes ImageMagick 7 (`magick`) on the host and writes the five
+files above. It is idempotent and strips creation timestamps so re-runs only
+diff when the SVG source changes.
+
 ## Verification
 
 - Unit tests covering the mapping logic live at
