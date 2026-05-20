@@ -24,6 +24,7 @@ import { apis, oidcAuthApiRef } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
 import { Root } from './components/Root';
+import { appTranslations } from './translations';
 
 import {
   AlertDisplay,
@@ -46,6 +47,11 @@ import {
 
 const app = createApp({
   apis,
+  __experimentalTranslations: {
+    defaultLanguage: 'es',
+    availableLanguages: ['es', 'en'],
+    resources: appTranslations,
+  },
   themes: [
     {
       id: 'desy',
@@ -83,7 +89,7 @@ const app = createApp({
         provider={{
           id: 'oidc',
           title: 'Keycloak (Aragón IdP)',
-          message: 'Sign in via Keycloak',
+          message: 'Iniciar sesión con Keycloak',
           apiRef: oidcAuthApiRef,
         }}
       />
