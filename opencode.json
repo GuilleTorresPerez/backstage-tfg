@@ -3,7 +3,8 @@
   "permission": {
     "external_directory": {
       "/home/guillermotorres/Documents/TFG/**": "allow",
-      "/home/guillermotorres/dev/**": "allow"
+      "/home/guillermotorres/dev/**": "allow",
+      "/home/guillermotorres/Pictures/Screenshots/**": "allow"
     }
   }
 }
