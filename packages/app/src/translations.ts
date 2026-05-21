@@ -91,8 +91,8 @@ const catalogEs = createTranslationMessages({
     'deleteEntity.description':
       'Esta entidad no es referenciada por ninguna ubicación y, por tanto, no recibe actualizaciones.',
     'deleteEntity.actionButtonTitle': 'Eliminar entidad',
-    'entityProcessingErrorsDescription': 'El error de abajo se origina en',
-    'entityRelationWarningDescription':
+    entityProcessingErrorsDescription: 'El error de abajo se origina en',
+    entityRelationWarningDescription:
       'Esta entidad tiene relaciones con otras entidades que no se encuentran en el catálogo.\n Las entidades no encontradas son: ',
     'hasComponentsCard.title': 'Contiene componentes',
     'hasComponentsCard.emptyMessage':
@@ -140,7 +140,8 @@ const catalogReactEs = createTranslationMessages({
     'entityPeekAheadPopover.entityCardActionsTitle': 'Mostrar detalles',
     'entitySearchBar.placeholder': 'Buscar',
     'entityTypePicker.title': 'Tipo',
-    'entityTypePicker.errorMessage': 'No se pudieron cargar los tipos de entidad',
+    'entityTypePicker.errorMessage':
+      'No se pudieron cargar los tipos de entidad',
     'entityTypePicker.optionAllTitle': 'todos',
     'favoriteEntity.addToFavorites': 'Añadir a favoritos',
     'favoriteEntity.removeFromFavorites': 'Quitar de favoritos',
@@ -189,7 +190,8 @@ const catalogReactEs = createTranslationMessages({
       'No puedes dar de baja esta entidad, ya que proviene de una configuración protegida de Backstage (ubicación "{{location}}"). Si crees que es un error, contacta con el integrador de {{appTitle}}.',
     'unregisterEntityDialog.bootstrapState.advancedDescription':
       'Tienes la opción de eliminar la entidad del catálogo. Ten en cuenta que esto solo debe hacerse si sabes que el fichero del catálogo ha sido eliminado o movido de su ubicación de origen. Si no, la entidad reaparecerá pronto cuando el catálogo haga la siguiente ronda de actualización.',
-    'unregisterEntityDialog.bootstrapState.advancedOptions': 'Opciones avanzadas',
+    'unregisterEntityDialog.bootstrapState.advancedOptions':
+      'Opciones avanzadas',
     'unregisterEntityDialog.onlyDeleteStateTitle':
       'Esta entidad no parece originarse en una ubicación registrada. Por tanto, solo tienes la opción de eliminarla directamente del catálogo.',
     'unregisterEntityDialog.unregisterState.title':
@@ -200,10 +202,12 @@ const catalogReactEs = createTranslationMessages({
       'Para deshacer, vuelve a registrar la entidad en {{appTitle}}.',
     'unregisterEntityDialog.unregisterState.unregisterButtonTitle':
       'Dar de baja la ubicación',
-    'unregisterEntityDialog.unregisterState.advancedOptions': 'Opciones avanzadas',
+    'unregisterEntityDialog.unregisterState.advancedOptions':
+      'Opciones avanzadas',
     'unregisterEntityDialog.unregisterState.advancedDescription':
       'También tienes la opción de eliminar la entidad del catálogo. Esto solo debería hacerse si sabes que el fichero del catálogo ha sido eliminado o movido de su ubicación de origen. Si no, la entidad reaparecerá pronto en la siguiente ronda de actualización.',
-    'unregisterEntityDialog.errorStateTitle': 'Error interno: estado desconocido',
+    'unregisterEntityDialog.errorStateTitle':
+      'Error interno: estado desconocido',
     'userListPicker.defaultOrgName': 'Compañía',
     'userListPicker.personalFilter.title': 'Personal',
     'userListPicker.personalFilter.ownedLabel': 'En propiedad',
@@ -249,7 +253,7 @@ const coreComponentsEs = createTranslationMessages({
     'signIn.guestProvider.subtitle':
       'Entrar como usuario invitado.\n No tendrás una identidad verificada, por lo que algunas funcionalidades pueden no estar disponibles.',
     'signIn.guestProvider.enter': 'Entrar',
-    'skipToContent': 'Saltar al contenido',
+    skipToContent: 'Saltar al contenido',
     'copyTextButton.tooltipText': 'Texto copiado al portapapeles',
     'simpleStepper.reset': 'Reiniciar',
     'simpleStepper.finish': 'Finalizar',
@@ -294,8 +298,7 @@ const coreComponentsEs = createTranslationMessages({
     'alertDisplay.message_one': '({{ count }} mensaje más reciente)',
     'alertDisplay.message_other': '({{ count }} mensajes más recientes)',
     'autoLogout.stillTherePrompt.title': 'Cerrando sesión por inactividad',
-    'autoLogout.stillTherePrompt.buttonText':
-      '¡Sí! No cierres mi sesión',
+    'autoLogout.stillTherePrompt.buttonText': '¡Sí! No cierres mi sesión',
     'dependencyGraph.fullscreenTooltip': 'Alternar pantalla completa',
     'proxiedSignInPage.title':
       'No pareces haber iniciado sesión. Por favor, intenta recargar la página.',
@@ -363,7 +366,7 @@ const userSettingsEs = createTranslationMessages({
     'featureFlags.flagItem.subtitle.registeredInPlugin':
       'Registrado en el plugin {{pluginId}}',
     'settingsLayout.title': 'Ajustes',
-    'sidebarTitle': 'Ajustes',
+    sidebarTitle: 'Ajustes',
     'profileCard.title': 'Perfil',
     'appearanceCard.title': 'Apariencia',
   },
