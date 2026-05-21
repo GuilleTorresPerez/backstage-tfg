@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: a4-bad-sin-system
+  description: |
+    Fixture A4 — violación RC-COMP-05 (spec.system obligatorio).
+    Esta entidad NO debe registrarse: el validador tfgCatalogValidator
+    lanza un error bloqueante desde validateEntityKind().
+  tags:
+    - tfg
+    - a4-fixture
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/platform

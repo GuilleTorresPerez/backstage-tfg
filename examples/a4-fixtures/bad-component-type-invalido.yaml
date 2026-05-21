@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: a4-bad-type-chair
+  description: |
+    Fixture A4 — violación RC-COMP-02 (spec.type fuera de la lista
+    permitida [service, library, website, documentation]).
+    Esta entidad NO debe persistirse: el validador emite
+    processingResult.generalError, que es bloqueante en Backstage.
+  tags:
+    - tfg
+    - a4-fixture
+spec:
+  type: chair
+  lifecycle: production
+  owner: group:default/platform
+  system: portal-ciudadano
