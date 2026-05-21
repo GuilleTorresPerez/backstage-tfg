@@ -64,21 +64,21 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
   <SidebarPage>
     <Sidebar>
       <SidebarLogo />
-      <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
+      <SidebarGroup label="Buscar" icon={<SearchIcon />} to="/search">
         <SidebarSearchModal />
       </SidebarGroup>
       <SidebarDivider />
-      <SidebarGroup label="Menu" icon={<MenuIcon />}>
+      <SidebarGroup label="Menú" icon={<MenuIcon />}>
         {/* Global nav, not org-specific */}
         <SidebarItem icon={HomeIcon} to="catalog" text="Home" />
         <MyGroupsSidebarItem
-          singularTitle="My Group"
-          pluralTitle="My Groups"
+          singularTitle="Mi Grupo"
+          pluralTitle="Mis Grupos"
           icon={GroupIcon}
         />
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
-        <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
+        <SidebarItem icon={CreateComponentIcon} to="create" text="Crear..." />
         <RequirePermission
           permission={auditEventReadPermission}
           errorPage={<></>}
@@ -96,7 +96,7 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
       <NotificationsSidebarItem />
       <SidebarDivider />
       <SidebarGroup
-        label="Settings"
+        label="Ajustes"
         icon={<UserSettingsSignInAvatar />}
         to="/settings"
       >

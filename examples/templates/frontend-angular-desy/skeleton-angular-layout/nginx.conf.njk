@@ -63,10 +63,10 @@ server {
     # style-src 'self' 'unsafe-inline'  -> Angular puede usar estilos inline; se minimiza con hash en producción si es posible
     # img-src 'self' data:  -> imágenes propias y data URIs
     # font-src 'self'     -> fuentes propias
-    # connect-src 'self' {{ values.apiBaseUrl }}  -> solo conexiones al backend configurado
+    # connect-src 'self' ${{ values.apiBaseUrl }}  -> solo conexiones al backend configurado
     # frame-ancestors 'none'  -> no puede ser embebido (refuerzo anti-clickjacking)
     # base-uri 'self'     -> previene manipulación de <base>
     # form-action 'self'  -> formularios solo a orígenes propios
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' {{ values.apiBaseUrl }}; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' ${{ values.apiBaseUrl }}; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
 }
