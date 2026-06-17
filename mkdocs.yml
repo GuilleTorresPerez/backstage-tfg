@@ -4,7 +4,12 @@ nav:
   - Inicio: index.md
   - Catálogo: catalogo.md
   - Plantillas: plantillas.md
-  - ENS: ens.md
+  - ENS:
+      - Controles del prototipo: ens.md
+      - Resumen RD 311/2022: ens-medidas-rd311-2022.md
+      - Marco organizativo: ens-marco-organizativo.md
+      - Marco operacional: ens-marco-operacional.md
+      - Medidas de protección: ens-medidas-de-proteccion.md
   - Cumplimiento:
       - 'op.exp.8 Registro de actividad': cumplimiento/op-exp-8.md
 exclude_docs: |

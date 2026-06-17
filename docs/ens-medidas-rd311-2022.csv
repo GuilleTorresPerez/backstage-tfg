@@ -1,0 +1,282 @@
+tipo,codigo,medida,marco,familia,medida_principal
+medida,org.1,Política de seguridad,Marco organizativo,Marco organizativo,
+submedida,org.1.1,Los objetivos o misión de la organización.,Marco organizativo,Marco organizativo,org.1
+submedida,org.1.2,El marco legal y regulatorio en el que se desarrollarán las actividades.,Marco organizativo,Marco organizativo,org.1
+submedida,org.1.3,"Los roles o funciones de seguridad, definiendo para cada uno los deberes y responsabilidades del cargo, así como el procedimiento para su designación y renovación.",Marco organizativo,Marco organizativo,org.1
+submedida,org.1.4,"La estructura del comité o los comités para la gestión y coordinación de la seguridad, detallando su ámbito de responsabilidad, las personas integrantes y la relación con otros elementos de la organización.",Marco organizativo,Marco organizativo,org.1
+submedida,org.1.5,"Las directrices para la estructuración de la documentación de seguridad del sistema, su gestión y acceso.",Marco organizativo,Marco organizativo,org.1
+medida,org.2,Normativa de seguridad,Marco organizativo,Marco organizativo,
+submedida,org.2.1,"El uso correcto de equipos, servicios e instalaciones, así como lo que se considerará uso indebido.",Marco organizativo,Marco organizativo,org.2
+submedida,org.2.2,"La responsabilidad del personal con respecto al cumplimiento o violación de la normativa: derechos, deberes y medidas disciplinarias de acuerdo con la legislación vigente.",Marco organizativo,Marco organizativo,org.2
+medida,org.3,Procedimientos de seguridad,Marco organizativo,Marco organizativo,
+submedida,org.3.1,Cómo llevar a cabo las tareas habituales.,Marco organizativo,Marco organizativo,org.3
+submedida,org.3.2,Quién debe hacer cada tarea.,Marco organizativo,Marco organizativo,org.3
+submedida,org.3.3,Cómo identificar y reportar comportamientos anómalos.,Marco organizativo,Marco organizativo,org.3
+submedida,org.3.4,"La forma en que se ha de tratar la información en consideración al nivel de seguridad que requiere, precisando cómo efectuar:",Marco organizativo,Marco organizativo,org.3
+medida,org.4,Proceso de autorización,Marco organizativo,Marco organizativo,
+submedida,org.4.1,"Utilización de instalaciones, habituales y alternativas.",Marco organizativo,Marco organizativo,org.4
+submedida,org.4.2,"Entrada de equipos en producción, en particular, equipos que involucren criptografía.",Marco organizativo,Marco organizativo,org.4
+submedida,org.4.3,Entrada de aplicaciones en producción.,Marco organizativo,Marco organizativo,org.4
+submedida,org.4.4,Establecimiento de enlaces de comunicaciones con otros sistemas.,Marco organizativo,Marco organizativo,org.4
+submedida,org.4.5,"Utilización de medios de comunicación, habituales y alternativos.",Marco organizativo,Marco organizativo,org.4
+submedida,org.4.6,Utilización de soportes de información.,Marco organizativo,Marco organizativo,org.4
+submedida,org.4.7,"Utilización de equipos móviles. Se entenderá por equipos móviles ordenadores portátiles, tabletas, teléfonos móviles u otros de naturaleza análoga.",Marco organizativo,Marco organizativo,org.4
+submedida,org.4.8,"Utilización de servicios de terceros, bajo contrato o convenio, concesión, encargo, etc.",Marco organizativo,Marco organizativo,org.4
+medida,op.pl.1,Análisis de riesgos,Marco operacional,Planificación,
+submedida,op.pl.1.1,Identifique los activos más valiosos del sistema. (Ver op.exp.1).,Marco operacional,Planificación,op.pl.1
+submedida,op.pl.1.2,Identifique las amenazas más probables.,Marco operacional,Planificación,op.pl.1
+submedida,op.pl.1.3,Identifique las salvaguardas que protegen de dichas amenazas.,Marco operacional,Planificación,op.pl.1
+submedida,op.pl.1.4,Identifique los principales riesgos residuales.,Marco operacional,Planificación,op.pl.1
+medida,op.pl.2,Arquitectura de seguridad,Marco operacional,Planificación,
+submedida,op.pl.2.1,"Documentación de las instalaciones, incluyendo áreas y puntos de acceso.",Marco operacional,Planificación,op.pl.2
+submedida,op.pl.2.2,"Documentación del sistema, incluyendo equipos, redes internas y conexiones al exterior, y puntos de acceso al sistema (puestos de trabajo y consolas de administración).",Marco operacional,Planificación,op.pl.2
+submedida,op.pl.2.3,"Esquema de líneas de defensa, incluyendo puntos de interconexión a otros sistemas o a otras redes (en especial, si se trata de internet o redes públicas en general); cortafuegos, DMZ, etc.; y la utilización de tecnologías diferentes para prevenir vulnerabilidades que pudieran perforar simultáneamente varias líneas de defensa.",Marco operacional,Planificación,op.pl.2
+submedida,op.pl.2.4,"Sistema de identificación y autenticación de usuarios, incluyendo el uso de claves concertadas, contraseñas, tarjetas de identificación, biometría, u otras de naturaleza análoga, y el uso de ficheros o directorios para autenticar al usuario y determinar sus derechos de acceso.",Marco operacional,Planificación,op.pl.2
+medida,op.pl.3,Adquisición de nuevos componentes,Marco operacional,Planificación,
+submedida,op.pl.3.1,Atenderá a las conclusiones del análisis de riesgos ([op.pl.1]).,Marco operacional,Planificación,op.pl.3
+submedida,op.pl.3.2,Será acorde a la arquitectura de seguridad escogida ([op.pl.2]).,Marco operacional,Planificación,op.pl.3
+submedida,op.pl.3.3,"Contemplará las necesidades técnicas, de formación y de financiación, de forma conjunta.",Marco operacional,Planificación,op.pl.3
+medida,op.pl.4,Dimensionamiento / gestión de la capacidad,Marco operacional,Planificación,
+submedida,op.pl.4.1,Necesidades de procesamiento.,Marco operacional,Planificación,op.pl.4
+submedida,op.pl.4.2,Necesidades de almacenamiento de información: durante su procesamiento y durante el periodo que deba retenerse.,Marco operacional,Planificación,op.pl.4
+submedida,op.pl.4.3,Necesidades de comunicación.,Marco operacional,Planificación,op.pl.4
+submedida,op.pl.4.4,Necesidades de personal: cantidad y cualificación profesional.,Marco operacional,Planificación,op.pl.4
+submedida,op.pl.4.5,Necesidades de instalaciones y medios auxiliares.,Marco operacional,Planificación,op.pl.4
+medida,op.pl.5,Componentes certificados,Marco operacional,Planificación,
+submedida,op.pl.5.1,"Se utilizará el Catálogo de Productos y Servicios de Seguridad de las Tecnologías de la Información y Comunicación (CPSTIC) del CCN, para seleccionar los productos o servicios suministrados por un tercero que formen parte de la arquitectura de seguridad del sistema y aquellos que se referencien expresamente en las medidas de este real decreto.",Marco operacional,Planificación,op.pl.5
+submedida,op.pl.5.2,"Si el sistema suministra un servicio de seguridad a un tercero bajo el alcance del ENS, el producto o productos que en los que se sustente dicho servicio debe superar un proceso de cualificación y ser incluido en el CPSTIC, o aportar una certificación que cumpla con los requisitos funcionales de seguridad y de aseguramiento de acuerdo a lo establecido en el artículo 19.",Marco operacional,Planificación,op.pl.5
+medida,op.acc.1,Identificación,Marco operacional,Control de acceso,
+submedida,op.acc.1.1,"Se podrá utilizar como identificador único los sistemas de identificación previstos en la normativa de aplicación, entre ellos, los sistemas de clave concertada y cualquier otro sistema que las administraciones consideren válido en los términos y condiciones establecidos en la Ley 39/2015, de 1 de octubre, del Procedimiento Administrativo Común de las Administraciones Públicas.",Marco operacional,Control de acceso,op.acc.1
+submedida,op.acc.1.2,"Cuando el usuario tenga diferentes roles frente al sistema (como ciudadano o usuario final, como trabajador del organismo o como administrador de los sistemas, por ejemplo) recibirá identificadores singulares para cada perfil, de forma que se recaben siempre los correspondientes registros de actividad, delimitándose los privilegios correspondientes a cada perfil.",Marco operacional,Control de acceso,op.acc.1
+submedida,op.acc.1.3,"Cada entidad (entidad, usuario o proceso) que accede al sistema, contará con un identificador singular que permita conocer el destinatario de los mismos y los derechos de acceso que recibe, así como las acciones realizadas por cada entidad.",Marco operacional,Control de acceso,op.acc.1
+submedida,op.acc.1.4,Las cuentas de usuario se gestionarán de la siguiente forma:,Marco operacional,Control de acceso,op.acc.1
+submedida,op.acc.1.5,"En los supuestos de comunicaciones electrónicas, las partes intervinientes se identificarán atendiendo a los mecanismos previstos en la legislación europea y nacional en la materia, con la siguiente correspondencia entre los niveles de la dimensión de autenticidad de los sistemas de información a los que se tiene acceso y los niveles de seguridad (bajo, sustancial, alto) de los sistemas de identificación electrónica previstos en el Reglamento (UE) n.º 910/2014, del Parlamento Europeo y del Consejo, de 23 de julio de 2014, relativo a la identificación electrónica y los servicios de confianza para las transacciones electrónicas en el mercado interior y por el que se deroga la Directiva 1999/93/CE y sus normas de desarrollo o ejecución que resulten de aplicación:",Marco operacional,Control de acceso,op.acc.1
+medida,op.acc.2,Requisitos de acceso,Marco operacional,Control de acceso,
+submedida,op.acc.2.1,"Los recursos del sistema se protegerán con algún mecanismo que impida su utilización, salvo a las entidades que disfruten de derechos de acceso suficientes.",Marco operacional,Control de acceso,op.acc.2
+submedida,op.acc.2.2,"Los derechos de acceso de cada recurso, se establecerán según las decisiones de la persona responsable del recurso, ateniéndose a la política y normativa de seguridad del sistema.",Marco operacional,Control de acceso,op.acc.2
+submedida,op.acc.2.3,"Particularmente, se controlará el acceso a los componentes del sistema operativo y a sus ficheros o registros de configuración.",Marco operacional,Control de acceso,op.acc.2
+medida,op.acc.3,Segregación de funciones y tareas,Marco operacional,Control de acceso,
+submedida,op.acc.3.1,"Siempre que sea posible, las capacidades de desarrollo y operación no recaerán en la misma persona.",Marco operacional,Control de acceso,op.acc.3
+submedida,op.acc.3.2,"Siempre que sea posible, las personas que autorizan y controlan el uso serán distintas.",Marco operacional,Control de acceso,op.acc.3
+medida,op.acc.4,Proceso de gestión de derechos de acceso,Marco operacional,Control de acceso,
+submedida,op.acc.4.1,"Todo acceso estará prohibido, salvo autorización expresa.",Marco operacional,Control de acceso,op.acc.4
+submedida,op.acc.4.2,"Mínimo privilegio: los privilegios de cada entidad, usuario o proceso se reducirán al mínimo imprescindible para cumplir sus obligaciones o funciones.",Marco operacional,Control de acceso,op.acc.4
+submedida,op.acc.4.3,"Necesidad de conocer y responsabilidad de compartir: los privilegios se asignarán de forma que las entidades, usuarios o procesos sólo accederán al conocimiento de aquella información requerida para cumplir sus obligaciones o funciones. La información es patrimonio del organismo y toda aquella que resulte necesaria para el usuario estará a su disposición.",Marco operacional,Control de acceso,op.acc.4
+submedida,op.acc.4.4,"Capacidad de autorizar: Exclusivamente el personal con competencia para ello podrá conceder, alterar o anular la autorización de acceso a los recursos, conforme a los criterios establecidos por su responsable. Los permisos de acceso se revisarán de forma periódica.",Marco operacional,Control de acceso,op.acc.4
+submedida,op.acc.4.5,"Se establecerá una política específica de acceso remoto, requiriéndose autorización expresa.",Marco operacional,Control de acceso,op.acc.4
+medida,op.acc.5,Mecanismo de autenticación (usuarios externos),Marco operacional,Control de acceso,
+submedida,op.acc.5.1,"Antes de proporcionar las credenciales de autenticación a las entidades, usuarios o procesos, estos deberán haberse identificado y registrado de manera fidedigna ante el sistema o ante un Prestador Cualificado de Servicios de Confianza o un proveedor de identidad electrónica reconocido por las administraciones públicas, de conformidad con lo dispuesto en la Ley 39/2015, de 1 de octubre.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.2,"Antes de activar el mecanismo de autenticación, el usuario reconocerá que las ha recibido y que conoce y acepta las obligaciones que implica su tenencia, en particular, el deber de custodia diligente, la protección de su confidencialidad y el deber de notificación inmediata en caso de pérdida.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.3,Las credenciales estarán bajo el control exclusivo del usuario y se activarán una vez estén bajo su control efectivo.,Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.4,Las credenciales se cambiarán con una periodicidad marcada por la política de seguridad de la organización.,Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.5,"Las credenciales serán inhabilitadas -pudiendo ser regeneradas, en su caso-, cuando conste o se sospeche su pérdida, compromiso o revelación a entidades (personas, equipos o procesos) no autorizadas.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.6,"Las credenciales serán inhabilitadas cuando la entidad (persona, equipo o proceso) que autentican termina su relación con el sistema.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.7,"Antes de autorizar el acceso, la información presentada por el sistema será la mínima imprescindible para que el usuario se autentique, evitando todo aquello que pueda, directa o indirectamente, revelar información sobre el sistema o la cuenta, sus características, su operación o su estado. Las credenciales solamente se validarán cuando se tengan todos los datos necesarios y, si se rechaza, no se informará del motivo del rechazo.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.8,"El número de intentos permitidos será limitado, bloqueando la oportunidad de acceso una vez superado tal número, y requiriendo una intervención específica para reactivar la cuenta, que se describirá en la documentación.",Marco operacional,Control de acceso,op.acc.5
+submedida,op.acc.5.9,El sistema informará al usuario de sus derechos u obligaciones inmediatamente después de obtener el acceso.,Marco operacional,Control de acceso,op.acc.5
+medida,op.acc.6,Mecanismo de autenticación (usuarios de la organización),Marco operacional,Control de acceso,
+submedida,op.acc.6.1,"Antes de proporcionar las credenciales a los usuarios, estos deberán conocer y aceptar la política de seguridad del organismo en los aspectos que les afecten.",Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.2,"Antes de activar el mecanismo de autenticación, el usuario reconocerá que ha recibido las credenciales de acceso y que conoce y acepta las obligaciones que implica su tenencia, en particular, el deber de custodia diligente, la protección de su confidencialidad y el deber de notificación inmediata en caso de pérdida.",Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.3,Las credenciales estarán bajo el control exclusivo del usuario y se activarán una vez estén bajo su control efectivo.,Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.4,Las credenciales se cambiarán con una periodicidad marcada por la política de seguridad de la organización.,Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.5,"Las credenciales serán inhabilitadas -pudiendo ser regeneradas, en su caso-, cuando conste o se sospeche su pérdida, compromiso o revelación a entidades (personas, equipos o procesos) no autorizadas.",Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.6,Las credenciales serán inhabilitadas cuando el usuario que autentican termina su relación con el sistema.,Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.7,"Antes de autorizar el acceso, la información presentada por el sistema será la mínima imprescindible para que el usuario se autentique, evitando todo aquello que pueda, directa o indirectamente, revelar información sobre el sistema o la cuenta, sus características, su operación o su estado. Las credenciales solamente se validarán cuando se tengan todos los datos necesarios y, si se rechaza, no se informará del motivo del rechazo.",Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.8,"El número de intentos permitidos será limitado, bloqueando la oportunidad de acceso una vez superado tal número, y requiriendo una intervención específica para reactivar la cuenta, que se describirá en la documentación.",Marco operacional,Control de acceso,op.acc.6
+submedida,op.acc.6.9,El sistema informará al usuario de sus derechos u obligaciones inmediatamente después de obtener el acceso.,Marco operacional,Control de acceso,op.acc.6
+medida,op.exp.1,Inventario de activos,Marco operacional,Explotación,
+submedida,op.exp.1.1,"Se mantendrá un inventario actualizado de todos los elementos del sistema, detallando su naturaleza e identificando a su responsable; es decir, la persona que toma las decisiones relativas al mismo.",Marco operacional,Explotación,op.exp.1
+medida,op.exp.2,Configuración de seguridad,Marco operacional,Explotación,
+submedida,op.exp.2.1,Se retiren cuentas y contraseñas estándar.,Marco operacional,Explotación,op.exp.2
+submedida,op.exp.2.2,"Se aplicará la regla de «mínima funcionalidad», es decir:",Marco operacional,Explotación,op.exp.2
+submedida,op.exp.2.3,"Se aplicará la regla de «seguridad por defecto», es decir:",Marco operacional,Explotación,op.exp.2
+submedida,op.exp.2.4,"Las máquinas virtuales estarán configuradas y gestionadas de un modo seguro. La gestión del parcheado, cuentas de usuarios, software antivirus, etc. se realizará como si se tratara de máquinas físicas, incluyendo la máquina anfitriona.",Marco operacional,Explotación,op.exp.2
+medida,op.exp.3,Gestión de la configuración de seguridad,Marco operacional,Explotación,
+submedida,op.exp.3.1,"Se mantenga en todo momento la regla de ""funcionalidad mínima"" ([op.exp.2]).",Marco operacional,Explotación,op.exp.3
+submedida,op.exp.3.2,"Se mantenga en todo momento la regla de ""mínimo privilegio"" ([op.exp.2]).",Marco operacional,Explotación,op.exp.3
+submedida,op.exp.3.3,"El sistema se adapte a las nuevas necesidades, previamente autorizadas. (Ver [op.acc.4]).",Marco operacional,Explotación,op.exp.3
+submedida,op.exp.3.4,El sistema reaccione a vulnerabilidades notificadas. (Ver [op.exp.4]).,Marco operacional,Explotación,op.exp.3
+submedida,op.exp.3.5,El sistema reaccione a incidentes. (Ver [op.exp.7]).,Marco operacional,Explotación,op.exp.3
+submedida,op.exp.3.6,La configuración de seguridad solamente podrá editarse por personal debidamente autorizado.,Marco operacional,Explotación,op.exp.3
+medida,op.exp.4,Mantenimiento y actualizaciones de seguridad,Marco operacional,Explotación,
+submedida,op.exp.4.1,"Se atenderá a las especificaciones de los fabricantes en lo relativo a instalación y mantenimiento de los sistemas, lo que incluirá un seguimiento continuo de los anuncios de defectos.",Marco operacional,Explotación,op.exp.4
+submedida,op.exp.4.2,"Se dispondrá de un procedimiento para analizar, priorizar y determinar cuándo aplicar las actualizaciones de seguridad, parches, mejoras y nuevas versiones. La priorización tendrá en cuenta la variación del riesgo en función de la implantación o no de la actualización.",Marco operacional,Explotación,op.exp.4
+submedida,op.exp.4.3,El mantenimiento solo podrá realizarse por personal debidamente autorizado.,Marco operacional,Explotación,op.exp.4
+medida,op.exp.5,Gestión de cambios,Marco operacional,Explotación,
+submedida,op.exp.5.1,"Los cambios se planificarán para reducir el impacto sobre la prestación de los servicios afectados. Para ello, todas las peticiones de cambio se registrarán asignando un número de referencia que permita su seguimiento, de forma equivalente al registro de los incidentes.",Marco operacional,Explotación,op.exp.5
+submedida,op.exp.5.2,La información a registrar para cada petición de cambio será suficiente para que quien deba autorizarlos no tenga dudas al respecto y permita gestionarlo hasta su desestimación o implementación.,Marco operacional,Explotación,op.exp.5
+submedida,op.exp.5.3,"Las pruebas de preproducción, siempre que sea posible realizarlas, se efectuarán en equipos equivalentes a los de producción, al menos en los aspectos específicos del cambio.",Marco operacional,Explotación,op.exp.5
+submedida,op.exp.5.4,"Mediante un análisis de riesgos se determinará si los cambios son relevantes para la seguridad del sistema. Aquellos cambios que impliquen un riesgo de nivel ALTO deberán ser aprobados, explícitamente, de forma previa a su implantación, por el Responsable de la Seguridad.",Marco operacional,Explotación,op.exp.5
+submedida,op.exp.5.5,"Una vez implementado el cambio, se realizarán las pruebas de aceptación convenientes. Si son positivas, se actualizará la documentación de configuración (diagramas de red, manuales, el inventario, etc.), siempre que proceda.",Marco operacional,Explotación,op.exp.5
+medida,op.exp.6,Protección frente a código dañino,Marco operacional,Explotación,
+submedida,op.exp.6.1,"Se dispondrá de mecanismos de prevención y reacción frente a código dañino, incluyendo el correspondiente mantenimiento de acuerdo a las recomendaciones del fabricante.",Marco operacional,Explotación,op.exp.6
+submedida,op.exp.6.2,"Se instalará software de protección frente a código dañino en todos los equipos: puestos de usuario, servidores y elementos perimetrales.",Marco operacional,Explotación,op.exp.6
+submedida,op.exp.6.3,Todo fichero procedente de fuentes externas será analizado antes de trabajar con él.,Marco operacional,Explotación,op.exp.6
+submedida,op.exp.6.4,Las bases de datos de detección de código dañino permanecerán permanentemente actualizadas.,Marco operacional,Explotación,op.exp.6
+submedida,op.exp.6.5,El software de detección de código dañino instalado en los puestos de usuario deberá estar configurado de forma adecuada e implementará protección en tiempo real de acuerdo a las recomendaciones del fabricante.,Marco operacional,Explotación,op.exp.6
+medida,op.exp.7,Gestión de incidentes,Marco operacional,Explotación,
+submedida,op.exp.7.1,"Se dispondrá de un proceso integral para hacer frente a los incidentes que puedan tener un impacto en la seguridad del sistema, que incluya el informe de eventos de seguridad y debilidades, detallando los criterios de clasificación y el escalado de la notificación.",Marco operacional,Explotación,op.exp.7
+submedida,op.exp.7.2,"La gestión de incidentes que afecten a datos personales tendrá en cuenta lo dispuesto en el Reglamento General de Protección de Datos; la Ley Orgánica 3/2018, de 5 de diciembre, en especial su disposición adicional primera, así como el resto de normativa de aplicación, sin perjuicio de los requisitos establecidos en este real decreto.",Marco operacional,Explotación,op.exp.7
+medida,op.exp.8,Registro de la actividad,Marco operacional,Explotación,
+submedida,op.exp.8.1,"Se generará un registro de auditoría, que incluirá, al menos, el identificador del usuario o entidad asociado al evento, fecha y hora, sobre qué información se realiza el evento, tipo de evento y el resultado del evento (fallo o éxito), según la política de seguridad y los procedimientos asociados a la misma.",Marco operacional,Explotación,op.exp.8
+submedida,op.exp.8.2,Se activarán los registros de actividad en los servidores.,Marco operacional,Explotación,op.exp.8
+medida,op.exp.9,Registro de la gestión de incidentes,Marco operacional,Explotación,
+submedida,op.exp.9.1,"Se registrarán los reportes iniciales, intermedios y finales de los incidentes, las actuaciones de emergencia y las modificaciones del sistema derivadas del incidente.",Marco operacional,Explotación,op.exp.9
+submedida,op.exp.9.2,"Se registrará aquella evidencia que pueda dirimirse en un ámbito jurisdiccional, especialmente cuando el incidente pueda comportar acciones disciplinarias sobre el personal interno, sobre proveedores externos o en la persecución de delitos. En la determinación de la composición y detalle de estas evidencias, se recurrirá a asesoramiento legal especializado.",Marco operacional,Explotación,op.exp.9
+submedida,op.exp.9.3,"Como consecuencia del análisis de los incidentes, se revisará la determinación de los eventos auditables.",Marco operacional,Explotación,op.exp.9
+medida,op.exp.10,Protección de claves criptográficas,Marco operacional,Explotación,
+submedida,op.exp.10.1,"Las claves criptográficas se protegerán durante todo su ciclo de vida: (1) generación, (2) transporte al punto de explotación, (3) custodia durante la explotación, (4) archivo posterior a su retirada de explotación activa y (5) destrucción final.",Marco operacional,Explotación,op.exp.10
+submedida,op.exp.10.2,Los medios de generación estarán aislados de los medios de explotación.,Marco operacional,Explotación,op.exp.10
+submedida,op.exp.10.3,"Las claves retiradas de operación que deban ser archivadas, lo serán en medios aislados de los de explotación.",Marco operacional,Explotación,op.exp.10
+medida,op.ext.1,Contratación y acuerdos de nivel de servicio,Marco operacional,Recursos externos,
+submedida,op.ext.1.1,"Con anterioridad a la efectiva utilización de los recursos externos se establecerá contractualmente un Acuerdo de Nivel de Servicio, que incluirá las características del servicio prestado, lo que debe entenderse como «servicio mínimo admisible», así como, la responsabilidad del prestador y las consecuencias de eventuales incumplimientos.",Marco operacional,Recursos externos,op.ext.1
+medida,op.ext.2,Gestión diaria,Marco operacional,Recursos externos,
+submedida,op.ext.2.1,"Un sistema rutinario para medir el cumplimiento de las obligaciones de servicio, incluyendo el procedimiento para neutralizar cualquier desviación fuera del margen de tolerancia acordado ([op.ext.1]).",Marco operacional,Recursos externos,op.ext.2
+submedida,op.ext.2.2,"El mecanismo y los procedimientos de coordinación para llevar a cabo las tareas de mantenimiento de los sistemas comprendidos en el acuerdo, que contemplarán los supuestos de incidentes y desastres (ver [op.exp.7]).",Marco operacional,Recursos externos,op.ext.2
+medida,op.ext.3,Protección de la cadena de suministro,Marco operacional,Recursos externos,
+submedida,op.ext.3.1,Se analizará el impacto que puede tener sobre el sistema un incidente accidental o deliberado que tenga su origen en la cadena de suministro.,Marco operacional,Recursos externos,op.ext.3
+submedida,op.ext.3.2,Se estimará el riesgo sobre el sistema por causa del impacto estimado en el punto anterior.,Marco operacional,Recursos externos,op.ext.3
+submedida,op.ext.3.3,Se tomarán medidas de contención de los impactos estimados en los puntos anteriores.,Marco operacional,Recursos externos,op.ext.3
+medida,op.ext.4,Interconexión de sistemas,Marco operacional,Recursos externos,
+submedida,op.ext.4.1,Todos los intercambios de información y prestación de servicios con otros sistemas deberán ser objeto de una autorización previa. Todo flujo de información estará prohibido salvo autorización expresa.,Marco operacional,Recursos externos,op.ext.4
+submedida,op.ext.4.2,"Para cada interconexión se documentará explícitamente: las características de la interfaz, los requisitos de seguridad y protección de datos y la naturaleza de la información intercambiada.",Marco operacional,Recursos externos,op.ext.4
+medida,op.nub.1,Protección de servicios en la nube,Marco operacional,Servicios en la nube,
+submedida,op.nub.1.1,"Los sistemas que suministran un servicio en la nube a organismos del sector público deberán cumplir con el conjunto de medidas de seguridad en función del modelo de servicio en la nube que presten: Software como Servicio (Software as a Service, SaaS), Plataforma como Servicio (Platform as a Service, PaaS) e Infraestructura como Servicio (Infrastructure as a Service, IaaS) definidas en las guías CCN-STIC que sean de aplicación.",Marco operacional,Servicios en la nube,op.nub.1
+submedida,op.nub.1.2,"Cuando se utilicen servicios en la nube suministrados por terceros, los sistemas de información que los soportan deberán ser conformes con el ENS o cumplir con las medidas desarrolladas en una guía CCN-STIC que incluirá, entre otros, requisitos relativos a:",Marco operacional,Servicios en la nube,op.nub.1
+medida,op.cont.1,Análisis de impacto,Marco operacional,Continuidad del servicio,
+submedida,op.cont.1.1,"Se realizará un análisis de impacto que permita determinar los requisitos de disponibilidad de cada servicio (impacto de una interrupción durante un periodo de tiempo determinado), así como los elementos que son críticos para la prestación de cada servicio.",Marco operacional,Continuidad del servicio,op.cont.1
+medida,op.cont.2,Plan de continuidad,Marco operacional,Continuidad del servicio,
+submedida,op.cont.2.1,"Se identificarán funciones, responsabilidades y actividades a realizar.",Marco operacional,Continuidad del servicio,op.cont.2
+submedida,op.cont.2.2,Existirá una previsión para coordinar la entrada en servicio de los medios alternativos de forma que se garantice poder seguir prestando los servicios esenciales de la organización.,Marco operacional,Continuidad del servicio,op.cont.2
+submedida,op.cont.2.3,Todos los medios alternativos estarán planificados y materializados en acuerdos o contratos con los proveedores correspondientes.,Marco operacional,Continuidad del servicio,op.cont.2
+submedida,op.cont.2.4,Las personas afectadas por el plan recibirán formación específica relativa a su papel en dicho plan.,Marco operacional,Continuidad del servicio,op.cont.2
+submedida,op.cont.2.5,El plan de continuidad será parte integral y armónica de los planes de continuidad de la organización en otras materias ajenas a la seguridad.,Marco operacional,Continuidad del servicio,op.cont.2
+medida,op.cont.3,Pruebas periódicas,Marco operacional,Continuidad del servicio,
+submedida,op.cont.3.1,"Se realizarán pruebas periódicas para localizar y, en su caso, corregir los errores o deficiencias que puedan existir en el plan de continuidad.",Marco operacional,Continuidad del servicio,op.cont.3
+medida,op.cont.4,Medios alternativos,Marco operacional,Continuidad del servicio,
+submedida,op.cont.4.1,"Estará prevista la disponibilidad de medios alternativos para poder seguir prestando servicio cuando los medios habituales no estén disponibles. En concreto, se cubrirán los siguientes elementos del sistema:",Marco operacional,Continuidad del servicio,op.cont.4
+submedida,op.cont.4.2,Se establecerá un tiempo máximo para que los medios alternativos entren en funcionamiento.,Marco operacional,Continuidad del servicio,op.cont.4
+submedida,op.cont.4.3,Los medios alternativos estarán sometidos a las mismas garantías de seguridad que los originales.,Marco operacional,Continuidad del servicio,op.cont.4
+medida,op.mon.1,Detección de intrusión,Marco operacional,Monitorización del sistema,
+submedida,op.mon.1.1,Se dispondrá de herramientas de detección o prevención de intrusiones.,Marco operacional,Monitorización del sistema,op.mon.1
+medida,op.mon.2,Sistema de métricas,Marco operacional,Monitorización del sistema,
+submedida,op.mon.2.1,"Atendiendo a la categoría de seguridad del sistema, se recopilarán los datos necesarios para conocer el grado de implantación de las medidas de seguridad que resulten aplicables y, en su caso, para proveer el informe anual requerido por el artículo 32.",Marco operacional,Monitorización del sistema,op.mon.2
+medida,op.mon.3,Vigilancia,Marco operacional,Monitorización del sistema,
+submedida,op.mon.3.1,Se dispondrá de un sistema automático de recolección de eventos de seguridad.,Marco operacional,Monitorización del sistema,op.mon.3
+medida,mp.if.1,Áreas separadas y con control de acceso,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.1.1,"El equipamiento del Centro de Proceso de Datos (CPD) se instalará, en la medida de lo posible, en áreas separadas, específicas para su función.",Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.1
+submedida,mp.if.1.2,Se controlarán los accesos a las áreas indicadas de forma que sólo se pueda acceder por las entradas previstas.,Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.1
+medida,mp.if.2,Identificación de las personas,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.2.1,"El procedimiento de control de acceso identificará a las personas que accedan a los locales donde hay equipamiento esencial que forme parte del sistema de información del CPD, registrando las correspondientes entradas y salidas.",Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.2
+medida,mp.if.3,Acondicionamiento de los locales,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.3.1,Las condiciones de temperatura y humedad.,Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.3
+submedida,mp.if.3.2,La protección frente a las amenazas identificadas en el análisis de riesgos.,Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.3
+submedida,mp.if.3.3,La protección del cableado frente a incidentes fortuitos o deliberados.,Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.3
+medida,mp.if.4,Energía eléctrica,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.4.1,"Los locales donde se ubiquen los sistemas de información y sus componentes esenciales dispondrán de tomas de energía eléctrica, de modo que se garantice el suministro y el correcto funcionamiento de las luces de emergencia.",Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.4
+medida,mp.if.5,Protección frente a incendios,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.5.1,"Los locales donde se ubiquen los sistemas de información y sus componentes esenciales se protegerán frente a incendios atendiendo, al menos, a la normativa industrial de aplicación.",Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.5
+medida,mp.if.6,Protección frente a inundaciones,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.6.1,Los locales donde se ubiquen los sistemas de información y sus componentes esenciales se protegerán frente a incidentes causados por el agua.,Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.6
+medida,mp.if.7,Registro de entrada y salida de equipamiento,Medidas de protección,Protección de las instalaciones e infraestructuras,
+submedida,mp.if.7.1,"Se llevará un registro pormenorizado de cualquier entrada y salida de equipamiento esencial, incluyendo la identificación de la persona que autoriza el movimiento.",Medidas de protección,Protección de las instalaciones e infraestructuras,mp.if.7
+medida,mp.per.1,Caracterización del puesto de trabajo,Medidas de protección,Gestión del personal,
+submedida,mp.per.1.1,"Para cada puesto de trabajo, relacionado directamente con el manejo de información o servicios, se definirán las responsabilidades en materia de seguridad, que estarán basadas en el análisis de riesgos.",Medidas de protección,Gestión del personal,mp.per.1
+submedida,mp.per.1.2,"Se definirán los requisitos que deben satisfacer las personas que vayan a ocupar el puesto de trabajo, en particular, en términos de confidencialidad. Dichos requisitos se tendrán en cuenta en la selección de la persona que vaya a ocupar el puesto, incluyendo la verificación de sus antecedentes laborales, formación y otras referencias, de conformidad con el ordenamiento jurídico y el respeto a los derechos fundamentales.",Medidas de protección,Gestión del personal,mp.per.1
+medida,mp.per.2,Deberes y obligaciones,Medidas de protección,Gestión del personal,
+submedida,mp.per.2.1,Las medidas disciplinarias a que haya lugar.,Medidas de protección,Gestión del personal,mp.per.2
+submedida,mp.per.2.2,"Contemplando tanto el periodo durante el cual se desempeña el puesto, como las obligaciones en caso de término de la asignación, o traslado a otro puesto de trabajo.",Medidas de protección,Gestión del personal,mp.per.2
+submedida,mp.per.2.3,"El deber de confidencialidad respecto de los datos a los que tenga acceso, tanto durante el periodo que esté adscrito al puesto de trabajo, como posteriormente a su terminación.",Medidas de protección,Gestión del personal,mp.per.2
+submedida,mp.per.2.4,En caso de personal contratado a través de un tercero:,Medidas de protección,Gestión del personal,mp.per.2
+medida,mp.per.3,Concienciación,Medidas de protección,Gestión del personal,
+submedida,mp.per.3.1,La normativa de seguridad relativa al buen uso de los equipos o sistemas y las técnicas de ingeniería social más habituales.,Medidas de protección,Gestión del personal,mp.per.3
+submedida,mp.per.3.2,"La identificación de incidentes, actividades o comportamientos sospechosos que deban ser reportados para su tratamiento por personal especializado.",Medidas de protección,Gestión del personal,mp.per.3
+submedida,mp.per.3.3,"El procedimiento para informar sobre incidentes de seguridad, sean reales o falsas alarmas.",Medidas de protección,Gestión del personal,mp.per.3
+medida,mp.per.4,Formación,Medidas de protección,Gestión del personal,
+submedida,mp.per.4.1,"Se formará regularmente al personal en aquellas materias relativas a seguridad de la información que requiera el desempeño de sus funciones, en particular en lo relativo a:",Medidas de protección,Gestión del personal,mp.per.4
+medida,mp.eq.1,Puesto de trabajo despejado,Medidas de protección,Protección de los equipos,
+submedida,mp.eq.1.1,"Los puestos de trabajo permanecerán despejados, sin que exista material distinto del necesario en cada momento.",Medidas de protección,Protección de los equipos,mp.eq.1
+medida,mp.eq.2,Bloqueo de puesto de trabajo,Medidas de protección,Protección de los equipos,
+submedida,mp.eq.2.1,"El puesto de trabajo se bloqueará al cabo de un tiempo prudencial de inactividad, requiriendo una nueva autenticación del usuario para reanudar la actividad en curso.",Medidas de protección,Protección de los equipos,mp.eq.2
+medida,mp.eq.3,Protección de dispositivos portátiles,Medidas de protección,Protección de los equipos,
+submedida,mp.eq.3.1,Se llevará un inventario de dispositivos portátiles junto con una identificación de la persona responsable de cada uno de ellos y un control regular de que está positivamente bajo su control.,Medidas de protección,Protección de los equipos,mp.eq.3
+submedida,mp.eq.3.2,Se establecerá un procedimiento operativo de seguridad para informar al servicio de gestión de incidentes de pérdidas o sustracciones.,Medidas de protección,Protección de los equipos,mp.eq.3
+submedida,mp.eq.3.3,"Cuando un dispositivo portátil se conecte remotamente a través de redes que no están bajo el estricto control de la organización, el ámbito de operación del servidor limitará la información y los servicios accesibles a los mínimos imprescindibles, requiriendo autorización previa de los responsables de la información y los servicios afectados. Este punto es de aplicación a conexiones a través de internet y otras redes que no sean de confianza.",Medidas de protección,Protección de los equipos,mp.eq.3
+submedida,mp.eq.3.4,"Se evitará, en la medida de lo posible, que el dispositivo portátil contenga claves de acceso remoto a la organización que no sean imprescindibles. Se considerarán claves de acceso remoto aquellas que sean capaces de habilitar un acceso a otros equipos de la organización u otras de naturaleza análoga.",Medidas de protección,Protección de los equipos,mp.eq.3
+medida,mp.eq.4,Otros dispositivos conectados a la red,Medidas de protección,Protección de los equipos,
+submedida,mp.eq.4.1,Los dispositivos presentes en el sistema deberán contar con una configuración de seguridad adecuada de manera que se garantice el control del flujo definido de entrada y salida de la información.,Medidas de protección,Protección de los equipos,mp.eq.4
+submedida,mp.eq.4.2,Los dispositivos presentes en la red que dispongan de algún tipo de almacenamiento temporal o permanente de información proporcionarán la funcionalidad necesaria para eliminar información de soportes de información. (Ver [mp.si.5]).,Medidas de protección,Protección de los equipos,mp.eq.4
+medida,mp.com.1,Perímetro seguro,Medidas de protección,Protección de las comunicaciones,
+submedida,mp.com.1.1,Se dispondrá de un sistema de protección perimetral que separe la red interna del exterior. Todo el tráfico deberá atravesar dicho sistema.,Medidas de protección,Protección de las comunicaciones,mp.com.1
+submedida,mp.com.1.2,Todos los flujos de información a través del perímetro deben estar autorizados previamente.,Medidas de protección,Protección de las comunicaciones,mp.com.1
+medida,mp.com.2,Protección de la confidencialidad,Medidas de protección,Protección de las comunicaciones,
+submedida,mp.com.2.1,Se emplearán redes privadas virtuales cifradas cuando la comunicación discurra por redes fuera del propio dominio de seguridad.,Medidas de protección,Protección de las comunicaciones,mp.com.2
+medida,mp.com.3,Protección de la integridad y de la autenticidad,Medidas de protección,Protección de las comunicaciones,
+submedida,mp.com.3.1,"En comunicaciones con puntos exteriores al dominio propio de seguridad, se asegurará la autenticidad del otro extremo del canal de comunicación antes de intercambiar información. (Ver [op.acc.5]).",Medidas de protección,Protección de las comunicaciones,mp.com.3
+submedida,mp.com.3.2,Se prevendrán ataques activos garantizando que al ser detectados se activarán los procedimientos previstos de tratamiento del incidente. Se considerarán ataques activos:,Medidas de protección,Protección de las comunicaciones,mp.com.3
+submedida,mp.com.3.3,Se aceptará cualquier mecanismo de identificación y autenticación de los previstos en el ordenamiento jurídico y en la normativa de aplicación.,Medidas de protección,Protección de las comunicaciones,mp.com.3
+medida,mp.com.4,Separación de flujos de información en la red,Medidas de protección,Protección de las comunicaciones,
+submedida,mp.com.4.1,El tráfico por la red se segregará para que cada equipo solamente tenga acceso a la información que necesita.,Medidas de protección,Protección de las comunicaciones,mp.com.4
+submedida,mp.com.4.2,"Si se emplean comunicaciones inalámbricas, será en un segmento separado.",Medidas de protección,Protección de las comunicaciones,mp.com.4
+medida,mp.si.1,Marcado de soportes,Medidas de protección,Protección de los soportes de información,
+submedida,mp.si.1.1,"Los soportes de información (papel impreso, documentos electrónicos, contenidos multimedia -vídeos, cursos, presentaciones- etc.) que contengan información que según [mp.info.2] deba protegerse con medidas de seguridad específicas, llevarán las marcas o metadatos correspondientes que indiquen el nivel de seguridad de la información contenida de mayor calificación.",Medidas de protección,Protección de los soportes de información,mp.si.1
+medida,mp.si.2,Criptografía,Medidas de protección,Protección de los soportes de información,
+submedida,mp.si.2.1,Se usarán mecanismos criptográficos que garanticen la confidencialidad y la integridad de la información contenida.,Medidas de protección,Protección de los soportes de información,mp.si.2
+submedida,mp.si.2.2,Se emplearán algoritmos y parámetros autorizados por el CCN.,Medidas de protección,Protección de los soportes de información,mp.si.2
+medida,mp.si.3,Custodia,Medidas de protección,Protección de los soportes de información,
+submedida,mp.si.3.1,"Se aplicará la debida diligencia y control a los soportes de información que permanecen bajo la responsabilidad de la organización, garantizando el control de acceso con medidas físicas ([mp.if.1] y [mp.if.7]) o lógicas ([mp.si.2]).",Medidas de protección,Protección de los soportes de información,mp.si.3
+submedida,mp.si.3.2,"Se respetarán las exigencias de mantenimiento del fabricante, en especial, en lo referente a temperatura, humedad y otros agentes medioambientales.",Medidas de protección,Protección de los soportes de información,mp.si.3
+medida,mp.si.4,Transporte,Medidas de protección,Protección de los soportes de información,
+submedida,mp.si.4.1,Se dispondrá de un registro de entrada/salida que identifique al transportista que entrega/recibe el soporte.,Medidas de protección,Protección de los soportes de información,mp.si.4
+submedida,mp.si.4.2,Se dispondrá de un procedimiento rutinario que coteje las salidas con las llegadas y levante las alarmas pertinentes cuando se detecte algún incidente.,Medidas de protección,Protección de los soportes de información,mp.si.4
+submedida,mp.si.4.3,Se utilizarán los medios de protección criptográfica ([mp.si.2]) correspondientes al mayor nivel de seguridad de la información contenida.,Medidas de protección,Protección de los soportes de información,mp.si.4
+submedida,mp.si.4.4,Se gestionarán las claves según [op.exp.10].,Medidas de protección,Protección de los soportes de información,mp.si.4
+medida,mp.si.5,Borrado y destrucción,Medidas de protección,Protección de los soportes de información,
+submedida,mp.si.5.1,"Los soportes que vayan a ser reutilizados para otra información o liberados a otra organización serán objeto del borrado seguro de su contenido que no permita su recuperación. Cuando la naturaleza del soporte no permita un borrado seguro, el soporte no podrá ser reutilizado en ningún otro sistema.",Medidas de protección,Protección de los soportes de información,mp.si.5
+medida,mp.sw.1,Desarrollo de aplicaciones,Medidas de protección,Protección de las aplicaciones informáticas,
+submedida,mp.sw.1.1,"El desarrollo de aplicaciones se realizará sobre un sistema diferente y separado del de producción, no debiendo existir herramientas o datos de desarrollo en el entorno de producción, ni datos de producción en el de desarrollo.",Medidas de protección,Protección de las aplicaciones informáticas,mp.sw.1
+medida,mp.sw.2,Aceptación y puesta en servicio,Medidas de protección,Protección de las aplicaciones informáticas,
+submedida,mp.sw.2.1,Se comprobará que:,Medidas de protección,Protección de las aplicaciones informáticas,mp.sw.2
+medida,mp.info.1,Datos personales,Medidas de protección,Protección de la información,
+submedida,mp.info.1.1,"Cuando el sistema trate datos personales, el responsable de seguridad recogerá los requisitos de protección de datos que sean fijados por el responsable o por el encargado del tratamiento, contando con el asesoramiento del DPD, y que sean necesarios implementar en los sistemas de acuerdo a la naturaleza, alcance, contexto y fines del mismo, así como de los riesgos para los derechos y libertades de acuerdo a lo establecido en los artículos 24 y 32 del RGPD, y de acuerdo a la evaluación de impacto en la protección de datos, si se ha llevado a cabo.",Medidas de protección,Protección de la información,mp.info.1
+medida,mp.info.2,Calificación de la información,Medidas de protección,Protección de la información,
+submedida,mp.info.2.1,Para calificar la información se estará a lo establecido legalmente por las leyes y tratados internacionales de los que España es miembro y su normativa de aplicación cuando se trate de materias clasificadas. El valor a emplear en el caso de información de materias no clasificadas sería USO OFICIAL para información con algún tipo de restricción en su manejo por su sensibilidad y confidencialidad.,Medidas de protección,Protección de la información,mp.info.2
+submedida,mp.info.2.2,La política de seguridad establecerá quién es el responsable de cada información manejada por el sistema.,Medidas de protección,Protección de la información,mp.info.2
+submedida,mp.info.2.3,"La política de seguridad recogerá, directa o indirectamente, los criterios que, en cada organización, determinarán el nivel de seguridad requerido, dentro del marco establecido en el artículo 40 y los criterios generales señalados en el anexo I.",Medidas de protección,Protección de la información,mp.info.2
+submedida,mp.info.2.4,"El responsable de cada información seguirá los criterios determinados en el apartado anterior para asignar a cada información el nivel de seguridad requerido, y será responsable de su documentación y aprobación formal.",Medidas de protección,Protección de la información,mp.info.2
+submedida,mp.info.2.5,"El responsable de cada información en cada momento tendrá en exclusiva la potestad de modificar el nivel de seguridad requerido, de acuerdo a los apartados anteriores.",Medidas de protección,Protección de la información,mp.info.2
+medida,mp.info.3,Firma electrónica,Medidas de protección,Protección de la información,
+submedida,mp.info.3.1,"Se empleará cualquier tipo de firma electrónica de los previstos en el vigente ordenamiento jurídico, entre ellos, los sistemas de código seguro de verificación vinculados a la Administración Pública, órgano, organismo público o entidad de derecho público, en los términos y condiciones establecidos en la Ley 39/2015, de 1 de octubre, del Procedimiento Administrativo Común de las Administraciones Públicas, y en la Ley 40/2015, de 1 de octubre.",Medidas de protección,Protección de la información,mp.info.3
+medida,mp.info.4,Sellos de tiempo,Medidas de protección,Protección de la información,
+submedida,mp.info.4.1,Los sellos de tiempo se aplicarán a aquella información que sea susceptible de ser utilizada como evidencia electrónica en el futuro.,Medidas de protección,Protección de la información,mp.info.4
+submedida,mp.info.4.2,"Los datos pertinentes para la verificación posterior de la fecha serán tratados con la misma seguridad que la información fechada a efectos de disponibilidad, integridad y confidencialidad.",Medidas de protección,Protección de la información,mp.info.4
+submedida,mp.info.4.3,"Se renovarán regularmente los sellos de tiempo hasta que la información protegida ya no sea requerida por el proceso administrativo al que da soporte, en su caso.",Medidas de protección,Protección de la información,mp.info.4
+submedida,mp.info.4.4,"Se emplearán ""sellos cualificados de tiempo electrónicos"" atendiendo a lo dispuesto en el Reglamento (UE) n.º 910/2014 y normativa de desarrollo.",Medidas de protección,Protección de la información,mp.info.4
+medida,mp.info.5,Limpieza de documentos,Medidas de protección,Protección de la información,
+submedida,mp.info.5.1,"En el proceso de limpieza de documentos, se retirará de estos toda la información adicional contenida en campos ocultos, metadatos, comentarios o revisiones anteriores, salvo cuando dicha información sea pertinente para el receptor del documento.",Medidas de protección,Protección de la información,mp.info.5
+medida,mp.info.6,Copias de seguridad,Medidas de protección,Protección de la información,
+submedida,mp.info.6.1,"Se realizarán copias de seguridad que permitan recuperar datos perdidos, accidental o intencionadamente. La periodicidad y los plazos de retención de estas copias de seguridad se determinarán en la normativa interna de la organización relativa a copias de seguridad.",Medidas de protección,Protección de la información,mp.info.6
+submedida,mp.info.6.2,Los procedimientos de respaldo establecidos indicarán:,Medidas de protección,Protección de la información,mp.info.6
+medida,mp.s.1,Protección del correo electrónico,Medidas de protección,Protección de los servicios,
+submedida,mp.s.1.1,"La información distribuida por medio de correo electrónico se protegerá, tanto en el cuerpo de los mensajes como en los anexos.",Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.2,Se protegerá la información de encaminamiento de mensajes y establecimiento de conexiones.,Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.3,"Correo no solicitado, en su expresión inglesa «spam».",Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.4,"Código dañino, constituidos por virus, gusanos, troyanos, espías, u otros de naturaleza análoga.",Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.5,"Código móvil de tipo micro-aplicación, en su expresión inglesa «applet».",Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.6,Limitaciones al uso como soporte de comunicaciones privadas.,Medidas de protección,Protección de los servicios,mp.s.1
+submedida,mp.s.1.7,Actividades de concienciación y formación relativas al uso del correo electrónico.,Medidas de protección,Protección de los servicios,mp.s.1
+medida,mp.s.2,Protección de servicios y aplicaciones web,Medidas de protección,Protección de los servicios,
+submedida,mp.s.2.1,"Cuando la información requiera control de acceso se garantizará la imposibilidad de acceder a la información obviando la autenticación, en particular, tomando medidas en los siguientes aspectos:",Medidas de protección,Protección de los servicios,mp.s.2
+submedida,mp.s.2.2,Se prevendrán intentos de escalado de privilegios.,Medidas de protección,Protección de los servicios,mp.s.2
+submedida,mp.s.2.3,Se prevendrán ataques de cross site scripting.,Medidas de protección,Protección de los servicios,mp.s.2
+medida,mp.s.3,Protección de la navegación web,Medidas de protección,Protección de los servicios,
+submedida,mp.s.3.1,"Se establecerá una normativa de utilización, definiendo el uso que se autoriza y las limitaciones de uso personal. En particular, se concretará el uso permitido de conexiones cifradas.",Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.2,"Se llevarán a cabo regularmente actividades de concienciación sobre higiene en la navegación web, fomentando el uso seguro y alertando de usos incorrectos.",Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.3,Se formará al personal encargado de la administración del sistema en monitorización del servicio y respuesta a incidentes.,Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.4,Se protegerá la información de resolución de direcciones web y de establecimiento de conexiones.,Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.5,Se protegerá a la organización en general y al puesto de trabajo en particular frente a problemas que se materializan vía navegación web.,Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.6,"Se protegerá contra la actuación de programas dañinos tales como páginas activas, descargas de código ejecutable, etc., previniendo la exposición del sistema a vectores de ataque del tipo spyware, ransomware, etc.",Medidas de protección,Protección de los servicios,mp.s.3
+submedida,mp.s.3.7,"Se establecerá una política ejecutiva de control de cookies, en particular, para evitar la contaminación entre uso personal y uso organizativo.",Medidas de protección,Protección de los servicios,mp.s.3
+medida,mp.s.4,Protección frente a la denegación de servicio,Medidas de protección,Protección de los servicios,
+submedida,mp.s.4.1,Se planificará y dotará al sistema de capacidad suficiente para atender con holgura a la carga prevista.,Medidas de protección,Protección de los servicios,mp.s.4
+submedida,mp.s.4.2,Se desplegarán tecnologías para prevenir los ataques conocidos.,Medidas de protección,Protección de los servicios,mp.s.4
