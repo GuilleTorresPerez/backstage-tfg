@@ -96,10 +96,10 @@ This is a standard Backstage monorepo with Yarn workspaces:
 ### Backend plugins loaded (`packages/backend/src/index.ts`)
 
 - `app-backend`, `proxy-backend`
-- `scaffolder-backend` + GitHub and notifications modules
+- `scaffolder-backend` + GitHub, GitLab and notifications modules
 - `techdocs-backend`
 - `auth-backend` + guest provider + custom OIDC (Keycloak) provider module
-- `catalog-backend` + scaffolder entity model + logs + GitHub + Keycloak (`@backstage-community/plugin-catalog-backend-module-keycloak`) modules
+- `catalog-backend` + scaffolder entity model + logs + GitLab (`catalog-backend-module-gitlab`, auto-discovery over the `aragon-idp` group) + Keycloak (`@backstage-community/plugin-catalog-backend-module-keycloak`) modules
 - `permission-backend` + allow-all policy module
 - `search-backend` + pg engine + catalog and techdocs collators
 - `kubernetes-backend`
@@ -112,7 +112,8 @@ This is a standard Backstage monorepo with Yarn workspaces:
 - `app-config.production.yaml` — Production config (PostgreSQL via env vars).
 
 Key environment variables:
-- `GITHUB_TOKEN` — GitHub integration PAT (still used for `catalog-backend-module-github` and scaffolder until Bloque C migrates to GitLab)
+- `GITHUB_TOKEN` — GitHub integration PAT. Used by the GitHub integration and the `desy-project` scaffolder template, which still publishes to `github.com`.
+- `GITLAB_TOKEN` — GitLab integration PAT. Primary git host for the Golden Path output: the `backend-spring-boot` and `frontend-angular-desy` templates publish to `gitlab.com/aragon-idp/projects`, and `catalog-backend-module-gitlab` discovers entities over the `aragon-idp` group.
 - `AUTH_OIDC_METADATA_URL` / `AUTH_OIDC_CLIENT_ID` / `AUTH_OIDC_CLIENT_SECRET` — Keycloak OIDC provider for sign-in
 - `KEYCLOAK_BACKSTAGE_SYNC_SECRET` — service-account secret for the `backstage-sync` confidential client used by the `keycloakOrg` catalog provider
 - `POSTGRES_HOST/PORT/USER/PASSWORD` — Production database
