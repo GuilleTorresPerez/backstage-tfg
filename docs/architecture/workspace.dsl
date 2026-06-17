@@ -7,56 +7,88 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
         // ==========================================================
         // Actores
         // ==========================================================
-        developer = person "Desarrollador" "Usuario final del IDP. Descubre componentes en el catálogo, arranca proyectos desde el Scaffolder y consulta TechDocs. Rol Backstage: developer." "Actor"
-        platformAdmin = person "Platform Admin (SDA)" "Mantiene el catálogo, las plantillas Scaffolder, las políticas de permisos y el Golden Path. Único rol con permisos de modificación de la configuración del IDP. Rol Backstage: platform-admin." "Actor"
-        securityReviewer = person "Security Reviewer" "Aprueba los PRs de bootstrapping generados por el Scaffolder y los cambios sobre archivos de seguridad (CODEOWNERS). Implementa la segregación de funciones (op.acc.3.2) y la autorización de entrada en producción (org.4.3). Rol Backstage: security-reviewer." "Actor"
+        developer = person "Desarrollador" "Usuario final del IDP. Rol Backstage: developer." "Actor"
+        platformAdmin = person "Platform Admin (SDA)" "Mantiene catálogo, plantillas y políticas del IDP. Rol Backstage: platform-admin." "Actor"
+        securityReviewer = person "Security Reviewer" "Aprueba MRs de bootstrapping y cambios sobre archivos sensibles. Rol Backstage: security-reviewer." "Actor"
 
         // ==========================================================
         // Sistema en scope: el prototipo del TFG
         // ==========================================================
-        backstage = softwareSystem "Prototipo IDP Backstage" "Portal Interno de Desarrolladores construido como artefacto del TFG. Capacidades: Software Catalog, Scaffolder con Golden Path DESY/ENS, TechDocs, Permission Framework y audit log. Despliegue local en el contexto del TFG; en producción correría sobre Cloud AST." "IDP"
+        backstage = softwareSystem "Prototipo IDP Backstage" "Portal Interno de Desarrolladores construido como artefacto del TFG." "IDP" {
+
+            // --- Contenedores del prototipo (C4 nivel 2) ---
+            frontend = container "Single-Page Application" "Portal web del IDP (catálogo, Scaffolder, TechDocs, auditoría) con tema visual DESY." "React, TypeScript, Material UI" "WebApp"
+            backend = container "Backend" "Aloja los plugins del IDP: catálogo, Scaffolder, TechDocs, auth OIDC, permisos, búsqueda y auditoría." "Node.js, Express, TypeScript" "App"
+            database = container "Base de datos" "Catálogo, tareas del Scaffolder, índice de búsqueda y eventos de auditoría." "PostgreSQL" "Database"
+            objectStorage = container "Almacenamiento de objetos" "Sitios TechDocs generados (HTML), S3-compatible y on-premise." "MinIO (API S3)" "Database"
+        }
 
         // ==========================================================
         // Sistemas externos con los que integra
         // ==========================================================
 
-        gitlab = softwareSystem "GitLab" "Plataforma de repositorios Git del IDP y de los servicios generados. Fuente de verdad para catalog-info.yaml, plantillas Scaffolder, TechDocs en Markdown y código de las aplicaciones departamentales. Branch protection y CODEOWNERS aplican el flujo GitOps que materializa los controles op.exp.5.* y org.4.3." "ExternalSystem"
+        gitlab = softwareSystem "GitLab" "Repositorios Git del IDP y de los servicios generados. Fuente de verdad del catálogo (GitOps)." "ExternalSystem"
 
-        keycloak = softwareSystem "Keycloak (IdP del prototipo)" "Servidor OIDC desplegado localmente en Docker (quay.io/keycloak/keycloak) con un realm versionado en el repositorio del IDP. Provee autenticación OIDC y sincroniza users y groups al catálogo Backstage vía @backstage-community/plugin-catalog-backend-module-keycloak. Stand-in del IdP corporativo del Gobierno de Aragón. La federación LDAP contra el directorio 389DS corporativo queda como trabajo futuro. En despliegue real se sustituye por el IdP corporativo gestionado por AST." "MockSystem"
+        keycloak = softwareSystem "Keycloak (IdP del prototipo)" "Servidor OIDC open-source real, desplegado localmente (Docker) con realm versionado. Suple al IdP corporativo del Gobierno de Aragón sin simularlo." "LocalStandIn"
 
-        mockAst = softwareSystem "Mock AST (Cloud target)" "Entorno mockeado que simula la plataforma cloud de AST (certificada ENS ALTA). Recibe los artefactos desplegables generados por el pipeline CI/CD que arranca el Scaffolder. En despliegue real es Cloud AST (modelo cloud-first híbrido)." "MockSystem"
+        mockAst = softwareSystem "Mock AST (Cloud target)" "Simula la plataforma cloud de AST (certificada ENS ALTA), destino del despliegue." "MockSystem"
 
-        desy = softwareSystem "DESY — Sistema de Diseño" "Sistema de Diseño del Gobierno de Aragón (EUPL-1.2). El Scaffolder inyecta sus paquetes npm (desy-html, desy-angular) como Golden Path de UI accesible (WCAG 2.1 AA). El portal público (desy.aragon.es) se enlaza desde TechDocs como documentación de referencia." "ExternalSystem"
+        desy = softwareSystem "DESY — Sistema de Diseño" "Sistema de Diseño del Gobierno de Aragón (EUPL-1.2). Distribuye el starter oficial (Bitbucket, sdaragon) y el paquete desy-angular. Golden Path de UI accesible." "ExternalSystem"
 
-        opendata = softwareSystem "Aragón Open Data" "Plataforma pública de datos abiertos del Gobierno de Aragón. Sus APIs (GA_OD_Core v2, CKAN, SPARQL) se registran en el Software Catalog como entidades 'kind: API' — caso de uso de demostración del control op.ext.4.2 (documentación y autorización de interconexiones)." "ExternalSystem"
+        opendata = softwareSystem "Aragón Open Data" "Datos abiertos del Gobierno de Aragón. Sus APIs se registran en el catálogo." "ExternalSystem"
 
         // ==========================================================
         // Salida del Golden Path
         // ==========================================================
-        deptApp = softwareSystem "Aplicación Departamental (generada)" "Servicio creado por un desarrollador a partir de una plantilla Scaffolder del IDP. Hereda dependencias DESY, controles ENS (TLS, headers, CORS, SBOM), configuración GitOps con CODEOWNERS y pipeline de despliegue. Es el artefacto que demuestra el valor del Golden Path en la Fase 4." "Generated"
+        deptApp = softwareSystem "Aplicación Departamental (generada)" "Servicio generado por una plantilla del Scaffolder, con DESY, controles ENS y GitOps." "Generated"
 
         // ==========================================================
         // Relaciones — System Context
         // ==========================================================
 
-        // Actores → IDP
-        developer -> backstage "Descubre componentes en el catálogo, ejecuta plantillas Scaffolder y consulta TechDocs" "HTTPS"
-        platformAdmin -> backstage "Mantiene catálogo, plantillas y políticas de permisos vía Git" "HTTPS / Git"
-        securityReviewer -> backstage "Aprueba PRs de bootstrapping y revisa cambios sobre archivos de seguridad" "Git / HTTPS"
+        // Actores → IDP (etiquetas de alto nivel; el detalle técnico vive en la vista Container)
+        developer -> backstage "Descubre componentes, ejecuta plantillas y consulta documentación"
+        platformAdmin -> backstage "Mantiene catálogo, plantillas y políticas de permisos"
+        securityReviewer -> backstage "Consulta el registro de auditoría y revisa el catálogo"
 
         // IDP → Integraciones
-        backstage -> gitlab "Descubre catalog-info.yaml automáticamente (RC-DISC-01); descarga esqueletos del Scaffolder (fetch:plain → skeletons/*); crea repositorios con branch protection y MR de bootstrapping (publish:gitlab); sirve TechDocs desde Markdown" "GitLab API / HTTPS"
-        backstage -> keycloak "Autentica usuarios vía OIDC (Authorization Code Flow) y sincroniza users/groups al catálogo vía Keycloak Admin REST API; los grupos sincronizados alimentan el Permission Framework" "OIDC / Admin REST API"
-        backstage -> desy "Referencia paquetes npm en plantillas y enlaza documentación pública" "npm / HTTPS"
-        backstage -> opendata "Registra sus APIs (GA_OD_Core, CKAN, SPARQL) como entidades del catálogo vía Location estática (RC-DISC-02) — demostración op.ext.4.2" "OpenAPI / AsyncAPI"
+        backstage -> gitlab "Descubre el catálogo, genera repositorios y sirve documentación"
+        backstage -> keycloak "Autentica usuarios y sincroniza identidades"
+        backstage -> desy "Toma el starter oficial como base del frontend generado"
+        backstage -> opendata "Registra sus APIs en el catálogo"
 
         // Golden Path: la app generada y sus dependencias
-        backstage -> deptApp "Genera el repositorio con boilerplate seguro (DESY + ENS + GitOps + CI/CD)" "Scaffolder template"
-        deptApp -> gitlab "Reside como repositorio con branch protection y CODEOWNERS" "Git"
-        deptApp -> mockAst "Se despliega vía pipeline CI/CD" "GitLab CI → Cloud target"
-        deptApp -> desy "Consume componentes UI accesibles WCAG 2.1 AA en runtime" "npm"
+        backstage -> deptApp "Genera el repositorio con boilerplate seguro"
+        deptApp -> gitlab "Reside como repositorio protegido"
+        deptApp -> mockAst "Se despliega vía pipeline CI/CD"
+        deptApp -> desy "Consume sus componentes accesibles"
 
-        developer -> deptApp "Trabaja sobre el código generado tras pasar por el Golden Path" "Git / IDE"
+        developer -> deptApp "Trabaja sobre el código generado"
+
+        // Segregación de funciones: la aprobación ocurre en el git host, no en el IDP
+        securityReviewer -> gitlab "Aprueba MRs sobre archivos sensibles (CODEOWNERS)"
+
+        // ==========================================================
+        // Relaciones — Container (nivel C4 2; no afectan al systemContext)
+        // ==========================================================
+
+        // Actores → contenedores
+        developer -> backstage.frontend "Usa el portal" "HTTPS"
+        platformAdmin -> backstage.frontend "Administra el IDP" "HTTPS"
+        securityReviewer -> backstage.frontend "Consulta el registro de auditoría" "HTTPS"
+
+        // Frontend → Backend
+        backstage.frontend -> backstage.backend "Llama a la API" "JSON / HTTPS"
+
+        // Backend → almacenamiento propio
+        backstage.backend -> backstage.database "Lee y escribe" "SQL / TCP"
+        backstage.backend -> backstage.objectStorage "Publica y sirve TechDocs" "API S3 / HTTPS"
+
+        // Backend → sistemas externos
+        backstage.backend -> keycloak "Autentica usuarios y sincroniza identidades" "OIDC / Admin REST API"
+        backstage.backend -> gitlab "Descubre el catálogo y publica repositorios" "GitLab API / HTTPS"
+        backstage.backend -> desy "Descarga el starter del frontend generado" "Git / HTTPS"
+        backstage.backend -> opendata "Registra sus APIs en el catálogo" "OpenAPI / AsyncAPI"
     }
 
     views {
@@ -71,6 +103,13 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
             autolayout lr
         }
 
+        container backstage "Backstage-Container-01" "Contenedores del prototipo IDP: SPA, backend, base de datos y almacenamiento de objetos, con sus integraciones externas" {
+            include developer platformAdmin securityReviewer
+            include backstage.frontend backstage.backend backstage.database backstage.objectStorage
+            include keycloak gitlab desy opendata
+            autolayout lr
+        }
+
         styles {
             element "Actor" {
                 shape Person
@@ -82,9 +121,29 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
                 background #1168bd
                 color #ffffff
             }
+            element "WebApp" {
+                shape WebBrowser
+                background #1168bd
+                color #ffffff
+            }
+            element "App" {
+                shape RoundedBox
+                background #1168bd
+                color #ffffff
+            }
+            element "Database" {
+                shape Cylinder
+                background #1168bd
+                color #ffffff
+            }
             element "ExternalSystem" {
                 shape RoundedBox
                 background #438dd5
+                color #ffffff
+            }
+            element "LocalStandIn" {
+                shape RoundedBox
+                background #17a2b8
                 color #ffffff
             }
             element "MockSystem" {

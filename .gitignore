@@ -54,6 +54,8 @@ e2e-test-report/
 
 # Cache
 .cache/
+__pycache__/
+*.py[cod]
 
 # Structurizr local data
 docs/architecture/.structurizr/
