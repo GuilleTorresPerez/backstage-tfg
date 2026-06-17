@@ -100,7 +100,7 @@ spec:
             to: src/test/java/es/aragon
 
     - id: fetchOverlay
-      name: Aplicar overlay de catálogo
+      name: Aplicar overlay (catalog-info, CODEOWNERS, docs)
       action: fetch:template
       input:
         url: ./content
@@ -126,6 +126,11 @@ spec:
       input:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
+        branches:
+          - name: main
+            protect: true
+        settings:
+          only_allow_merge_if_pipeline_succeeds: true
 
     - id: register
       name: Registrar en el catálogo

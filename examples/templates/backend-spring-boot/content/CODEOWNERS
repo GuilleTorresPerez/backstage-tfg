@@ -1,0 +1,13 @@
+# CODEOWNERS — generado por la plantilla backend-spring-boot del IDP
+# Las rutas sensibles requieren revisión del equipo de seguridad (RS-OUT-02).
+
+# Configuración de seguridad y dependencias
+**/SecurityConfig.java     @security-reviewers
+**/config/                 @security-reviewers
+/pom.xml                   @security-reviewers
+src/main/resources/        @security-reviewers
+/.gitlab-ci.yml            @security-reviewers
+/catalog-info.yaml         @security-reviewers
+
+# Resto del repositorio
+*                          @platform-admin
