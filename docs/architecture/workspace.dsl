@@ -20,7 +20,6 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
             frontend = container "Single-Page Application" "Portal web del IDP (catálogo, Scaffolder, TechDocs, auditoría) con tema visual DESY." "React, TypeScript, Material UI" "WebApp"
             backend = container "Backend" "Aloja los plugins del IDP: catálogo, Scaffolder, TechDocs, auth OIDC, permisos, búsqueda y auditoría." "Node.js, Express, TypeScript" "App"
             database = container "Base de datos" "Catálogo, tareas del Scaffolder, índice de búsqueda y eventos de auditoría." "PostgreSQL" "Database"
-            objectStorage = container "Almacenamiento de objetos" "Sitios TechDocs generados (HTML), S3-compatible y on-premise." "MinIO (API S3)" "Database"
         }
 
         // ==========================================================
@@ -33,9 +32,9 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
 
         mockAst = softwareSystem "Mock AST (Cloud target)" "Simula la plataforma cloud de AST (certificada ENS ALTA), destino del despliegue." "MockSystem"
 
-        desy = softwareSystem "DESY — Sistema de Diseño" "Sistema de Diseño del Gobierno de Aragón (EUPL-1.2). Distribuye el starter oficial (Bitbucket, sdaragon) y el paquete desy-angular. Golden Path de UI accesible." "ExternalSystem"
+        bitbucketDesy = softwareSystem "BitBucket — Proveedor DESY" "Repositorios BitBucket donde se publican los starters DESY utilizados como base del Golden Path de UI accesible." "ExternalSystem"
 
-        opendata = softwareSystem "Aragón Open Data" "Datos abiertos del Gobierno de Aragón. Sus APIs se registran en el catálogo." "ExternalSystem"
+        minio = softwareSystem "MinIO" "Almacenamiento de objetos compatible con S3 donde Backstage publica los sitios TechDocs renderizados." "LocalStandIn"
 
         // ==========================================================
         // Salida del Golden Path
@@ -49,19 +48,20 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
         // Actores → IDP (etiquetas de alto nivel; el detalle técnico vive en la vista Container)
         developer -> backstage "Descubre componentes, ejecuta plantillas y consulta documentación"
         platformAdmin -> backstage "Mantiene catálogo, plantillas y políticas de permisos"
+        platformAdmin -> bitbucketDesy "Incorpora el starter DESY al prototipo IDP"
         securityReviewer -> backstage "Consulta el registro de auditoría y revisa el catálogo"
 
         // IDP → Integraciones
         backstage -> gitlab "Descubre el catálogo, genera repositorios y sirve documentación"
         backstage -> keycloak "Autentica usuarios y sincroniza identidades"
-        backstage -> desy "Toma el starter oficial como base del frontend generado"
-        backstage -> opendata "Registra sus APIs en el catálogo"
+        backstage -> bitbucketDesy "Integra los starters DESY como base del frontend generado"
+        backstage -> minio "Publica y sirve TechDocs renderizados"
 
         // Golden Path: la app generada y sus dependencias
         backstage -> deptApp "Genera el repositorio con boilerplate seguro"
         deptApp -> gitlab "Reside como repositorio protegido"
         deptApp -> mockAst "Se despliega vía pipeline CI/CD"
-        deptApp -> desy "Consume sus componentes accesibles"
+        deptApp -> bitbucketDesy "Parte de los starters DESY"
 
         developer -> deptApp "Trabaja sobre el código generado"
 
@@ -82,13 +82,12 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
 
         // Backend → almacenamiento propio
         backstage.backend -> backstage.database "Lee y escribe" "SQL / TCP"
-        backstage.backend -> backstage.objectStorage "Publica y sirve TechDocs" "API S3 / HTTPS"
+        backstage.backend -> minio "Renderiza, publica y sirve TechDocs" "API S3 / HTTPS"
 
         // Backend → sistemas externos
         backstage.backend -> keycloak "Autentica usuarios y sincroniza identidades" "OIDC / Admin REST API"
         backstage.backend -> gitlab "Descubre el catálogo y publica repositorios" "GitLab API / HTTPS"
-        backstage.backend -> desy "Descarga el starter del frontend generado" "Git / HTTPS"
-        backstage.backend -> opendata "Registra sus APIs en el catálogo" "OpenAPI / AsyncAPI"
+        backstage.backend -> bitbucketDesy "Descarga el starter del frontend generado" "Git / HTTPS"
     }
 
     views {
@@ -105,8 +104,8 @@ workspace "Prototipo IDP Backstage — Contexto del Sistema" "Diagrama de contex
 
         container backstage "Backstage-Container-01" "Contenedores del prototipo IDP: SPA, backend, base de datos y almacenamiento de objetos, con sus integraciones externas" {
             include developer platformAdmin securityReviewer
-            include backstage.frontend backstage.backend backstage.database backstage.objectStorage
-            include keycloak gitlab desy opendata
+            include backstage.frontend backstage.backend backstage.database
+            include keycloak gitlab bitbucketDesy minio
             autolayout lr
         }
 
