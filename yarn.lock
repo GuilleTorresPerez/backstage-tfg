@@ -17005,6 +17005,7 @@ __metadata:
     better-sqlite3: "npm:^12.0.0"
     node-gyp: "npm:^10.0.0"
     pg: "npm:^8.11.3"
+    yaml: "npm:^2.8.2"
   languageName: unknown
   linkType: soft
 
@@ -35189,7 +35190,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.2.2":
+"yaml@npm:^2.2.2, yaml@npm:^2.8.2":
   version: 2.9.0
   resolution: "yaml@npm:2.9.0"
   bin:

@@ -155,6 +155,13 @@ catalog:
     - type: file
       target: ../../catalog/seed/system-aragon-idp.yaml
 
+    # Jerarquia organizativa AST de 4 niveles (ADR-0002 / ADR-0005 / ADR-0007):
+    # 8 Group estaticos (organization, business-unit, product-area). Los team
+    # del nivel 4 siguen viniendo de Keycloak; las relaciones childOf/parentOf
+    # se derivan de los spec.children declarados en los padres.
+    - type: file
+      target: ../../catalog/seed/org-ast.yaml
+
     - type: file
       target: ../../catalog-info.yaml
 
