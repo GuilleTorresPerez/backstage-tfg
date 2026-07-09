@@ -6,6 +6,7 @@ metadata:
   annotations:
     aragon.es/nivel-ens: ${{ values.nivel_ens }}
     aragon.es/skeleton-version: ${{ values.skeletonVersion }}
+    aragon.es/security-owner: group:default/security-reviewers
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service

@@ -9,4 +9,4 @@ src/environments/        @security-reviewers
 /catalog-info.yaml       @security-reviewers
 
 # Resto del repositorio
-*                        @platform-admin
+*                        @equipo-frontend
