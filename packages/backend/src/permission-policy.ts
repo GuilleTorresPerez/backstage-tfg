@@ -17,10 +17,12 @@ import { AuditorService, LoggerService } from '@backstage/backend-plugin-api';
 type Role = 'developer' | 'platform-admin' | 'security-reviewer';
 
 const GROUP_TO_ROLE: Record<string, Role> = {
-  'group:default/developers': 'developer',
+  'group:default/equipo-frontend': 'developer',
+  'group:default/equipo-spring': 'developer',
   'group:default/platform-admins': 'platform-admin',
   'group:default/security-reviewers': 'security-reviewer',
-  developers: 'developer',
+  'equipo-frontend': 'developer',
+  'equipo-spring': 'developer',
   'platform-admins': 'platform-admin',
   'security-reviewers': 'security-reviewer',
 };
