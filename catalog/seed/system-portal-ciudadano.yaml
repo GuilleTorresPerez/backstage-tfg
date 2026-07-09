@@ -2,9 +2,13 @@
 # dos Components conectados por partOf y dependsOn, listo para validar el
 # grafo del catalog-graph (RC-SYS-03) durante un arranque limpio.
 #
-# Los 3 Group de roles (developers, platform-admins, security-reviewers)
-# vienen sincronizados desde Keycloak vía catalog.providers.keycloakOrg
-# (RC-UG-01) — no se duplican como YAML estático aquí.
+# Los teams operativos (equipo-frontend, equipo-spring, platform-admins,
+# security-reviewers) se sincronizan desde Keycloak vía
+# catalog.providers.keycloakOrg (RC-UG-01) y cuelgan de la jerarquía AST
+# de 4 niveles definida en catalog/seed/org-ast.yaml (ADR-0005/0007) — no
+# se duplican como YAML estático aquí. Cada entidad distingue propietario
+# técnico (spec.owner) y responsable de seguridad
+# (aragon.es/security-owner, ADR-0008).
 ---
 apiVersion: backstage.io/v1alpha1
 kind: System
@@ -17,6 +21,8 @@ metadata:
   tags:
     - ciudadano
     - desy
+  annotations:
+    aragon.es/security-owner: group:default/security-reviewers
 spec:
   owner: group:platform-admins
 ---
@@ -32,9 +38,11 @@ metadata:
     - ciudadano
     - desy
     - frontend
+  annotations:
+    aragon.es/security-owner: group:default/security-reviewers
 spec:
   type: website
-  owner: group:developers
+  owner: group:equipo-frontend
   lifecycle: production
   system: portal-ciudadano
   dependsOn:
@@ -51,9 +59,11 @@ metadata:
   tags:
     - ciudadano
     - backend
+  annotations:
+    aragon.es/security-owner: group:default/security-reviewers
 spec:
   type: service
-  owner: group:developers
+  owner: group:equipo-frontend
   lifecycle: production
   system: portal-ciudadano
   consumesApis:
