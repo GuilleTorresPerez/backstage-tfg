@@ -47,7 +47,7 @@ KEYCLOAK (aragon-idp)
 |-- USUARIOS HUMANOS
 |   |
 |   |-- jperez
-|   |   |-- groups: ["/developers"]
+|   |   |-- groups: ["/equipo-frontend"]
 |   |   +-- realmRoles: ["default-roles-aragon-idp"]
 |   |
 |   |-- agarcia
@@ -58,13 +58,22 @@ KEYCLOAK (aragon-idp)
 |   |   |-- groups: ["/security-reviewers"]
 |   |   +-- realmRoles: ["default-roles-aragon-idp"]
 |   |
-|   +-- mgarcia
-|       |-- groups: ["/developers", "/security-reviewers"]
+|   |-- mgarcia
+|   |   |-- groups: ["/equipo-frontend", "/security-reviewers"]
+|   |   +-- realmRoles: ["default-roles-aragon-idp"]
+|   |
+|   |-- lruiz
+|   |   |-- groups: ["/equipo-spring"]
+|   |   +-- realmRoles: ["default-roles-aragon-idp"]
+|   |
+|   +-- jgomez
+|       |-- groups: ["/equipo-spring"]
 |       +-- realmRoles: ["default-roles-aragon-idp"]
 |
 |-- GRUPOS
 |   |
-|   |-- developers
+|   |-- equipo-frontend
+|   |-- equipo-spring
 |   |-- platform-admins
 |   +-- security-reviewers
 |
@@ -223,7 +232,8 @@ BACKSTAGE
        |                                     |
        |<------------------------------------|
        |  "Aqui tienes la lista:"            |
-       |  [jperez, agarcia, msanchez, ...]   |
+       |  [jperez, agarcia, msanchez,        |
+       |   mgarcia, lruiz, jgomez, ...]      |
        |                                     |
 ```
 
@@ -243,7 +253,7 @@ Authorization: Bearer <token>
     "lastName": "Perez",
     "email": "jperez@aragon.es",
     "enabled": true,
-    "groups": ["/developers"]
+    "groups": ["/equipo-frontend"]
   },
   {
     "id": "5d758e24-...",
@@ -253,6 +263,15 @@ Authorization: Bearer <token>
     "email": "agarcia@aragon.es",
     "enabled": true,
     "groups": ["/platform-admins"]
+  },
+  {
+    "id": "407d8364-...",
+    "username": "lruiz",
+    "firstName": "Laura",
+    "lastName": "Ruiz",
+    "email": "lruiz@aragon.es",
+    "enabled": true,
+    "groups": ["/equipo-spring"]
   }
 ]
 ```
@@ -286,7 +305,8 @@ Authorization: Bearer <token>
        |                                     |
        |<------------------------------------|
        |  "Aqui tienes la lista:"            |
-       |  [developers, platform-admins, ...] |
+       |  [equipo-frontend, equipo-spring,   |
+       |   platform-admins, ...]             |
        |                                     |
 ```
 
@@ -301,8 +321,13 @@ Authorization: Bearer <token>
 [
   {
     "id": "90b0913c-...",
-    "name": "developers",
-    "path": "/developers"
+    "name": "equipo-frontend",
+    "path": "/equipo-frontend"
+  },
+  {
+    "id": "db9c171f-...",
+    "name": "equipo-spring",
+    "path": "/equipo-spring"
   },
   {
     "id": "2ac126ad-...",
@@ -339,7 +364,7 @@ Authorization: Bearer <token>
 |    email: "jperez@aragon.es"                              |
 |    firstName: "Juan"                                      |
 |    lastName: "Perez"                                      |
-|    groups: ["/developers"]                                |
+|    groups: ["/equipo-frontend"]                           |
 |       |                                                   |
 |       v                                                   |
 |  +--------------------------------------------------+     |
@@ -353,21 +378,21 @@ Authorization: Bearer <token>
 |  |    profile:                                      |     |
 |  |      displayName: Juan Perez                     |     |
 |  |      email: jperez@aragon.es                     |     |
-|  |    memberOf: [group:default/developers]          |     |
+|  |    memberOf: [group:default/equipo-frontend]    |     |
 |  +--------------------------------------------------+     |
 |                                                           |
-|  Grupo developers                                         |
-|    name: "developers"                                     |
-|    path: "/developers"                                    |
+|  Grupo equipo-frontend                                    |
+|    name: "equipo-frontend"                                |
+|    path: "/equipo-frontend"                               |
 |       |                                                   |
 |       v                                                   |
 |  +--------------------------------------------------+     |
-|  |  ENTIDAD: Group:default/developers               |     |
+|  |  ENTIDAD: Group:default/equipo-frontend          |     |
 |  |                                                  |     |
 |  |  apiVersion: backstage.io/v1alpha1               |     |
 |  |  kind: Group                                     |     |
 |  |  metadata:                                       |     |
-|  |    name: developers                              |     |
+|  |    name: equipo-frontend                         |     |
 |  |  spec:                                           |     |
 |  |    type: team                                    |     |
 |  |    children: []                                  |     |
@@ -403,8 +428,13 @@ Authorization: Bearer <token>
        |  - User:default/jperez              |
        |  - User:default/agarcia             |
        |  - User:default/msanchez            |
-       |  - Group:default/developers         |
+       |  - User:default/mgarcia             |
+       |  - User:default/lruiz               |
+       |  - User:default/jgomez              |
+       |  - Group:default/equipo-frontend    |
+       |  - Group:default/equipo-spring      |
        |  - Group:default/platform-admins    |
+       |  - Group:default/security-reviewers |
        |------------------------------------>|
        |                                     |
        |<------------------------------------|
@@ -420,7 +450,7 @@ CATALOGO DE BACKSTAGE (SQLite)
 |-- User:default/jperez
 |   |-- spec.profile.displayName: "Juan Perez"
 |   |-- spec.profile.email: "jperez@aragon.es"
-|   +-- spec.memberOf: ["group:default/developers"]
+|   +-- spec.memberOf: ["group:default/equipo-frontend"]
 |
 |-- User:default/agarcia
 |   |-- spec.profile.displayName: "Ana Garcia"
@@ -435,10 +465,23 @@ CATALOGO DE BACKSTAGE (SQLite)
 |-- User:default/mgarcia
 |   |-- spec.profile.displayName: "Manuel Garcia"
 |   |-- spec.profile.email: "mgarcia@aragon.es"
-|   +-- spec.memberOf: ["group:default/developers",
-|                        "group:default/security-reviewers"]
+|   +-- spec.memberOf: ["group:default/equipo-frontend",
+|                       "group:default/security-reviewers"]
 |
-|-- Group:default/developers
+|-- User:default/lruiz
+|   |-- spec.profile.displayName: "Laura Ruiz"
+|   |-- spec.profile.email: "lruiz@aragon.es"
+|   +-- spec.memberOf: ["group:default/equipo-spring"]
+|
+|-- User:default/jgomez
+|   |-- spec.profile.displayName: "Javier Gomez"
+|   |-- spec.profile.email: "jgomez@aragon.es"
+|   +-- spec.memberOf: ["group:default/equipo-spring"]
+|
+|-- Group:default/equipo-frontend
+|   +-- spec.type: "team"
+|
+|-- Group:default/equipo-spring
 |   +-- spec.type: "team"
 |
 |-- Group:default/platform-admins
@@ -450,7 +493,7 @@ CATALOGO DE BACKSTAGE (SQLite)
 
 > **Entidades:**
 > - **Catalogo:** Ahora contiene entidades `User` y `Group` sincronizadas
-> - **Relaciones:** `jperez` pertenece a `developers`, `agarcia` a `platform-admins`, etc.
+> - **Relaciones:** `jperez` pertenece a `equipo-frontend`, `agarcia` a `platform-admins`, `lruiz` y `jgomez` a `equipo-spring`, etc.
 
 > **Memoria:** El catalogo es la agenda de contactos de Backstage. Ahora tiene copiados todos los empleados y departamentos de RRHH.
 
@@ -470,7 +513,7 @@ CATALOGO DE BACKSTAGE (SQLite)
 |  |  signInResolver busca: User:default/jperez       |     |
 |  |  -> ENCONTRADO                                   |     |
 |  |  -> Juan puede entrar                            |     |
-|  |  -> Se sabe que es del grupo developers          |     |
+|  |  -> Se sabe que es del grupo equipo-frontend     |     |
 |  |                                                  |     |
 |  |  Si no estuviera sincronizado:                   |     |
 |  |  -> User:default/jperez NO EXISTE                |     |
@@ -555,7 +598,9 @@ CATALOGO DE BACKSTAGE (SQLite)
   |-----------------------> |
   |  KEYCLOAK               |
   |  "Aqui: jperez,        |
-  |   agarcia, msanchez..." |
+  |   agarcia, msanchez,   |
+  |   mgarcia, lruiz,      |
+  |   jgomez..."           |
   |<----------------------- |
   |                         |
   |  4. "Dame grupos"       |
@@ -563,8 +608,10 @@ CATALOGO DE BACKSTAGE (SQLite)
   |      al robot]          |
   |-----------------------> |
   |  KEYCLOAK               |
-  |  "Aqui: developers,     |
-  |   platform-admins..."   |
+  |  "Aqui: equipo-        |
+  |   frontend, equipo-    |
+  |   spring, platform-    |
+  |   admins..."           |
   |<----------------------- |
   +-------------------------+
      |
@@ -578,6 +625,8 @@ CATALOGO DE BACKSTAGE (SQLite)
   |  6. Registra/Actualiza: |
   |     User:default/jperez |
   |     User:default/agarcia|
+  |     User:default/lruiz  |
+  |     User:default/jgomez |
   |     Group:default/...   |
   |                         |
   |  7. Listo para login    |
