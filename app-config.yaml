@@ -13,6 +13,8 @@ backend:
   #   keys:
   #     - secret: ${BACKEND_SECRET}
   baseUrl: http://localhost:7007
+  logger:
+    level: warn
   listen:
     port: 7007
     # Uncomment the following host directive to bind to specific interfaces
