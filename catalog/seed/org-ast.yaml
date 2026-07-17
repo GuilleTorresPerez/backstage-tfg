@@ -1,0 +1,132 @@
+# Jerarquía organizativa AST de 4 niveles (ADR-0002 / ADR-0005 / ADR-0007).
+#
+# Nodos estáticos: 1 organization (ast), 3 business-unit (desarrollo,
+# plataforma, seguridad) y 4 product-area (desarrollo-web, desarrollo-backend,
+# sre, gobierno-datos). Solo declaran `spec.children`, nunca `spec.members`
+# (ADR-0004): la afiliación a un nodo padre se calcula automáticamente por
+# jerarquía como la unión de los miembros de sus hijos.
+#
+# Los `team` del nivel 4 (equipo-frontend, equipo-spring, platform-admins,
+# security-reviewers) NO se redefinen aquí: se sincronizan desde Keycloak vía
+# catalog.providers.keycloakOrg. Las relaciones childOf/parentOf se derivan de
+# los `spec.children` declarados en los padres estáticos: el
+# BuiltinKindsEntityProcessor emite parentOf (padre -> hijo) y, recíprocamente,
+# childOf (hijo -> padre) a partir de esta única declaración.
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: ast
+  description: |
+    Agencia de Servicios Telemáticos (AST). Organización pública ficticia
+    responsable del entorno del demostrador IDP del Gobierno de Aragón.
+    Raíz de la jerarquía organizativa de 4 niveles del catálogo.
+spec:
+  type: organization
+  profile:
+    displayName: AST
+  children:
+    - desarrollo
+    - plataforma
+    - seguridad
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: desarrollo
+  description: |
+    Business unit de desarrollo de software bajo AST. Agrupa las áreas de
+    producto de frontend y backend.
+spec:
+  type: business-unit
+  profile:
+    displayName: Desarrollo
+  children:
+    - desarrollo-web
+    - desarrollo-backend
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: plataforma
+  description: |
+    Business unit de plataforma bajo AST. Agrupa el área de producto SRE,
+    responsable de la operación y el gobierno de la infraestructura del IDP.
+spec:
+  type: business-unit
+  profile:
+    displayName: Plataforma
+  children:
+    - sre
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: seguridad
+  description: |
+    Business unit de seguridad bajo AST. Agrupa el área de producto de
+    gobierno de datos, responsable de la revisión de seguridad y la postura
+    ENS del catálogo.
+spec:
+  type: business-unit
+  profile:
+    displayName: Seguridad
+  children:
+    - gobierno-datos
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: desarrollo-web
+  description: |
+    Área de producto de desarrollo web bajo la business unit Desarrollo.
+    Agrupa al equipo operativo equipo-frontend (sincronizado desde Keycloak).
+spec:
+  type: product-area
+  profile:
+    displayName: Desarrollo Web
+  children:
+    - equipo-frontend
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: desarrollo-backend
+  description: |
+    Área de producto de desarrollo backend bajo la business unit Desarrollo.
+    Agrupa al equipo operativo equipo-spring (sincronizado desde Keycloak).
+spec:
+  type: product-area
+  profile:
+    displayName: Desarrollo Backend
+  children:
+    - equipo-spring
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: sre
+  description: |
+    Área de producto SRE bajo la business unit Plataforma. Agrupa al equipo
+    operativo platform-admins (sincronizado desde Keycloak).
+spec:
+  type: product-area
+  profile:
+    displayName: SRE
+  children:
+    - platform-admins
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: gobierno-datos
+  description: |
+    Área de producto de gobierno de datos bajo la business unit Seguridad.
+    Agrupa al equipo operativo security-reviewers (sincronizado desde
+    Keycloak).
+spec:
+  type: product-area
+  profile:
+    displayName: Gobierno de Datos
+  children:
+    - security-reviewers

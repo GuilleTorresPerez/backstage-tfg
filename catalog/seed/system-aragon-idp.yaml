@@ -13,5 +13,7 @@ metadata:
     - idp
     - plataforma
     - desy
+  annotations:
+    aragon.es/security-owner: group:default/security-reviewers
 spec:
   owner: group:platform-admins

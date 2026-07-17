@@ -42,10 +42,28 @@ function makeUser(refs: string[]): PolicyQueryUser {
 }
 
 describe('extractRoles', () => {
-  it('extracts developer from group:default/developers', () => {
-    expect(extractRoles(makeUser(['group:default/developers']))).toEqual([
+  it('extracts developer from group:default/equipo-frontend', () => {
+    expect(extractRoles(makeUser(['group:default/equipo-frontend']))).toEqual([
       'developer',
     ]);
+  });
+
+  it('extracts developer from group:default/equipo-spring', () => {
+    expect(extractRoles(makeUser(['group:default/equipo-spring']))).toEqual([
+      'developer',
+    ]);
+  });
+
+  it('maps unprefixed equipo-frontend to developer', () => {
+    expect(extractRoles(makeUser(['equipo-frontend']))).toEqual(['developer']);
+  });
+
+  it('maps unprefixed equipo-spring to developer', () => {
+    expect(extractRoles(makeUser(['equipo-spring']))).toEqual(['developer']);
+  });
+
+  it('does not map the renamed group:default/developers to any role', () => {
+    expect(extractRoles(makeUser(['group:default/developers']))).toEqual([]);
   });
 
   it('extracts platform-admin from group:default/platform-admins', () => {
@@ -83,6 +101,18 @@ describe('extractRoles', () => {
     expect(roles).toContain('security-reviewer');
     expect(roles).toHaveLength(2);
   });
+
+  it('returns union of developer + security-reviewer for equipo-frontend + security-reviewers (OR semantics)', () => {
+    const roles = extractRoles(
+      makeUser([
+        'group:default/equipo-frontend',
+        'group:default/security-reviewers',
+      ]),
+    );
+    expect(roles).toContain('developer');
+    expect(roles).toContain('security-reviewer');
+    expect(roles).toHaveLength(2);
+  });
 });
 
 describe('AragonPermissionPolicy', () => {
@@ -98,7 +128,7 @@ describe('AragonPermissionPolicy', () => {
   describe('Catalog permissions', () => {
     it('allows all roles to read catalog entities', async () => {
       for (const user of [
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
         makeUser(['group:default/platform-admins']),
         makeUser(['group:default/security-reviewers']),
       ]) {
@@ -121,7 +151,7 @@ describe('AragonPermissionPolicy', () => {
     it('allows developer to create location (from scaffolder)', async () => {
       const result = await policy.handle(
         makeQuery('catalog.location.create'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
@@ -129,7 +159,7 @@ describe('AragonPermissionPolicy', () => {
     it('allows developer to create catalog entity (from scaffolder)', async () => {
       const result = await policy.handle(
         makeQuery('catalog.entity.create'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
@@ -137,7 +167,7 @@ describe('AragonPermissionPolicy', () => {
     it('denies developer from deleting catalog entity', async () => {
       const result = await policy.handle(
         makeQuery('catalog.entity.delete'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.DENY);
     });
@@ -147,7 +177,7 @@ describe('AragonPermissionPolicy', () => {
     it('allows developer to execute template', async () => {
       const result = await policy.handle(
         makeQuery('scaffolder.task.create'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
@@ -155,7 +185,7 @@ describe('AragonPermissionPolicy', () => {
     it('allows developer to read template steps', async () => {
       const result = await policy.handle(
         makeQuery('scaffolder.template.step.read'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
@@ -171,7 +201,7 @@ describe('AragonPermissionPolicy', () => {
     it('allows developer to read task logs', async () => {
       const result = await policy.handle(
         makeQuery('scaffolder.task.read'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
@@ -223,6 +253,28 @@ describe('AragonPermissionPolicy', () => {
       );
       expect(result.result).toBe(AuthorizeResult.ALLOW);
     });
+
+    it('allows equipo-frontend + security-reviewer to execute developer actions (OR semantics)', async () => {
+      const result = await policy.handle(
+        makeQuery('scaffolder.task.create'),
+        makeUser([
+          'group:default/equipo-frontend',
+          'group:default/security-reviewers',
+        ]),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
+
+    it('allows equipo-frontend + security-reviewer to read audit events (OR semantics)', async () => {
+      const result = await policy.handle(
+        makeQuery('audit.event.read'),
+        makeUser([
+          'group:default/equipo-frontend',
+          'group:default/security-reviewers',
+        ]),
+      );
+      expect(result.result).toBe(AuthorizeResult.ALLOW);
+    });
   });
 
   describe('Audit permissions', () => {
@@ -245,7 +297,7 @@ describe('AragonPermissionPolicy', () => {
     it('denies developer from reading audit events', async () => {
       const result = await policy.handle(
         makeQuery('audit.event.read'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.DENY);
     });
@@ -290,7 +342,7 @@ describe('AragonPermissionPolicy', () => {
     it('emits permission-decision with reason "unknown-permission" when permission is not in the matrix', async () => {
       await policy.handle(
         makeQuery('some.unknown.permission'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
 
       expect(auditor.createEvent).toHaveBeenCalledWith(
@@ -309,7 +361,7 @@ describe('AragonPermissionPolicy', () => {
     it('emits permission-decision with reason "no-matching-role" when user role does not match', async () => {
       await policy.handle(
         makeQuery('catalog.entity.delete'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
 
       expect(auditor.createEvent).toHaveBeenCalledWith(
@@ -328,7 +380,7 @@ describe('AragonPermissionPolicy', () => {
     it('does NOT emit on ALLOW', async () => {
       await policy.handle(
         makeQuery('catalog.entity.read'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
 
       expect(auditor.createEvent).not.toHaveBeenCalled();
@@ -341,7 +393,7 @@ describe('AragonPermissionPolicy', () => {
     it('denies unlisted permissions', async () => {
       const result = await policy.handle(
         makeQuery('some.unknown.permission'),
-        makeUser(['group:default/developers']),
+        makeUser(['group:default/equipo-frontend']),
       );
       expect(result.result).toBe(AuthorizeResult.DENY);
     });

@@ -110,8 +110,17 @@
   "groups": [
     {
       "id": "90b0913c-1c9b-4b30-bcf1-9ee1fad0fb08",
-      "name": "developers",
-      "path": "/developers",
+      "name": "equipo-frontend",
+      "path": "/equipo-frontend",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "id": "db9c171f-2a74-4ffe-b712-424b9d934447",
+      "name": "equipo-spring",
+      "path": "/equipo-spring",
       "attributes": {},
       "realmRoles": [],
       "clientRoles": {},
@@ -152,7 +161,7 @@
           "temporary": false
         }
       ],
-      "groups": ["/developers"],
+      "groups": ["/equipo-frontend"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",
@@ -218,7 +227,51 @@
           "temporary": false
         }
       ],
-      "groups": ["/developers", "/security-reviewers"],
+      "groups": ["/equipo-frontend", "/security-reviewers"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "407d8364-45e3-4a0a-9831-02bbd70e839d",
+      "username": "lruiz",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Laura",
+      "lastName": "Ruiz",
+      "email": "lruiz@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/equipo-spring"],
+      "realmRoles": [
+        "default-roles-aragon-idp",
+        "offline_access",
+        "uma_authorization"
+      ]
+    },
+    {
+      "id": "6efe843d-5fc7-439b-9a4d-59903928fa71",
+      "username": "jgomez",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Javier",
+      "lastName": "Gomez",
+      "email": "jgomez@aragon.es",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "changeme",
+          "temporary": false
+        }
+      ],
+      "groups": ["/equipo-spring"],
       "realmRoles": [
         "default-roles-aragon-idp",
         "offline_access",

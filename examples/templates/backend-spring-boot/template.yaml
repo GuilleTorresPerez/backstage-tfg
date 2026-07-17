@@ -11,7 +11,7 @@ metadata:
     - golden-path
 spec:
   type: service
-  owner: platform-team
+  owner: group:default/equipo-spring
 
   parameters:
     - title: Información del servicio
@@ -33,6 +33,7 @@ spec:
           type: string
           description: Grupo responsable del servicio (solo tus grupos)
           ui:field: MyGroupsPicker
+          default: group:default/equipo-spring
         system:
           title: Sistema
           type: string

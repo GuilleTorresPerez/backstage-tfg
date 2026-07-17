@@ -14,7 +14,7 @@ metadata:
     - frontend
     - angular
 spec:
-  owner: group:default/platform-admin
+  owner: group:default/equipo-frontend
   type: website
 
   parameters:
@@ -43,6 +43,7 @@ spec:
           type: string
           description: Grupo responsable del componente (solo tus grupos)
           ui:field: MyGroupsPicker
+          default: group:default/equipo-frontend
         system:
           title: Sistema
           type: string

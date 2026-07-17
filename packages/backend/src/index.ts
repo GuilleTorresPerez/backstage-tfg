@@ -11,6 +11,7 @@ import {
   auditStoreServiceFactory,
   auditorServiceFactory,
 } from '@internal/backstage-plugin-audit-backend';
+import { keycloakGroupTransformerModule } from './modules/keycloakGroupTransformer';
 import { oidcAuthProviderModule } from './modules/oidcAuthProvider';
 import { tfgCatalogValidatorModule } from './modules/tfgCatalogValidator';
 import { permissionPolicyModule } from './permission-policy';
@@ -82,6 +83,7 @@ backend.add(import('@backstage/plugin-signals-backend'));
 backend.add(
   import('@backstage-community/plugin-catalog-backend-module-keycloak'),
 );
+backend.add(keycloakGroupTransformerModule);
 
 // audit-log plugin (issue #65)
 // - audit-backend mounts GET /api/audit/events
