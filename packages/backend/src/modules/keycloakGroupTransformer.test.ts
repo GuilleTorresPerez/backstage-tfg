@@ -5,7 +5,12 @@ function makeEntity(name: string, overrides?: Record<string, unknown>): any {
     apiVersion: 'backstage.io/v1beta1',
     kind: 'Group',
     metadata: { name },
-    spec: { type: 'group', children: [], members: [], profile: { displayName: name } },
+    spec: {
+      type: 'group',
+      children: [],
+      members: [],
+      profile: { displayName: name },
+    },
     ...overrides,
   };
 }
@@ -14,7 +19,11 @@ describe('customGroupTransformer', () => {
   it('sets spec.type to "team"', async () => {
     const entity = makeEntity('equipo-frontend');
 
-    const result = await customGroupTransformer(entity, {} as any, 'aragon-idp');
+    const result = await customGroupTransformer(
+      entity,
+      {} as any,
+      'aragon-idp',
+    );
 
     expect(result?.spec?.type).toBe('team');
   });
@@ -22,11 +31,15 @@ describe('customGroupTransformer', () => {
   it('preserves metadata and other spec fields unchanged', async () => {
     const entity = makeEntity('equipo-spring');
 
-    const result = await customGroupTransformer(entity, {} as any, 'aragon-idp');
+    const result = await customGroupTransformer(
+      entity,
+      {} as any,
+      'aragon-idp',
+    );
 
     expect(result?.metadata.name).toBe('equipo-spring');
     expect(result?.spec.children).toEqual([]);
-    expect(result?.spec.profile.displayName).toBe('equipo-spring');
+    expect(result?.spec.profile?.displayName).toBe('equipo-spring');
   });
 
   it('works for all four teams', async () => {
@@ -39,7 +52,11 @@ describe('customGroupTransformer', () => {
 
     for (const name of teams) {
       const entity = makeEntity(name);
-      const result = await customGroupTransformer(entity, {} as any, 'aragon-idp');
+      const result = await customGroupTransformer(
+        entity,
+        {} as any,
+        'aragon-idp',
+      );
       expect(result?.spec?.type).toBe('team');
     }
   });

@@ -55,7 +55,10 @@ const SECURITY_OWNER = 'group:default/security-reviewers';
 describe('examples/templates — golden-path owners, security-owner, CODEOWNERS', () => {
   describe('backend-spring-boot', () => {
     const manifest = loadManifest('backend-spring-boot');
-    const catalogInfo = readFile('backend-spring-boot', 'content/catalog-info.yaml');
+    const catalogInfo = readFile(
+      'backend-spring-boot',
+      'content/catalog-info.yaml',
+    );
     const codeowners = readFile('backend-spring-boot', 'content/CODEOWNERS');
 
     it('template spec.owner is equipo-spring (team custodian of the golden path)', () => {
@@ -63,7 +66,9 @@ describe('examples/templates — golden-path owners, security-owner, CODEOWNERS'
     });
 
     it('owner parameter defaults to equipo-spring', () => {
-      expect(findOwnerPicker(manifest).default).toBe('group:default/equipo-spring');
+      expect(findOwnerPicker(manifest).default).toBe(
+        'group:default/equipo-spring',
+      );
     });
 
     it('catalog-info.yaml carries security-owner and keeps the ENS annotations', () => {

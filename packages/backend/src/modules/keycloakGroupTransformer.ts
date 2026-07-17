@@ -4,7 +4,11 @@ import {
   keycloakTransformerExtensionPoint,
 } from '@backstage-community/plugin-catalog-backend-module-keycloak';
 
-export const customGroupTransformer: GroupTransformer = async (entity, _group, _realm) => {
+export const customGroupTransformer: GroupTransformer = async (
+  entity,
+  _group,
+  _realm,
+) => {
   return { ...entity, spec: { ...entity.spec, type: 'team' } };
 };
 
