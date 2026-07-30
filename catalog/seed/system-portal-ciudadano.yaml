@@ -63,7 +63,7 @@ metadata:
     aragon.es/security-owner: group:default/security-reviewers
 spec:
   type: service
-  owner: group:equipo-frontend
+  owner: group:equipo-spring
   lifecycle: production
   system: portal-ciudadano
   consumesApis:

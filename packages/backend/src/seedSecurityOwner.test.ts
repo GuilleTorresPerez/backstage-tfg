@@ -53,11 +53,11 @@ describe('catalog/seed — security-owner annotation and owners (ADR-0008)', () 
     }
   });
 
-  it('Components are owned by equipo-frontend (renamed from developers)', () => {
+  it('Components are owned by the team that maintains each one', () => {
     const frontend = byName.get('portal-ciudadano-frontend');
     const backend = byName.get('portal-ciudadano-backend');
     expect(frontend?.spec.owner).toBe('group:equipo-frontend');
-    expect(backend?.spec.owner).toBe('group:equipo-frontend');
+    expect(backend?.spec.owner).toBe('group:equipo-spring');
   });
 
   it('Systems keep platform-admins as technical owner', () => {
