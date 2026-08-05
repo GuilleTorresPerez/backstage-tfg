@@ -14,15 +14,8 @@ const TEMPLATES_DIR = path.resolve(
   'templates',
 );
 
-type OwnerParam = {
-  'ui:field'?: string;
-  default?: string;
-};
-
-type ParamStep = { properties: Record<string, OwnerParam> };
-
 type TemplateManifest = {
-  spec: { owner: string; parameters: ParamStep[] };
+  spec: { owner: string };
 };
 
 function loadManifest(template: string): TemplateManifest {
@@ -37,88 +30,13 @@ function readFile(template: string, rel: string): string {
   return readFileSync(path.join(TEMPLATES_DIR, template, rel), 'utf8');
 }
 
-// The owner parameter uses ui:field: MyGroupsPicker; its `default` is the
-// pre-selected team when the logged-in user is a member of it, so running a
-// template without customizing the owner assigns the component to that team.
-function findOwnerPicker(manifest: TemplateManifest): OwnerParam {
-  for (const step of manifest.spec.parameters) {
-    for (const key of Object.keys(step.properties)) {
-      const param = step.properties[key];
-      if (param['ui:field'] === 'MyGroupsPicker') return param;
-    }
-  }
-  throw new Error('No MyGroupsPicker parameter found in template manifest');
-}
-
-const SECURITY_OWNER = 'group:default/security-reviewers';
-
-describe('examples/templates — golden-path owners, security-owner, CODEOWNERS', () => {
-  describe('backend-spring-boot', () => {
-    const manifest = loadManifest('backend-spring-boot');
-    const catalogInfo = readFile(
-      'backend-spring-boot',
-      'content/catalog-info.yaml',
-    );
-    const codeowners = readFile('backend-spring-boot', 'content/CODEOWNERS');
-
-    it('template spec.owner is equipo-spring (team custodian of the golden path)', () => {
-      expect(manifest.spec.owner).toBe('group:default/equipo-spring');
-    });
-
-    it('owner parameter defaults to equipo-spring', () => {
-      expect(findOwnerPicker(manifest).default).toBe(
-        'group:default/equipo-spring',
-      );
-    });
-
-    it('catalog-info.yaml carries security-owner and keeps the ENS annotations', () => {
-      expect(catalogInfo).toContain(
-        `aragon.es/security-owner: ${SECURITY_OWNER}`,
-      );
-      expect(catalogInfo).toContain('aragon.es/nivel-ens:');
-      expect(catalogInfo).toContain('aragon.es/skeleton-version:');
-    });
-
-    it('CODEOWNERS points the rest of the repo at @equipo-spring and keeps @security-reviewers', () => {
-      expect(codeowners).toMatch(/^\*\s+@equipo-spring\s*$/m);
-      expect(codeowners).toContain('@security-reviewers');
-      expect(codeowners).not.toContain('@platform-admin');
-    });
-  });
-
-  describe('frontend-angular-desy', () => {
-    const manifest = loadManifest('frontend-angular-desy');
-    const catalogInfo = readFile(
-      'frontend-angular-desy',
-      'content/catalog-info.yaml',
-    );
-    const codeowners = readFile('frontend-angular-desy', 'content/CODEOWNERS');
-
-    it('template spec.owner is equipo-frontend (team custodian of the golden path)', () => {
-      expect(manifest.spec.owner).toBe('group:default/equipo-frontend');
-    });
-
-    it('owner parameter defaults to equipo-frontend', () => {
-      expect(findOwnerPicker(manifest).default).toBe(
-        'group:default/equipo-frontend',
-      );
-    });
-
-    it('catalog-info.yaml carries security-owner and keeps the ENS annotations', () => {
-      expect(catalogInfo).toContain(
-        `aragon.es/security-owner: ${SECURITY_OWNER}`,
-      );
-      expect(catalogInfo).toContain('aragon.es/nivel-ens:');
-      expect(catalogInfo).toContain('aragon.es/skeleton-version:');
-    });
-
-    it('CODEOWNERS points the rest of the repo at @equipo-frontend and keeps @security-reviewers', () => {
-      expect(codeowners).toMatch(/^\*\s+@equipo-frontend\s*$/m);
-      expect(codeowners).toContain('@security-reviewers');
-      expect(codeowners).not.toContain('@platform-admin');
-    });
-  });
-
+// The golden-path templates (backend-spring-boot, frontend-angular-desy) no
+// longer live here: they were extracted to their own repositories under
+// `aragon-idp/templates/` so the catalog ingests them by discovery instead of
+// by a declared location. Their owner / security-owner / CODEOWNERS
+// assertions (ADR-0006, ADR-0008) left with them — this suite can only cover
+// what is still on disk.
+describe('examples/templates — plantillas que siguen en el repositorio', () => {
   describe('desy-project (example template, unchanged)', () => {
     it('is not given a security-owner annotation and keeps its example owner', () => {
       const manifest = loadManifest('desy-project');
