@@ -19,7 +19,7 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp = softwareSystem "Portal interno de desarrolladores" "Artefacto del TFG: punto único de entrada al catálogo, a los caminos guiados y a la documentación." "IDP" {
 
             // --- Nivel 2: contenedores ---
-            webApp = container "Aplicación web" "Portal del desarrollador, con tema visual DESY y la interfaz propia de auditoría." "React 17, TypeScript, Material UI v4" "WebApp"
+            webApp = container "Aplicación web" "Portal del desarrollador, con tema visual DESY y la interfaz propia de auditoría." "React 18, TypeScript, Material UI v4" "WebApp"
 
             database = container "Base de datos" "Instancia compartida en la que cada plugin dispone de su propia base lógica." "PostgreSQL 17" "Database"
 
