@@ -54,7 +54,11 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         // Nivel 1 — el entorno, en registro conceptual: sin productos.
         // ==========================================================
         scm = softwareSystem "Control de versiones" "Origen del inventario y destino de lo que se genera." "Concepto"
-        identity = softwareSystem "Proveedor de identidad" "Resuelve quién accede al portal. El piloto lo emula con un proveedor propio: la identidad corporativa no es federable en este entorno." "Concepto,Limitacion"
+        // Sin la etiqueta Limitacion: en el nivel 1 esta caja es un papel de
+        // arquitectura, no un producto. El papel no está comprometido; lo está
+        // su realización en el piloto, que es donde se marca la limitación
+        // (el elemento keycloak del nivel 2).
+        identity = softwareSystem "Proveedor de identidad" "Resuelve quién accede al portal. El piloto lo emula con un proveedor propio: la identidad corporativa no es federable en este entorno." "Concepto"
         objectStore = softwareSystem "Almacenamiento de objetos" "Conserva la documentación publicada de cada componente." "Concepto"
 
         // ==========================================================
@@ -70,15 +74,20 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         // ==========================================================
         // Relaciones — nivel 1
         // ==========================================================
-        developer -> idp "Consulta el inventario, genera componentes y lee sus documentos"
+        // Rótulo sin la palabra «componentes»: Structurizr parte el rótulo por
+        // píxeles y esa palabra no cabe en una línea, así que se rompía a la
+        // mitad. Se dice lo mismo con palabras que sí caben.
+        developer -> idp "Consulta el inventario, genera repositorios y lee sus documentos"
         platformAdmin -> idp "Mantiene el catálogo y la política de permisos"
         securityReviewer -> idp "Revisa el registro de auditoría"
         developer -> scm "Continúa el trabajo sobre el repositorio generado"
 
         idp -> scm "Descubre el inventario y publica los repositorios generados"
         idp -> identity "Delega el inicio de sesión y sincroniza usuarios y grupos"
-        idp -> objectStore "Publica y recupera los documentos"
+        idp -> objectStore "Publica los documentos al generar el componente" "" "Reto"
+        idp -> objectStore "Recupera los documentos publicados"
         scm -> objectStore "Publicará los documentos desde la CI" "" "Futuro"
+        developer -> identity "Iniciará sesión con la identidad corporativa" "" "Futuro"
 
         // ==========================================================
         // Relaciones — nivel 2
