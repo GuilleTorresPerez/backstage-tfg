@@ -51,25 +51,27 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         }
 
         // ==========================================================
-        // Nivel 1 — el entorno, en registro conceptual: sin productos.
+        // El entorno. Un solo elemento por sistema, con el mismo nombre en
+        // todas las vistas: el papel de arquitectura y, entre paréntesis, el
+        // producto que lo realiza en el piloto.
+        //
+        // Antes había dos juegos de cajas —papeles en el nivel 1, productos del
+        // nivel 2 hacia abajo—, y eso rompía el principio del modelo: bajar de
+        // nivel es abrir la caja del sistema en alcance, no rebautizar ni
+        // descomponer las de alrededor. En el ejemplo canónico de C4, el
+        // «E-mail System» y el «Mainframe Banking System» son la misma caja, con
+        // el mismo nombre, en los niveles 1, 2 y 3.
+        //
+        // El control de versiones son dos sistemas, no uno partido en dos: por
+        // eso ahora también son dos cajas en el nivel 1.
         // ==========================================================
-        scm = softwareSystem "Control de versiones" "Origen del inventario y destino de lo que se genera." "Concepto"
-        // Sin la etiqueta Limitacion: en el nivel 1 esta caja es un papel de
-        // arquitectura, no un producto. El papel no está comprometido; lo está
-        // su realización en el piloto, que es donde se marca la limitación
-        // (el elemento keycloak del nivel 2).
-        identity = softwareSystem "Proveedor de identidad" "Resuelve quién accede al portal. El piloto lo emula con un proveedor propio: la identidad corporativa no es federable en este entorno." "Concepto"
-        objectStore = softwareSystem "Almacenamiento de objetos" "Conserva la documentación publicada de cada componente." "Concepto"
-
-        // ==========================================================
-        // Del nivel 2 hacia abajo, los mismos papeles con producto y
-        // nombre. El control de versiones se desdobla porque los dos
-        // repositorios no se controlan igual.
-        // ==========================================================
-        gitlab = softwareSystem "GitLab" "Grupo de la organización: repositorios descubiertos, plantillas y destino de lo generado. Bajo control del prototipo." "Externo"
-        bitbucket = softwareSystem "Bitbucket (DESY)" "Repositorio ajeno con el starter Angular del Sistema de Diseño DESY, del que el prototipo solo lee." "Externo"
-        keycloak = softwareSystem "Keycloak" "Proveedor OIDC del piloto, autoalojado con un realm propio." "Externo,Limitacion"
-        minio = softwareSystem "MinIO" "Almacenamiento compatible con S3 del piloto." "Externo"
+        gitlab = softwareSystem "Control de versiones (GitLab)" "Grupo de la organización: origen del inventario, de las plantillas y destino de lo que se genera. Bajo control del prototipo." "Externo"
+        bitbucket = softwareSystem "Repositorio de terceros (Bitbucket / DESY)" "Repositorio ajeno con el starter Angular del Sistema de Diseño DESY, del que el prototipo solo lee." "Externo"
+        // La limitación se marca aquí y solo aquí, porque ahora solo hay una
+        // caja: el papel no está comprometido, lo está su realización en el
+        // piloto, y las dos viven en el mismo elemento.
+        keycloak = softwareSystem "Proveedor de identidad (Keycloak)" "Resuelve quién accede al portal. El piloto lo emula con un proveedor autoalojado y un realm propio: la identidad corporativa no es federable en este entorno." "Externo,Limitacion"
+        minio = softwareSystem "Almacenamiento de objetos (MinIO)" "Conserva la documentación publicada de cada componente. El piloto usa un almacén compatible con S3." "Externo"
 
         // ==========================================================
         // Relaciones — nivel 1
@@ -80,22 +82,27 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         developer -> idp "Consulta el inventario, genera repositorios y lee sus documentos"
         platformAdmin -> idp "Mantiene el catálogo y la política de permisos"
         securityReviewer -> idp "Revisa el registro de auditoría"
-        developer -> scm "Continúa el trabajo sobre el repositorio generado"
-        // Presente, no futuro: el navegador es redirigido al proveedor y la
-        // contraseña se teclea allí. El portal nunca la ve. Tiene que estar en
-        // los dos niveles o en ninguno; el nivel 2 la dibuja contra Keycloak.
-        developer -> identity "Se autentica"
+        idp -> gitlab "Descubre el inventario y publica los repositorios generados"
+        idp -> bitbucket "Descarga y parchea el starter del frontend" "" "Reto"
+        idp -> keycloak "Delega el inicio de sesión y sincroniza usuarios y grupos"
+        idp -> minio "Publica los documentos al generar el componente" "" "Reto"
+        idp -> minio "Recupera los documentos publicados"
 
-        idp -> scm "Descubre el inventario y publica los repositorios generados"
-        idp -> identity "Delega el inicio de sesión y sincroniza usuarios y grupos"
-        idp -> objectStore "Publica los documentos al generar el componente" "" "Reto"
-        idp -> objectStore "Recupera los documentos publicados"
-        // Los dos futuros del nivel 1 tienen la misma forma: relaciones entre
-        // papeles del entorno que hoy no existen y que resolverían una
-        // limitación del piloto. No hablan de qué producto realiza el papel
-        // —eso es del nivel 2—, sino de cómo se relacionarán los papeles.
-        scm -> objectStore "Publicará los documentos desde la CI" "" "Futuro"
-        scm -> identity "Delegará también el inicio de sesión" "" "Futuro"
+        // ==========================================================
+        // Relaciones que no dependen del nivel: unen dos elementos que se
+        // dibujan igual en las dos vistas, así que se declaran una sola vez y
+        // aparecen en ambas. Antes estaban duplicadas, una por registro de
+        // nombres; al unificar los elementos, la duplicación se disuelve.
+        // ==========================================================
+        developer -> gitlab "Continúa el trabajo sobre el repositorio generado" "Git y merge requests"
+        // El navegador es redirigido al proveedor y la contraseña se teclea
+        // allí: el portal nunca la ve, solo el código de autorización.
+        developer -> keycloak "Se autentica" "OIDC con PKCE"
+        // Los dos futuros del modelo tienen la misma forma: relaciones entre
+        // sistemas del entorno que hoy no existen y que resolverían una
+        // limitación del piloto.
+        gitlab -> minio "Publicará los documentos desde la CI" "" "Futuro"
+        gitlab -> keycloak "Delegará también el inicio de sesión" "" "Futuro"
 
         // ==========================================================
         // Relaciones — nivel 2
@@ -107,7 +114,10 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp.webApp -> idp.backend "Llama a la API" "JSON / HTTP"
         idp.backend -> idp.database "Lee y escribe el inventario, las tareas y la auditoría" "SQL / TCP"
         idp.backend -> gitlab "Descubre el inventario y publica los repositorios" "API de GitLab"
-        idp.backend -> bitbucket "Descarga el starter del frontend generado" "HTTP"
+        // Marcada como reto en los tres niveles, por la misma regla que la
+        // publicación de documentos: el starter ajeno no encaja tal cual y hay
+        // que parchearlo al vuelo. Antes solo salía en ámbar en el nivel 3.
+        idp.backend -> bitbucket "Descarga y parchea el starter del frontend" "HTTP" "Reto"
         idp.backend -> keycloak "Autentica y sincroniza usuarios y grupos" "OIDC y API de administración"
         // Desdobladas por la misma razón que en el nivel 1: publicar y recuperar
         // no son lo mismo. La publicación durante la generación es el atajo del
@@ -115,11 +125,6 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp.backend -> minio "Publica los documentos al generar el componente" "API S3" "Reto"
         idp.backend -> minio "Recupera los documentos publicados" "API S3"
         idp.backend -> developer "Notifica el final de la generación"
-
-        gitlab -> minio "Publicará los documentos desde la CI" "" "Futuro"
-        gitlab -> keycloak "Delegará también el inicio de sesión" "" "Futuro"
-        developer -> keycloak "Se autentica" "OIDC con PKCE"
-        developer -> gitlab "Continúa el trabajo sobre el repositorio generado" "Git y merge requests"
 
         // ==========================================================
         // Relaciones — nivel 3
@@ -155,8 +160,8 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
 
     views {
 
-        systemContext idp "C4-01-Contexto" "Vista de contexto: el portal, los tres perfiles y los tres papeles del entorno, sin nombrar productos." {
-            include developer platformAdmin securityReviewer idp scm identity objectStore
+        systemContext idp "C4-01-Contexto" "Vista de contexto: el portal, los tres perfiles que lo usan y los cuatro sistemas del entorno con los que integra." {
+            include developer platformAdmin securityReviewer idp gitlab bitbucket keycloak minio
             autolayout tb 300 60
         }
 
@@ -239,11 +244,6 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
             element "Database" {
                 shape Cylinder
                 background #1168bd
-                color #ffffff
-            }
-            element "Concepto" {
-                shape RoundedBox
-                background #6b7f95
                 color #ffffff
             }
             element "Externo" {
