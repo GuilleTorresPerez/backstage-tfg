@@ -81,6 +81,10 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         platformAdmin -> idp "Mantiene el catálogo y la política de permisos"
         securityReviewer -> idp "Revisa el registro de auditoría"
         developer -> scm "Continúa el trabajo sobre el repositorio generado"
+        // Presente, no futuro: el navegador es redirigido al proveedor y la
+        // contraseña se teclea allí. El portal nunca la ve. Tiene que estar en
+        // los dos niveles o en ninguno; el nivel 2 la dibuja contra Keycloak.
+        developer -> identity "Se autentica"
 
         idp -> scm "Descubre el inventario y publica los repositorios generados"
         idp -> identity "Delega el inicio de sesión y sincroniza usuarios y grupos"
@@ -105,7 +109,11 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp.backend -> gitlab "Descubre el inventario y publica los repositorios" "API de GitLab"
         idp.backend -> bitbucket "Descarga el starter del frontend generado" "HTTP"
         idp.backend -> keycloak "Autentica y sincroniza usuarios y grupos" "OIDC y API de administración"
-        idp.backend -> minio "Publica y recupera los documentos" "API S3"
+        // Desdobladas por la misma razón que en el nivel 1: publicar y recuperar
+        // no son lo mismo. La publicación durante la generación es el atajo del
+        // piloto y va en ámbar; la lectura es ordinaria y va sin marca.
+        idp.backend -> minio "Publica los documentos al generar el componente" "API S3" "Reto"
+        idp.backend -> minio "Recupera los documentos publicados" "API S3"
         idp.backend -> developer "Notifica el final de la generación"
 
         gitlab -> minio "Publicará los documentos desde la CI" "" "Futuro"
@@ -149,14 +157,14 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
 
         systemContext idp "C4-01-Contexto" "Vista de contexto: el portal, los tres perfiles y los tres papeles del entorno, sin nombrar productos." {
             include developer platformAdmin securityReviewer idp scm identity objectStore
-            autolayout tb 150 120
+            autolayout tb 300 60
         }
 
         container idp "C4-02-Contenedores" "Vista de contenedores: la aplicación web y el backend son las dos mitades desplegables de Backstage, con la base de datos y los sistemas del piloto." {
-            include developer
+            include developer platformAdmin securityReviewer
             include idp.webApp idp.backend idp.database
             include gitlab bitbucket keycloak minio
-            autolayout tb 150 120
+            autolayout tb 380 40
         }
 
         // La vista de componentes va en dos figuras: dieciséis cajas en una sola
