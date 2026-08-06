@@ -107,7 +107,7 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         // ==========================================================
         // Relaciones — nivel 2
         // ==========================================================
-        developer -> idp.webApp "Usa el portal" "HTTP"
+        developer -> idp.webApp "Consulta el inventario y genera repositorios" "HTTP"
         platformAdmin -> idp.webApp "Administra el portal" "HTTP"
         securityReviewer -> idp.webApp "Consulta el registro de auditoría" "HTTP"
 
@@ -132,8 +132,12 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp.backend.search -> idp.backend.catalog "Indexa las entidades del catálogo"
         idp.backend.search -> idp.backend.techdocs "Indexa los documentos publicados"
 
-        idp.backend.catalog -> idp.backend.validator "Valida cada entidad"
-        idp.backend.auth -> idp.backend.signIn "Resuelve la sesión"
+        // Los rótulos van en la dirección de la flecha: describen lo que hace
+        // quien la origina, no lo que hace el destino. Antes decían «Valida
+        // cada entidad» y «Resuelve la sesión», que es el trabajo del módulo
+        // apuntado, así que se leían al revés del dibujo.
+        idp.backend.catalog -> idp.backend.validator "Somete cada entidad a validación"
+        idp.backend.auth -> idp.backend.signIn "Delega la resolución de la identidad"
         idp.backend.permission -> idp.backend.policy "Consulta la matriz de permisos"
         idp.backend.scaffolder -> idp.backend.publishDocs "Ejecuta la acción de publicación"
         idp.backend.scaffolder -> idp.backend.notifications "Avisa al solicitante"
