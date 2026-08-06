@@ -86,8 +86,12 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp -> identity "Delega el inicio de sesión y sincroniza usuarios y grupos"
         idp -> objectStore "Publica los documentos al generar el componente" "" "Reto"
         idp -> objectStore "Recupera los documentos publicados"
+        // Los dos futuros del nivel 1 tienen la misma forma: relaciones entre
+        // papeles del entorno que hoy no existen y que resolverían una
+        // limitación del piloto. No hablan de qué producto realiza el papel
+        // —eso es del nivel 2—, sino de cómo se relacionarán los papeles.
         scm -> objectStore "Publicará los documentos desde la CI" "" "Futuro"
-        developer -> identity "Iniciará sesión con la identidad corporativa" "" "Futuro"
+        scm -> identity "Delegará también el inicio de sesión" "" "Futuro"
 
         // ==========================================================
         // Relaciones — nivel 2
@@ -105,6 +109,7 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         idp.backend -> developer "Notifica el final de la generación"
 
         gitlab -> minio "Publicará los documentos desde la CI" "" "Futuro"
+        gitlab -> keycloak "Delegará también el inicio de sesión" "" "Futuro"
         developer -> keycloak "Se autentica" "OIDC con PKCE"
         developer -> gitlab "Continúa el trabajo sobre el repositorio generado" "Git y merge requests"
 
