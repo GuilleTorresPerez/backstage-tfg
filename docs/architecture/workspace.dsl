@@ -191,22 +191,26 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
             autolayout lr 120 90
         }
 
-        dynamic idp "C4-04-Flujo" "Integración del flujo de trabajo: del inicio de sesión al repositorio registrado, y la vida posterior del componente generado." {
-            developer -> idp.webApp "Inicia sesión"
-            idp.backend -> keycloak "Autentica y resuelve la identidad contra el catálogo"
-            developer -> idp.webApp "Elige plantilla y rellena el formulario"
-            idp.webApp -> idp.backend "Solicita la generación; autoriza en local"
-            idp.backend -> gitlab "Descarga la plantilla y su esqueleto"
-            idp.backend -> bitbucket "Descarga el starter ajeno y lo parchea al vuelo"
-            idp.backend -> minio "Genera y publica los documentos"
-            idp.backend -> gitlab "Crea el repositorio y publica el contenido"
-            idp.backend -> idp.database "Da de alta la entidad, ya validada"
-            idp.backend -> developer "Notifica el final de la generación"
+        // El flujo va a nivel de sistemas, no de contenedores: se lee como la
+        // figura de contexto recorrida en orden. Los saltos internos del portal
+        // —web al backend, backend a la base de datos— no cuentan nada de la
+        // historia y son los que estrangulaban la legibilidad de la figura. El
+        // detalle que vivía en ellos (autorización local, validación de la
+        // entidad) está donde corresponde: en las vistas de componentes.
+        dynamic * "C4-04-Flujo" "Integración del flujo de trabajo: del inicio de sesión al repositorio registrado, y la vida posterior del componente generado." {
+            developer -> idp "Inicia sesión en el portal"
+            idp -> keycloak "Autentica y resuelve la identidad contra el catálogo"
+            developer -> idp "Elige plantilla y solicita la generación"
+            idp -> gitlab "Descarga la plantilla y su esqueleto"
+            idp -> bitbucket "Descarga el starter ajeno y lo parchea al vuelo"
+            idp -> minio "Genera y publica los documentos"
+            idp -> gitlab "Crea el repositorio y publica el contenido"
+            idp -> developer "Notifica el final de la generación"
             developer -> gitlab "Continúa por merge requests"
-            idp.backend -> gitlab "Redescubre el inventario cada 30 minutos"
-            idp.backend -> idp.webApp "Sirve los documentos al portal"
+            idp -> gitlab "Redescubre el inventario cada 30 minutos"
+            idp -> minio "Recupera los documentos publicados"
             gitlab -> minio "Publicará los documentos desde la CI"
-            autolayout lr 150 120
+            autolayout tb 400 40
         }
 
         styles {
