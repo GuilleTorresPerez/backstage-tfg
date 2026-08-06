@@ -71,7 +71,10 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
         // caja: el papel no está comprometido, lo está su realización en el
         // piloto, y las dos viven en el mismo elemento.
         keycloak = softwareSystem "Proveedor de identidad (Keycloak)" "Resuelve quién accede al portal. El piloto lo emula con un proveedor autoalojado y un realm propio: la identidad corporativa no es federable en este entorno." "Externo,Limitacion"
-        minio = softwareSystem "Almacenamiento de objetos (MinIO)" "Conserva la documentación publicada de cada componente. El piloto usa un almacén compatible con S3." "Externo"
+        // La etiqueta «Almacen» no añade significado al código de color: solo le
+        // da forma de cilindro, porque un almacén de objetos se lee antes como
+        // depósito que como caja.
+        minio = softwareSystem "Almacenamiento de objetos (MinIO)" "Conserva la documentación publicada de cada componente. El piloto usa un almacén compatible con S3." "Externo,Almacen"
 
         // ==========================================================
         // Relaciones — nivel 1
@@ -228,62 +231,100 @@ workspace "Prototipo IDP Backstage — Modelo C4" "Modelo C4 del prototipo de po
             }
             relationship "Relationship" {
                 fontSize 34
+                color #4d4d4d
             }
+            // Las cajas van de trazo, no macizas: relleno muy claro, borde grueso
+            // y rótulo del mismo tono. El código de color de D05 no cambia — el
+            // tono de cada categoría es exactamente el mismo de siempre, solo que
+            // ahora vive en el borde y en el texto en lugar de en el relleno. Se
+            // gana en que el nombre se lee en oscuro sobre claro, que a 4,5 pt
+            // impresos rinde bastante mejor que blanco sobre color.
+            //
+            // strokeWidth 10 es el máximo que admite Structurizr; en estas
+            // figuras equivale a algo más de 1 pt impreso, que es lo que hace
+            // falta para que el borde sostenga el color al reducir.
             element "Actor" {
                 shape Person
-                background #08427b
-                color #ffffff
+                background #eef3fa
+                stroke #08427b
+                strokeWidth 10
+                color #08427b
             }
             element "IDP" {
                 shape RoundedBox
-                background #1168bd
-                color #ffffff
+                background #e9f2fb
+                stroke #1168bd
+                strokeWidth 10
+                color #0d5290
             }
             element "WebApp" {
                 shape WebBrowser
-                background #1168bd
-                color #ffffff
+                background #e9f2fb
+                stroke #1168bd
+                strokeWidth 10
+                color #0d5290
             }
             element "App" {
                 shape RoundedBox
-                background #1168bd
-                color #ffffff
+                background #e9f2fb
+                stroke #1168bd
+                strokeWidth 10
+                color #0d5290
             }
             element "Database" {
                 shape Cylinder
-                background #1168bd
-                color #ffffff
+                background #e9f2fb
+                stroke #1168bd
+                strokeWidth 10
+                color #0d5290
             }
             element "Externo" {
                 shape RoundedBox
-                background #6b7f95
-                color #ffffff
+                background #eff2f5
+                stroke #6b7f95
+                strokeWidth 10
+                color #4a5b6d
+            }
+            // Un almacén de objetos se dibuja como depósito. Va después de
+            // «Externo» para que le gane la forma sin tocarle el color.
+            element "Almacen" {
+                shape Cylinder
             }
             element "DeSerie" {
                 shape Component
-                background #85bbf0
-                color #000000
+                background #eaf4fd
+                stroke #85bbf0
+                strokeWidth 10
+                color #2f76b4
             }
             element "Extendido" {
                 shape Component
-                background #7e57c2
-                color #ffffff
+                background #f1ebfa
+                stroke #7e57c2
+                strokeWidth 10
+                color #5b3b95
             }
             element "Propio" {
                 shape Component
-                background #2e7d32
-                color #ffffff
+                background #e9f3ea
+                stroke #2e7d32
+                strokeWidth 10
+                color #256128
             }
             // Código de color de la corrección: gris = limitación asumida,
             // amarillo = reto afrontado con una solución provisional.
             element "Limitacion" {
-                background #9e9e9e
-                color #000000
+                background #f2f2f2
+                stroke #9e9e9e
+                strokeWidth 10
+                color #5e5e5e
                 border dashed
             }
             element "Reto" {
-                background #f0ad4e
-                color #000000
+                background #fdf2e0
+                stroke #f0ad4e
+                strokeWidth 10
+                color #8f5b10
             }
             relationship "Reto" {
                 color #d9821b
